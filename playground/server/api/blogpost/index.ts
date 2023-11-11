@@ -1,6 +1,6 @@
-import { defineEventHandler, getQuery, getRouterParams, H3Error } from 'h3'
+import { defineEventHandler } from 'h3'
 
-export default defineEventHandler(async (req) => {
+export default defineEventHandler(async () => {
   const client = useEdgeDb()
 
   const blogposts = await client.query(`
@@ -9,8 +9,6 @@ export default defineEventHandler(async (req) => {
       description
     }
   `)
-
-  console.log(blogposts)
 
   return blogposts
 })

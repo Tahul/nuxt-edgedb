@@ -251,7 +251,7 @@ export default defineNuxtModule<ModuleOptions>({
       if (options.generateInterfaces) nuxtOptions.alias['@db/interfaces'] = join(dbschemaDir, '/interfaces.ts')
       if (options.generateQueryBuilder) nuxtOptions.alias['@db/builder'] = join(dbschemaDir, '/query-builder/index.ts')
 
-      nuxt.hook('prepare:types', async (_nuxtOptions) => {
+      nuxt.hook('prepare:types', async () => {
         await generateInterfaces()
         await generateQueries()
         await generateQueryBuilder()

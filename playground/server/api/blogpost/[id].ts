@@ -1,4 +1,4 @@
-import { defineEventHandler, getQuery, getRouterParams, H3Error } from 'h3'
+import { defineEventHandler, getRouterParams, H3Error } from 'h3'
 
 export default defineEventHandler(async (req) => {
   const params = getRouterParams(req)
@@ -11,8 +11,6 @@ export default defineEventHandler(async (req) => {
         description
       } filter .id = ${params.id}
     `)
-
-    console.log(blogpost)
 
     return blogpost
   } else {
