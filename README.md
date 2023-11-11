@@ -17,6 +17,8 @@
 - 🛟 &nbsp;Auto-imported typed database query client provided by [`@edgedb/generate`](https://www.edgedb.com/docs/clients/js/generation)
 - 🍩 &nbsp;[`edgedb ui`](https://www.edgedb.com/docs/cli/edgedb_ui) injected into [Nuxt Devtools](https://github.com/nuxt/devtools)
 
+⚠️ This is still very experimental project. Please do not use until it is properly announced.
+
 ## Quick Setup
 
 1. Add `nuxt-edgedb` dependency to your project

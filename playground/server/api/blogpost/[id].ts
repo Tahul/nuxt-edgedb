@@ -2,11 +2,19 @@ import { defineEventHandler, getQuery, getRouterParams, H3Error } from 'h3'
 
 export default defineEventHandler(async (req) => {
   const params = getRouterParams(req)
-  const query = getQuery(req)
-  // const db = useEdgeDb()
+  const client = useEdgeDb()
 
-  if (query.domain) {
-    //
+  if (params.id) {
+    const blogpost = await client.querySingle(`
+      select BlogPost {
+        title,
+        description
+      } filter .id = ${params.id}
+    `)
+
+    console.log(blogpost)
+
+    return blogpost
   } else {
     const err = new H3Error('No domain found in query.')
     err.statusCode = 400

@@ -7,7 +7,7 @@ export function useEdgeDbQueries() {
     Object.entries(queries).map(([key, fn]) => {
       return [
         key,
-        (...args) => fn(client, ...args)
+        (args: Parameters<typeof fn>[1]) => fn(client, args)
       ]
     })
   )

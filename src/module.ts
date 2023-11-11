@@ -19,7 +19,10 @@ export interface ModuleOptions {
   generateQueries: boolean
   generateQueryBuilder: boolean
   generateQuiet: boolean
+  composables: boolean
 }
+
+const { resolve: resolveLocal } = createResolver(import.meta.url)
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -38,7 +41,8 @@ export default defineNuxtModule<ModuleOptions>({
     generateInterfaces: true,
     generateQueries: true,
     generateQueryBuilder: true,
-    generateQuiet: true
+    generateQuiet: true,
+    composables: true
   },
   async setup(options, nuxt) {
     const logger = createConsola({
@@ -252,6 +256,20 @@ export default defineNuxtModule<ModuleOptions>({
         await generateQueries()
         await generateQueryBuilder()
       })
+    }
+
+    if (options.composables) {
+      // Add server-side auto-imports
+      nuxt.hook(
+        'nitro:config',
+        (config) => {
+          if (!config.imports)
+            config.imports = {}
+          if (!config.imports.dirs)
+            config.imports.dirs = []
+          config.imports.dirs.push(resolveLocal('./runtime/server'))
+        },
+      )
     }
   }
 })
