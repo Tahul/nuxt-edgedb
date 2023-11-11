@@ -11,7 +11,7 @@
 
 ## Features
 
-- 🍱 &nbsp;Zero-config setup; just add `nuxt-edgedb` to your `modules`
+- 🍱 &nbsp;Zero-config setup; just add `nuxt-edgedb-module` to your `modules`
 - 🧙 &nbsp;[EdgeDB CLI install](https://www.edgedb.com/docs/cli/index) and [project init](https://www.edgedb.com/docs/cli/edgedb_project/edgedb_project_init) wizards
 - 🎩 &nbsp;Watchers on `dbschema/*`, `queries/*`, `dbschema/migrations/*` bringing _HMR_ to your database
 - 🛟 &nbsp;Auto-imported typed database query client provided by [`@edgedb/generate`](https://www.edgedb.com/docs/clients/js/generation)
@@ -21,25 +21,25 @@
 
 ## Quick Setup
 
-1. Add `nuxt-edgedb` dependency to your project
+1. Add `nuxt-edgedb-module` dependency to your project
 
 ```bash
 # Using pnpm
-pnpm add -D nuxt-edgedb
+pnpm add -D nuxt-edgedb-module
 
 # Using yarn
-yarn add --dev nuxt-edgedb
+yarn add --dev nuxt-edgedb-module
 
 # Using npm
-npm install --save-dev nuxt-edgedb
+npm install --save-dev nuxt-edgedb-module
 ```
 
-2. Add `nuxt-edgedb` to the `modules` section of `nuxt.config.ts`
+2. Add `nuxt-edgedb-module` to the `modules` section of `nuxt.config.ts`
 
 ```js
 export default defineNuxtConfig({
   modules: [
-    'nuxt-edgedb'
+    'nuxt-edgedb-module'
   ],
   // Optional, all options has sufficient defaults.
   edgedb: {
@@ -259,6 +259,14 @@ If you want to go fast and know what you are doing, you can set `watchPrompt` to
 If you do not want any of these features, just set `watch` to false and you are free to feel safe about changes applied to your development database.
 
 > HMR on your database obviously has **NO** effect in production context.
+
+### Why the name isn't `nuxt-edgedb`
+
+Because that handle is already taken on NPM.
+
+It seem to be taken by [`ohmree`](https://github.com/ohmree), but the package seem inactive.
+
+If anyone happens to know him, I would be happy to get in contact!
 
 ## Development
 

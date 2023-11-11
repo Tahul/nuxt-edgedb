@@ -26,7 +26,7 @@ const { resolve: resolveLocal } = createResolver(import.meta.url)
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: 'nuxt-edgedb',
+    name: 'nuxt-edgedb-module',
     configKey: 'edgeDb'
   },
   // Default configuration options of the Nuxt module
@@ -148,7 +148,7 @@ export default defineNuxtModule<ModuleOptions>({
         nuxt.hook('devtools:customTabs', (tabs) => {
           tabs.push({
             // unique identifier
-            name: 'nuxt-edgedb',
+            name: 'nuxt-edgedb-module',
             // title to display in the tab
             title: 'EdgeDB',
             // any icon from Iconify, or a URL to an image
