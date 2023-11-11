@@ -295,14 +295,14 @@ npm run release
 ```
 
 <!-- Badges -->
-[npm-version-src]: https://img.shields.io/npm/v/nuxt-edgedb/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-version-href]: https://npmjs.com/package/nuxt-edgedb
+[npm-version-src]: https://img.shields.io/npm/v/nuxt-edgedb-module/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-version-href]: https://npmjs.com/package/nuxt-edgedb-module
 
-[npm-downloads-src]: https://img.shields.io/npm/dm/nuxt-edgedb.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-downloads-href]: https://npmjs.com/package/nuxt-edgedb
+[npm-downloads-src]: https://img.shields.io/npm/dm/nuxt-edgedb-module.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-downloads-href]: https://npmjs.com/package/nuxt-edgedb-module
 
-[license-src]: https://img.shields.io/npm/l/nuxt-edgedb.svg?style=flat&colorA=18181B&colorB=28CF8D
-[license-href]: https://npmjs.com/package/nuxt-edgedb
+[license-src]: https://img.shields.io/npm/l/nuxt-edgedb-module.svg?style=flat&colorA=18181B&colorB=28CF8D
+[license-href]: https://npmjs.com/package/nuxt-edgedb-module
 
 [nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?logo=nuxt.js
 [nuxt-href]: https://nuxt.com
