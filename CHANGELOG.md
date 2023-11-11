@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.3
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.2...v0.0.3)
+
+### 🏡 Chore
+
+- **package-name:** Change to nuxt-edgedb-module (nuxt-edgedb already taken) ([2b80325](https://github.com/tahul/nuxt-edgedb/commit/2b80325))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.2
 
 
