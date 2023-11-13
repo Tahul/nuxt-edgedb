@@ -49,12 +49,15 @@ If you do not already have [EdgeDB](https://www.edgedb.com) installed on your ma
 
 If you want to run the example project, you have to git clone this repository and run the playground.
 
-As EdgeDB cannot run on web containers environment like Stackblitz or CodeSandbox, you must clone the project locally to run this playground.
+As EdgeDB cannot run on web containers environment like Stackblitz or CodeSandbox.
+
+You must clone the project locally to run this playground:
 
 ```bash
 git clone git@github.com:Tahul/nuxt-edgedb.git
 cd nuxt-edgedb
 pnpm install
+pnpm stub
 cd playground && pnpm run dev
 ```
 
