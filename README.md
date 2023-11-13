@@ -321,15 +321,27 @@ You can totally rewrite any of these components locally to implement your own au
 
 ### OAuth
 
+If you want to use OAuth, you will have to enable it in your `nuxt.config`:
+
+```typescript
+export default defineNuxtConfig({
+  edgeDb: {
+    oauth: true
+  }
+})
+```
+
+That will inject two new components to your app:
+
+- [`EdgeDbOAuthButton`](./src/runtime/components/EdgeDbOAuthButton.vue)
+- [`EdgeDbOAuthCallback`](./src/runtime/components/EdgeDbOAuthCallback.vue)
+
 EdgeDB currently supports [OAuth](https://www.edgedb.com/docs/guides/auth/oauth#oauth) on following providers:
 
 - Apple
 - Azure (Microsoft)
 - GitHub
 - Google
-
-- [`EdgeDbOAuthButton`](./src/runtime/components/EdgeDbOAuthButton.vue)
-- [`EdgeDbOAuthCallback`](./src/runtime/components/EdgeDbOAuthCallback.vue)
 
 In order to get OAuth working, you will have to visit your EdgeDB Instance UI, via the Nuxt DevTools.
 
