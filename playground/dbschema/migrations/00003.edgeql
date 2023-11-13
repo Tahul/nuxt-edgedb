@@ -1,10 +1,9 @@
-CREATE MIGRATION m1eittjmr3ry4x23hx5bll3qlbj6a6trigilzj2mavjzid3xfuphka
-    ONTO m1zwrwacfwgbpled2oup7peti2gy2szzsyrehrdtfd6pz6e77yxfrq
+CREATE MIGRATION m1x3k4pj7vpulmz2lt2xgos2rvqlpbo35iymu4prcgfsuvcixy6unq
+    ONTO m1lmflqgxsmihc4iyaiz37ujsrhjqznhkbxbljgpfk32424z6o54oq
 {
-  CREATE TYPE default::BlogPost {
-      CREATE REQUIRED PROPERTY content: std::str {
-          SET default := '';
+  ALTER TYPE default::BlogPost {
+      ALTER LINK author {
+          SET default := (GLOBAL default::current_user);
       };
-      CREATE REQUIRED PROPERTY title: std::str;
   };
 };

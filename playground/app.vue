@@ -1,50 +1,59 @@
-<template>
-  <div>
-    Nuxt EdgeDB playground!
+<script setup lang="ts">
+const { isLoggedIn } = useEdgeDbIdentity()
 
-    <div>
-      Blogposts:
-      {{ data }}
-    </div>
+const links = computed(() => {
+  const links = [
+    {
+      label: 'Home',
+      icon: 'i-heroicons-home',
+      to: '/'
+    },
+  ]
 
-    <div>
-      Add a new client:
-      <input placeholder="thecompaniesapi.com">
-      <button @click="submit">
-        {{ loading ? 'Loading...' : 'Submit' }}
-      </button>
-    </div>
-
-    <div v-if="error">
-      {{ error }}
-    </div>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const loading = ref(false);
-const error = ref("");
-const clientInput = ref();
-
-const { data, refresh } = await useAsyncData(
-  'blogpost-index',
-  () => $fetch('/api/blogpost')
-)
-
-const submit = async () => {
-  loading.value = true
-  error.value = ""
-  try {
-    await $fetch('/api/client/create', {
-      query: {
-        domain: clientInput.value
+  if (isLoggedIn.value) {
+    links.push(
+      {
+        label: 'New blogpost',
+        icon: 'i-heroicons-newspaper-20-solid',
+        to: '/new'
+      },
+      {
+        label: 'Logout',
+        icon: 'i-heroicons-newspaper-20-solid',
+        to: '/auth/logout'
       }
-    })
-    await refresh()
-  } catch (e: any) {
-    console.log(e);
-    error.value = e;
+    )
+  } else {
+    links.push(
+      {
+        label: 'Register',
+        icon: 'i-heroicons-key-20-solid',
+        to: '/auth/signup'
+      },
+      {
+        label: 'Login',
+        icon: 'i-heroicons-lock-open-20-solid',
+        to: '/auth/login'
+      },
+      {
+        label: 'Forgot my password',
+        icon: 'i-heroicons-sparkles-20-solid',
+        to: '/auth/forgot-password'
+      },
+    )
   }
-  loading.value = false
-}
+
+  return links
+})
+
 </script>
+
+<template>
+  <UContainer class="p-8 flex flex-col gap-4">
+    <UVerticalNavigation :links="links" />
+
+    <div>
+      <NuxtPage />
+    </div>
+  </UContainer>
+</template>

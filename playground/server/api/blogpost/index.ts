@@ -1,14 +1,32 @@
-import { defineEventHandler } from 'h3'
+import { defineEventHandler, isMethod, readBody } from 'h3'
 
-export default defineEventHandler(async () => {
-  const client = useEdgeDb()
+export default defineEventHandler(async (req) => {
+  if (isMethod(req, 'DELETE')) {
+    const { id } = await readBody(req)
 
-  const blogposts = await client.query(`
-    select BlogPost {
+    const { deleteBlogPost } = useEdgeDbQueries(req)
+
+    return await deleteBlogPost({ blogpost_id: id })
+  }
+  if (isMethod(req, 'POST')) {
+    const {
       title,
-      description
-    }
-  `)
+      description,
+      content
+    } = await readBody(req)
 
-  return blogposts
+    const { insertBlogPost } = useEdgeDbQueries(req)
+
+    const blogPost = await insertBlogPost({
+        blogpost_title: title,
+        blogpost_description: description,
+        blogpost_content: content
+      })
+
+    return blogPost
+  }
+
+  const { allBlogPosts } = useEdgeDbQueries()
+
+  return await allBlogPosts()
 })

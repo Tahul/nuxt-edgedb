@@ -12,6 +12,7 @@
     "nuxt": "latest"
   },
   "dependencies": {
-    "@edgedb/generate": "^0.4.1"
+    "@edgedb/generate": "^0.4.1",
+    "@nuxt/ui": "^2.10.0"
   }
 }

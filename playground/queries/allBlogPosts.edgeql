@@ -2,6 +2,5 @@ select BlogPost {
   id,
   title,
   description,
-  content
+  content,
 }
-filter .id = <uuid>$blogpost_id;
