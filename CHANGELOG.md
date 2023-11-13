@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.0.6
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.5...v0.0.6)
+
+### 🏡 Chore
+
+- **readme:** Up ([f29c0d4](https://github.com/tahul/nuxt-edgedb/commit/f29c0d4))
+- **readme:** Up ([3f0b589](https://github.com/tahul/nuxt-edgedb/commit/3f0b589))
+- **readme:** Up ([0b483b8](https://github.com/tahul/nuxt-edgedb/commit/0b483b8))
+- **readme:** Up ([0542345](https://github.com/tahul/nuxt-edgedb/commit/0542345))
+- **readme:** Up ([66aa58e](https://github.com/tahul/nuxt-edgedb/commit/66aa58e))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.5
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.4...v0.0.5)

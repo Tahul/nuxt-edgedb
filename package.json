@@ -1,6 +1,6 @@
 {
   "name": "nuxt-edgedb-module",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Nuxt 3 integration for EdgeDB.",
   "repository": "tahul/nuxt-edgedb",
   "license": "MIT",
