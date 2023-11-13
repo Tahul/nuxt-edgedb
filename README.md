@@ -41,7 +41,7 @@ export default defineNuxtConfig({
 })
 ```
 
-That's it! Your Nuxt project now has a database. ✨
+That's it! Your Nuxt project now have a database. ✨
 
 If you do not already have [EdgeDB](https://www.edgedb.com) installed on your machine, the install wizard will help you to install it.
 
