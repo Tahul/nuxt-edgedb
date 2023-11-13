@@ -13,7 +13,7 @@ Integrate [Nuxt 3](https://nuxt.com) with [EdgeDB](https://www.edgedb.com) effor
 - 🧙 **Seamless Initialization**: Automates [EdgeDB CLI](https://www.edgedb.com/docs/cli/index) setup and [project initialization](https://www.edgedb.com/docs/cli/edgedb_project/edgedb_project_init).
 - 🎩 **Live Schema Updates**: Experience _HMR-like DX_ with watchers on **schema**, **queries**, and **migrations**.
 - 🛟 **Typed Query Generation**: Automatically generate a typed query client with [@edgedb/generate](https://www.edgedb.com/docs/clients/js/generation).
-- 🍩 **Integrated Database Management**: Administer your database directly from [Nuxt DevTools](https://github.com/nuxt/devtools).
+- 🍩 **Integrated Database Management**: Pilot your database from [Nuxt DevTools](https://github.com/nuxt/devtools).
 - 🔐 **Flexible Auth**: 1-line toggle [Email](https://www.edgedb.com/docs/guides/auth/email_password) or [OAuth](https://www.edgedb.com/docs/guides/auth/oauth) authentication, with support for custom auth providers.
 
 ## Quick Setup
