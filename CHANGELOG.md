@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v0.0.4
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.3...v0.0.4)
+
+### 🚀 Enhancements
+
+- **auth:** Add authentication; improve readme ([2bc59dc](https://github.com/tahul/nuxt-edgedb/commit/2bc59dc))
+- **auth:** Add auth implementation; support oauth & email/pw ([a1c13c2](https://github.com/tahul/nuxt-edgedb/commit/a1c13c2))
+- **auth:** Add edgedb:auth:callback ([150db0c](https://github.com/tahul/nuxt-edgedb/commit/150db0c))
+
+### 🏡 Chore
+
+- **readme:** Update ([d15c6d7](https://github.com/tahul/nuxt-edgedb/commit/d15c6d7))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.3
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.2...v0.0.3)
