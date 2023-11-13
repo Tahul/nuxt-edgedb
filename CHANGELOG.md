@@ -1,6 +1,21 @@
 # Changelog
 
 
+## v0.0.7
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.6...v0.0.7)
+
+### 🏡 Chore
+
+- **readme:** Up ([a416e2d](https://github.com/tahul/nuxt-edgedb/commit/a416e2d))
+- **readme:** Up ([e900c9a](https://github.com/tahul/nuxt-edgedb/commit/e900c9a))
+- **readme:** Add minimal-starter; improve readme ([9b7da2b](https://github.com/tahul/nuxt-edgedb/commit/9b7da2b))
+- **up:** Update module ; improve prompts handling ([a2cc6ba](https://github.com/tahul/nuxt-edgedb/commit/a2cc6ba))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.6
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.5...v0.0.6)
