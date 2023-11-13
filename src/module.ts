@@ -124,7 +124,7 @@ export default defineNuxtModule<ModuleOptions>({
           async onSubmit(_, response) {
             if (response.value === true) {
               try {
-                await execaCommand(`curl --proto \'=https\' --tlsv1.2 -sSf https://sh.edgedb.com | sh`)
+                await execaCommand(`curl --proto '=https' --tlsv1.2 -sSf https://sh.edgedb.com | sh`)
                 edgedbCliVersion = (await execaCommand(`edgedb --version`)).stdout.replace('EdgeDB CLI ', '')
                 success(`EdgeDB CLI version ${edgedbCliVersion} installed.`, true)
               } catch (e) {
