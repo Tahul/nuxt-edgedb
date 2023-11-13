@@ -254,9 +254,9 @@ If you are doing these edits while the server is off, you can run `edgedb migrat
 
 You will need to enable auth providers on your EdgeDB server.
 
-That can be done through DevTools, in the `EdgeDB`.
+That can be done through DevTools, in the `EdgeDB` tab.
 
-Browse to your database, then inside `Auth Admin` tab.
+Browse to your database, then to `Auth Admin`.
 
 There, you must specify:
 
@@ -267,7 +267,7 @@ You also must enable some providers, you can usually start with `Email + Passwor
 
 If you enable `required_verification`, you will need to configure a SMTP server for you EdgeDB instance.
 
-You can find further instructions on how to use [Mailtrap](https://mailpit.axllent.org/docs/configuration/) locally to debug this feature [here](https://www.edgedb.com/docs/guides/auth/index#email-and-password).
+You can find further instructions on how to use [Mailtrap](https://mailpit.axllent.org/docs/configuration/) locally to try this feature [here](https://www.edgedb.com/docs/guides/auth/index#email-and-password).
 
 > Do not forget these steps must also be performed on your production environment.
 
