@@ -1,4 +1,3 @@
-import { useNitroApp } from '#imports'
 import { defineEventHandler, H3Error, setHeaders, getCookie, getRequestURL } from "h3";
 
 /**
@@ -9,8 +8,6 @@ import { defineEventHandler, H3Error, setHeaders, getCookie, getRequestURL } fro
  */
 export default defineEventHandler(async (req) => {
   const { authBaseUrl } = useEdgeDbEnv();
-
-  console.log(useNitroApp())
 
   const requestUrl = getRequestURL(req);
   const code = requestUrl.searchParams.get("code");
@@ -43,12 +40,16 @@ export default defineEventHandler(async (req) => {
 
   const codeExchangeResponseData = await codeExchangeResponse.json();
 
-  console.log({
-    code,
-    verifier,
-    codeExchangeUrl,
-    codeExchangeResponse,
-  })
+  useNitroApp().hooks.callHook(
+    // @ts-expect-error
+    'edgedb:auth:callback',
+    {
+      code,
+      verifier,
+      codeExchangeUrl,
+      codeExchangeResponseData,
+    }
+  );
 
   setHeaders(req, {
     "Set-Cookie": `edgedb-auth-token=${codeExchangeResponseData.auth_token}; Path=/; HttpOnly`,

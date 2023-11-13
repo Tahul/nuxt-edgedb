@@ -45,6 +45,19 @@ That's it! Your Nuxt project now has a database. ✨
 
 If you do not already have [EdgeDB](https://www.edgedb.com) installed on your machine, the install wizard will help you to install it.
 
+## Example project
+
+If you want to run the example project, you have to git clone this repository and run the playground.
+
+As EdgeDB cannot run on web containers environment like Stackblitz or CodeSandbox, you must clone the project locally to run this playground.
+
+```bash
+git clone git@github.com:Tahul/nuxt-edgedb.git
+cd nuxt-edgedb
+pnpm install
+cd playground && pnpm run dev
+```
+
 ## Server usage
 
 The module provides auto-imported composables available anywhere inside `server/` context of your Nuxt app.
@@ -443,7 +456,31 @@ NUXT_EDGEDB_AUTH_VERIFY_REDIRECT_URL=http://localhost:3000/auth/verify
 
 EdgeDB Auth only provides bare minimal identity feature for authentication.
 
-In the code example I provided, I added a `User` type that goes along with the `Identity` interface.
+In the code example provided for authentication setup, a `User` type goes along with the `Identity` interface.
+
+If you want to fill `User` with other attributes upon user registration, you will have to implement this behavior.
+
+The initial authentication workflow is made to be as minimal as possible so anyone can build any kind of authentication and roles system on top of it.
+
+If you want to resolve data from OAuth providers, you can use the Nitro hook called `edgedb:auth:callback` from a Nitro plugin.
+
+```
+// server/plugins/auth.ts
+
+export default defineNitroPlugin((app) => {
+  app.hooks.hook('edgedb:auth:callback', (data) => {
+    const {
+      code,
+      verifier,
+      codeExchangeUrl,
+      codeExchangeResponseData,
+    } = data
+
+    // codeExchangeResponseData contains the OAuth token from the provider.
+    // ... implement your own authentication logic.
+  })
+})
+```
 
 ## Production
 
@@ -516,6 +553,7 @@ No, as they are generated with your Nuxt client, you should add them to your `.g
 **/*.edgeql.ts
 dbschema/queries.*
 dbschema/query-builder
+dbschema/interfaces.ts
 queries/*.query.ts
 ```
 
@@ -543,6 +581,12 @@ It seem to be taken by [`ohmree`](https://github.com/ohmree), but the package se
 
 If anyone happens to know him, I would be happy to get in contact!
 
+### Contributions
+
+There is still plenty of great features to build for this integration.
+
+I would be happy to receive and review any Pull Request.
+
 ## Development
 
 ```bash
@@ -568,6 +612,10 @@ npm run test:watch
 # Release new version
 npm run release
 ```
+
+## Sponsors
+
+[![thecompaniesapi.com](./.github/thecompaniesapi.png)](https://thecompaniesapi.com)
 
 <!-- Badges -->
 [npm-version-src]: https://img.shields.io/npm/v/nuxt-edgedb-module/latest.svg?style=flat&colorA=18181B&colorB=28CF8D

@@ -60,3 +60,4 @@ Temporary Items
 **/dbschema/queries.*
 **/dbschema/query-builder
 **/queries/*.edgeql.ts
+**/dbschema/interfaces.ts
