@@ -7,5 +7,8 @@ export default defineNuxtConfig({
     auth: true,
     oauth: true
   },
-  devtools: { enabled: true }
+  devtools: { enabled: true },
+  tailwindcss: {
+    viewer: false
+  }
 })
