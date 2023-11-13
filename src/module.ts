@@ -100,7 +100,6 @@ export default defineNuxtModule<ModuleOptions>({
           await piped$(`npx @edgedb/generate edgeql-js --output-dir=${queryBuilderDir} --force-overwrite --target=${options.generateTarget}`, quiet)
         } catch (e) {
           error(`Could not generate ${edgeColor('EdgeDB')} interfaces.`)
-          logger.error(e)
         }
       }
     }
@@ -183,9 +182,14 @@ export default defineNuxtModule<ModuleOptions>({
      */
 
     if (canPrompt && options.devtools) {
-      const uiUrl = await execaCommand(`edgedb ui --print-url`)
+      let uiUrl: any | undefined
+      try {
+        uiUrl = await execaCommand(`edgedb ui --print-url`)
+      } catch (e) {
+        //
+      }
 
-      if (uiUrl.stdout) {
+      if (uiUrl?.stdout) {
         nuxt.hook('devtools:customTabs', (tabs) => {
           tabs.push({
             // unique identifier
@@ -363,9 +367,16 @@ export default defineNuxtModule<ModuleOptions>({
     if (options.auth) {
       if (!process.env.NUXT_EDGEDB_AUTH_BASE_URL && options.injectDbCredentials) {
         // http://localhost:10702/db/edgedb/ext/auth/
-        const dbCredentials = await execaCommand(`edgedb instance credentials --json`)
-        const { host, port, database } = JSON.parse(dbCredentials.stdout)
-        process.env.NUXT_EDGEDB_AUTH_BASE_URL = `http://${host}:${port}/${database}/ext/auth/`
+        let dbCredentials: any | undefined
+        try {
+          dbCredentials = await execaCommand(`edgedb instance credentials --json`)
+        } catch (e) {
+          //
+        }
+        if (dbCredentials) {
+          const { host, port, database } = JSON.parse(dbCredentials.stdout)
+          process.env.NUXT_EDGEDB_AUTH_BASE_URL = `http://${host}:${port}/${database}/ext/auth/`
+        }
       }
 
       // Runtime
@@ -461,8 +472,7 @@ async function piped$(
   quiet: boolean = false
 ) {
   const commandProcess = execaCommand(command)
-  const commandProcessClosePromise = new Promise<void>((resolve) => commandProcess.on('close', resolve))
   if (!quiet) commandProcess.stdout?.pipe?.(process.stdout)
-  await commandProcess
+  const commandProcessClosePromise = new Promise<void>((resolve) => commandProcess.on('close', resolve))
   await commandProcessClosePromise
 }

@@ -20,7 +20,7 @@ export default defineEventHandler(async (req) => {
     const blogPost = await insertBlogPost({
         blogpost_title: title,
         blogpost_description: description,
-        blogpost_content: content
+        blogpost_content: content,
       })
 
     return blogPost

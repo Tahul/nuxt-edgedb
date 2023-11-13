@@ -61,6 +61,52 @@ pnpm stub
 cd playground && pnpm run dev
 ```
 
+## Module options
+
+You can configure any behavior from the module from your `nuxt.config.ts` file:
+
+```typescript
+export default defineNuxtConfig({
+  modules: ['nuxt-edgedb-module'],
+  edgeDb: {
+    // Devtools integrations
+    devtools: true,
+    // Completely toggle watchers feature
+    watch: true,
+    // Enable or disable prompts on watch events
+    watchPrompt: true,
+    // Generate target for your queries and query builder
+    generateTarget: 'ts',
+    // dbschema/ dir (you should not touch this)
+    dbschemaDir: 'dbschema',
+    // dbschema/ dir (you should not touch this)
+    queriesDir: 'queries',
+    // dbschema/ dir (you should not touch this)
+    queryBuilderDir: 'dbschema/query-builder',
+    // Toggles typings generation (@db/interfaces)
+    generateInterfaces: true,
+    // Toggles typings generation (@db/queries)
+    generateQueries: true,
+    // Toggles typings generation (@db/builder)
+    generateQueryBuilder: true,
+    // Toggles logging messages on code generation
+    generateQuiet: true,
+    // Toggles project init wizard
+    projectInit: true,
+    // Toggle CLI install wizard
+    installCli: true,
+    // Toggles composables
+    composables: true,
+    // Toggles auto-injection on auth credentials
+    injectDbCredentials: true,
+    // Enables authentication intergation
+    auth: false,
+    // Enables oauth intergation
+    oauth: false,
+  }
+})
+```
+
 ## Server usage
 
 The module provides auto-imported composables available anywhere inside `server/` context of your Nuxt app.
