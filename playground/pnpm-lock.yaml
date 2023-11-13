@@ -8,12 +8,12 @@ dependencies:
   '@edgedb/generate':
     specifier: ^0.4.1
     version: 0.4.1(edgedb@1.4.1)
+  '@iconify-json/heroicons':
+    specifier: ^1.1.13
+    version: 1.1.13
   '@nuxt/ui':
     specifier: ^2.10.0
     version: 2.10.0(vue@3.3.8)(webpack@5.89.0)
-  '@picocss/pico':
-    specifier: ^1.5.10
-    version: 1.5.10
 
 devDependencies:
   '@nuxt/devtools':
@@ -1542,10 +1542,6 @@ packages:
       '@parcel/watcher-win32-ia32': 2.3.0
       '@parcel/watcher-win32-x64': 2.3.0
     dev: true
-
-  /@picocss/pico@1.5.10:
-    resolution: {integrity: sha512-+LafMsrwPxXQMk6sI///TmSInCwwZmq+K7SikyL3N/4GhhwzyPC+TQLUEqmrLyjluR+uIpFFcqjty30Rtr6GxQ==}
-    dev: false
 
   /@pkgjs/parseargs@0.11.0:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}

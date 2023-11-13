@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@edgedb/generate": "^0.4.1",
+    "@iconify-json/heroicons": "^1.1.13",
     "@nuxt/ui": "^2.10.0"
   }
 }

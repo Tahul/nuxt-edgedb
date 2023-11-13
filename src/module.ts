@@ -1,4 +1,4 @@
-import { defineNuxtModule, createResolver } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addServerHandler, addComponentsDir, addPlugin, addImportsDir } from '@nuxt/kit'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
 import chalk from 'chalk'
@@ -20,9 +20,22 @@ export interface ModuleOptions {
   generateQueryBuilder: boolean
   generateQuiet: boolean
   composables: boolean
+  auth: boolean
+  oauth: boolean
+  injectDbCredentials: boolean
+  projectInit: boolean
+  installCli: boolean
 }
 
 const { resolve: resolveLocal } = createResolver(import.meta.url)
+
+const activePrompts = {
+  initPrompt: undefined as any,
+  installCliPrompt: undefined as any,
+  migrationPrompt: undefined as any,
+  queriesPrompt: undefined as any,
+  schemaPrompt: undefined as any,
+}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -42,23 +55,21 @@ export default defineNuxtModule<ModuleOptions>({
     generateQueries: true,
     generateQueryBuilder: true,
     generateQuiet: true,
-    composables: true
+    projectInit: true,
+    installCli: true,
+    composables: true,
+    injectDbCredentials: true,
+    auth: false,
+    oauth: false,
   },
   async setup(options, nuxt) {
-    const logger = createConsola({
-      defaults: {
-        tag: 'edgedb'
-      }
-    })
-    const errorLog = (message: string, boot: boolean = false) => logger.log(`${boot ? `  ` : ``}${chalk.red('➜')} ${message}`)
-    const successLog = (message: string, boot: boolean = false) => logger.log(`${boot ? `  ` : ``}${chalk.green('➜')} ${message}`)
-    const edgeDbColor = (content: string) => chalk.rgb(12, 203, 147)(content)
-
+    const { success, error, edgeColor } = useLogger()
     const { resolve: resolveProject } = createResolver(nuxt.options.rootDir)
     const dbschemaDir = resolveProject(options.dbschemaDir)
     const queriesDir = resolveProject(options.queriesDir)
     const queryBuilderDir = resolveProject(options.queryBuilderDir)
-
+    const edgeDbConfigPath = resolveProject('edgedb.toml')
+    const hasConfigFile = () => fs.existsSync(edgeDbConfigPath)
 
     async function generateInterfaces(quiet: boolean = options.generateQuiet) {
       if (options.generateInterfaces) {
@@ -67,21 +78,23 @@ export default defineNuxtModule<ModuleOptions>({
           if (!quiet) interfacesGenerateProcess.stdout?.pipe?.(process.stdout)
           await new Promise<void>((resolve) => interfacesGenerateProcess.on('close', resolve))
         } catch (e) {
-          errorLog(`Could not generate ${edgeDbColor('EdgeDB')} interfaces.`)
+          error(`Could not generate ${edgeColor('EdgeDB')} interfaces.`)
         }
       }
     }
+
     async function generateQueries(quiet: boolean = options.generateQuiet) {
       if (options.generateInterfaces) {
         try {
-          const queriesGenerateProcess = $`npx @edgedb/generate queries --file=${join(dbschemaDir, 'queries.ts')} --force-overwrite --target=${options.generateTarget}`
+          const queriesGenerateProcess = $`npx @edgedb/generate queries --file --force-overwrite --target=${options.generateTarget}`
           if (!quiet) queriesGenerateProcess.stdout?.pipe?.(process.stdout)
           await new Promise<void>((resolve) => queriesGenerateProcess.on('close', resolve))
         } catch (e) {
-          errorLog(`Could not generate ${edgeDbColor('EdgeDB')} interfaces.`)
+          error(`Could not generate ${edgeColor('EdgeDB')} interfaces.`)
         }
       }
     }
+
     async function generateQueryBuilder(quiet: boolean = options.generateQuiet) {
       if (options.generateInterfaces) {
         try {
@@ -89,59 +102,91 @@ export default defineNuxtModule<ModuleOptions>({
           if (!quiet) queryBuilderGenerateProcess.stdout?.pipe?.(process.stdout)
           await new Promise<void>((resolve) => queryBuilderGenerateProcess.on('close', resolve))
         } catch (e) {
-          errorLog(`Could not generate ${edgeDbColor('EdgeDB')} interfaces.`)
+          error(`Could not generate ${edgeColor('EdgeDB')} interfaces.`)
         }
       }
     }
+
+    /**
+     * CLI Install detection
+     */
 
     let edgedbCliVersion = (await $`edgedb --version`).stdout.replace('EdgeDB CLI ', '')
 
-    if (!edgedbCliVersion) {
-      errorLog(`Could not find ${edgeDbColor('EdgeDB')} CLI.`, true)
-      const response = await prompts({
-        type: 'confirm',
-        name: 'value',
-        message: 'Do you want to install EdgeDB CLI?',
-        warn: 'curl --proto \'=https\' --tlsv1.2 -sSf https://sh.edgedb.com | sh'
-      });
-      if (response.value === true) {
-        try {
-          await $`curl --proto \'=https\' --tlsv1.2 -sSf https://sh.edgedb.com | sh`
-          edgedbCliVersion = (await $`edgedb --version`).stdout.replace('EdgeDB CLI ', '')
-          successLog(`EdgeDB CLI version ${edgedbCliVersion} installed.`, true)
-        } catch (e) {
-          errorLog('Failed to install EdgeDB CLI.', true)
+    if (nuxt.server && options.installCli && !edgedbCliVersion) {
+      error(`Could not find ${edgeColor('EdgeDB')} CLI.`, true)
+      activePrompts.installCliPrompt = prompts(
+        {
+          type: 'confirm',
+          name: 'value',
+          message: 'Do you want to install EdgeDB CLI?',
+          warn: 'curl --proto \'=https\' --tlsv1.2 -sSf https://sh.edgedb.com | sh'
+        },
+        {
+          async onSubmit(_, response) {
+            if (response.value === true) {
+              try {
+                await $`curl --proto \'=https\' --tlsv1.2 -sSf https://sh.edgedb.com | sh`
+                edgedbCliVersion = (await $`edgedb --version`).stdout.replace('EdgeDB CLI ', '')
+                success(`EdgeDB CLI version ${edgedbCliVersion} installed.`, true)
+              } catch (e) {
+                error('Failed to install EdgeDB CLI.', true)
+              }
+            }
+          }
         }
-      }
+      );
     } else {
-      successLog(`Using ${edgeDbColor('EdgeDB')} version ${edgeDbColor(edgedbCliVersion)}.`, true)
-    }
 
-    const edgeDbConfigPath = resolveProject('edgedb.toml')
 
-    if (!fs.existsSync(edgeDbConfigPath)) {
-      logger.log(`  ${chalk.red('➜')} Could not find ${edgeDbColor('EdgeDB')} configuration file.`, true)
-      const response = await prompts({
-        type: 'confirm',
-        name: 'value',
-        message: 'Do you want to run `edgedb project init`?'
-      });
-      if (response.value === true) {
-        try {
-          const edgeDbProcess = $`edgedb project init --project-dir=${nuxt.options.rootDir}`
-
-          edgeDbProcess.stdout?.pipe?.(process.stdout)
-
-          await new Promise<void>((resolve) => edgeDbProcess.on('close', resolve))
-
-          successLog(`EdgeDB project initialized.`, true)
-        } catch (e) {
-          errorLog('Failed to init EdgeDB project.', true)
+      nuxt.hook(
+        'modules:done',
+        () => {
+          if (edgedbCliVersion) {
+            success(`Using ${edgeColor('EdgeDB')} version ${edgeColor(edgedbCliVersion)}.`, true)
+          }
         }
-      }
+      )
     }
 
-    if (options.devtools) {
+
+    /**
+     * EdgeDB Init wizard
+     */
+
+    if (nuxt.server && options.projectInit && !hasConfigFile()) {
+      logger.log(`  ${chalk.red('➜')} Could not find ${edgeColor('EdgeDB')} configuration file.`, true)
+      activePrompts.initPrompt = prompts(
+        {
+          type: 'confirm',
+          name: 'value',
+          message: 'Do you want to run `edgedb project init`?',
+        },
+        {
+          async onSubmit(_, response) {
+            if (response.value === true) {
+              try {
+                const edgeDbProcess = $`edgedb project init --project-dir=${nuxt.options.rootDir}`
+
+                edgeDbProcess.stdout?.pipe?.(process.stdout)
+
+                await new Promise<void>((resolve) => edgeDbProcess.on('close', resolve))
+
+                success(`EdgeDB project initialized.`, true)
+              } catch (e) {
+                error('Failed to init EdgeDB project.', true)
+              }
+            }
+          }
+        }
+      );
+    }
+
+    /**
+     * Devtools
+     */
+
+    if (nuxt.server && options.devtools) {
       const uiUrl = await $`edgedb ui --print-url`
 
       if (uiUrl.stdout) {
@@ -153,59 +198,99 @@ export default defineNuxtModule<ModuleOptions>({
             title: 'EdgeDB',
             // any icon from Iconify, or a URL to an image
             icon: 'logos:edgedb',
+            category: 'app',
             // iframe view
             view: {
               type: 'iframe',
               src: uiUrl.stdout,
+              persistent: true
             },
           })
         })
       }
     }
 
-    if (options.watch) {
+
+    /**
+     * Watchers
+     */
+
+    if (nuxt.server && options.watch) {
       nuxt.options.watch.push(dbschemaDir + '/*')
       nuxt.options.watch.push(dbschemaDir + '/migrations/*')
       nuxt.options.watch.push(queriesDir + '/*')
 
       nuxt.hook('builder:watch', async (event, path) => {
         if (event === 'add' || event === 'change' || event === 'unlink' || event === 'unlinkDir') {
+          // Queries
           if (path.includes(options.queriesDir) && path.endsWith('.edgeql')) {
-            successLog(`Queries changes detected on: ${edgeDbColor(path.replace(options.dbschemaDir, ''))}`)
+            success(`Queries changes detected on: ${edgeColor(path.replace(options.dbschemaDir, ''))}`)
             try {
-              const response = options.watchPrompt ? await prompts({
-                type: 'confirm',
-                name: 'value',
-                message: 'Do you want to generate queries files?'
-              }) : { value: true }
-
-              if (response.value === true) {
+              if (options.watchPrompt) {
+                prompts(
+                  {
+                    type: 'confirm',
+                    name: 'value',
+                    message: 'Do you want to generate queries files?',
+                  },
+                  {
+                    onSubmit: async (_, response) => {
+                      if (response.value === true) {
+                        await generateQueries()
+                        success('Successfully generated queries!')
+                      }
+                    }
+                  }
+                )
+                return
+              } else {
                 await generateQueries()
-                successLog('Successfully generated queries!')
+                success('Successfully generated queries!')
               }
             } catch (e) {
               //
             }
             return
           }
-          if (path.includes(options.dbschemaDir + '/migrations') && path.endsWith('.edgeql')) {
-            successLog(`Migrations changes detected on: ${edgeDbColor(path.replace(options.dbschemaDir, ''))}`)
-            try {
-              const response = options.watchPrompt
-                ? await prompts({
-                  type: 'confirm',
-                  name: 'value',
-                  message: 'Do you want to run `edgedb migrate`?'
-                }) : { value: true }
 
-              if (response.value === true) {
+          // Migrations
+          if (path.includes(options.dbschemaDir + '/migrations') && path.endsWith('.edgeql')) {
+            success(`Migrations changes detected on: ${edgeColor(path.replace(options.dbschemaDir, ''))}`)
+            try {
+              if (options.watchPrompt) {
+                activePrompts.migrationPrompt = prompts(
+                  {
+                    type: 'confirm',
+                    name: 'value',
+                    message: 'Do you want to run `edgedb migrate`?',
+
+                  },
+                  {
+                    onSubmit: async (_, response) => {
+                      if (response.value === true) {
+                        const migrateProcess = $`edgedb migrate`
+
+                        migrateProcess.stdout?.pipe?.(process.stdout)
+
+                        await new Promise<void>((resolve) => migrateProcess.on('close', resolve))
+
+                        success('Successfully migrated database!')
+
+                        await generateInterfaces()
+                        await generateQueries()
+                        await generateQueryBuilder()
+                      }
+                    }
+                  }
+                )
+              } else {
                 const migrateProcess = $`edgedb migrate`
 
                 migrateProcess.stdout?.pipe?.(process.stdout)
 
                 await new Promise<void>((resolve) => migrateProcess.on('close', resolve))
 
-                successLog('Successfully migrated database!')
+                success('Successfully migrated database!')
 
                 await generateInterfaces()
                 await generateQueries()
@@ -217,23 +302,37 @@ export default defineNuxtModule<ModuleOptions>({
             return
           }
 
+          // Schema
           if (path.includes(options.dbschemaDir) && path.endsWith('.esdl')) {
-            successLog(`Schema changes detected on: ${edgeDbColor(path.replace(options.dbschemaDir, ''))}`)
+            success(`Schema changes detected on: ${edgeColor(path.replace(options.dbschemaDir, ''))}`)
             try {
-              const response = options.watchPrompt ? await prompts({
-                type: 'confirm',
-                name: 'value',
-                message: 'Do you want to run `edgedb migration create`?'
-              }) : { value: true }
+              if (options.watchPrompt) {
+                activePrompts.schemaPrompt = prompts({
+                  type: 'confirm',
+                  name: 'value',
+                  message: 'Do you want to run `edgedb migration create`?'
+                },
+                  {
+                    onSubmit: async (_, response) => {
+                      if (response.value === true) {
+                        const migrationCreateProcess = $`edgedb migration create`
 
-              if (response.value === true) {
+                        migrationCreateProcess.stdout?.pipe?.(process.stdout)
+
+                        await new Promise<void>((resolve) => migrationCreateProcess.on('close', resolve))
+
+                        success('Migration created!')
+                      }
+                    }
+                  })
+              } else {
                 const migrationCreateProcess = $`edgedb migration create`
 
                 migrationCreateProcess.stdout?.pipe?.(process.stdout)
 
                 await new Promise<void>((resolve) => migrationCreateProcess.on('close', resolve))
 
-                successLog('Migration created!')
+                success('Migration created!')
               }
             } catch (e) {
               //
@@ -271,5 +370,99 @@ export default defineNuxtModule<ModuleOptions>({
         },
       )
     }
+
+    if (options.auth) {
+      if (!process.env.NUXT_EDGEDB_AUTH_BASE_URL && options.injectDbCredentials) {
+        // http://localhost:10702/db/edgedb/ext/auth/
+        const dbCredentials = await $`edgedb instance credentials --json`
+        const { host, port, database } = JSON.parse(dbCredentials.stdout)
+        process.env.NUXT_EDGEDB_AUTH_BASE_URL = `http://${host}:${port}/${database}/ext/auth/`
+      }
+
+      // Runtime
+      addPlugin({
+        src: resolveLocal('./runtime/plugin/edgedb-auth.ts'),
+        mode: 'all'
+      })
+      addComponentsDir({
+        path: resolveLocal('./runtime/components/auth/base'),
+        global: true
+      })
+      addImportsDir(resolveLocal('./runtime/composables'))
+
+      // Server
+      addServerHandler({
+        handler: resolveLocal('./runtime/api/auth/login'),
+        route: '/api/auth/login',
+      })
+      addServerHandler({
+        handler: resolveLocal('./runtime/api/auth/verify'),
+        route: '/api/auth/verify',
+      })
+      addServerHandler({
+        handler: resolveLocal('./runtime/api/auth/callback'),
+        route: '/api/auth/callback',
+      })
+      addServerHandler({
+        handler: resolveLocal('./runtime/api/auth/reset-password-ui'),
+        route: '/api/auth/reset-password-ui',
+      })
+      addServerHandler({
+        handler: resolveLocal('./runtime/api/auth/reset-password'),
+        route: '/api/auth/reset-password',
+      })
+      addServerHandler({
+        handler: resolveLocal('./runtime/api/auth/send-password-reset-email'),
+        route: '/api/auth/send-password-reset-email',
+      })
+      addServerHandler({
+        handler: resolveLocal('./runtime/api/auth/signup'),
+        route: '/api/auth/signup',
+      })
+      addServerHandler({
+        handler: resolveLocal('./runtime/api/auth/identity'),
+        route: '/api/auth/identity',
+      })
+      addServerHandler({
+        handler: resolveLocal('./runtime/api/auth/providers'),
+        route: '/api/auth/providers',
+      })
+    }
+
+    if (options.oauth) {
+      addComponentsDir({
+        path: resolveLocal('./runtime/components/auth/oauth'),
+        global: true
+      })
+      addServerHandler({
+        handler: resolveLocal('./runtime/api/auth/authorize'),
+        route: '/api/auth/authorize',
+      })
+      addServerHandler({
+        handler: resolveLocal('./runtime/api/auth/callback'),
+        route: '/api/auth/callback',
+      })
+    }
   }
 })
+
+const logger = createConsola({
+  defaults: {
+    tag: 'edgedb'
+  }
+})
+function useLogger() {
+  const error = (message: string, boot: boolean = false) => logger.log(`${boot ? `  ` : ``}${chalk.red('➜')} ${message}`)
+  const successLog = (message: string, boot: boolean = false) => logger.log(`${boot ? `  ` : ``}${chalk.green('➜')} ${message}`)
+  const edgeColor = (content: string) => chalk.rgb(12, 203, 147)(content)
+
+
+  return Object.assign(
+    logger,
+    {
+      error: error,
+      success: successLog,
+      edgeColor: edgeColor
+    }
+  )
+}

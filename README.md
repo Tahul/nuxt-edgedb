@@ -5,19 +5,16 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-[Nuxt 3](https://nuxt.com) integration for [EdgeDB](https://www.edgedb.com) that aims at being the fastest way to add a fully typed database layer to your Nuxt 3 project.
-
-- [✨ &nbsp;Release Notes](/CHANGELOG.md)
+Integrate [Nuxt 3](https://nuxt.com) with [EdgeDB](https://www.edgedb.com) effortlessly, adding a robust database layer to your app with minimal configuration.
 
 ## Features
 
-- 🍱 &nbsp;Zero-config setup; just add `nuxt-edgedb-module` to your `modules`
-- 🧙 &nbsp;[EdgeDB CLI install](https://www.edgedb.com/docs/cli/index) and [project init](https://www.edgedb.com/docs/cli/edgedb_project/edgedb_project_init) wizards
-- 🎩 &nbsp;Watchers on `dbschema/*`, `queries/*`, `dbschema/migrations/*` bringing _HMR_ to your database
-- 🛟 &nbsp;Auto-imported typed database query client provided by [`@edgedb/generate`](https://www.edgedb.com/docs/clients/js/generation)
-- 🍩 &nbsp;[`edgedb ui`](https://www.edgedb.com/docs/cli/edgedb_ui) injected into [Nuxt Devtools](https://github.com/nuxt/devtools)
-
-⚠️ This is still very experimental project. Please do not use until it is properly announced.
+- 🍱 **Effortless Integration**: Set up a database with just one line of configuration.
+- 🧙 **Seamless Initialization**: Automates [EdgeDB CLI](https://www.edgedb.com/docs/cli/index) setup and [project initialization](https://www.edgedb.com/docs/cli/edgedb_project/edgedb_project_init).
+- 🎩 **Live Schema Updates**: Experience _HMR-like DX_ with watchers on `dbschema/*`, `queries/*`, and `dbschema/migrations/*`.
+- 🛟 **Typed Query Generation**: Automatically generate a typed query client with [@edgedb/generate](https://www.edgedb.com/docs/clients/js/generation).
+- 🍩 **Integrated Database Management**: Administer your database directly from [Nuxt DevTools](https://github.com/nuxt/devtools).
+- 🔐 **Flexible Authentication**: Easily enable [Email](https://www.edgedb.com/docs/guides/auth/email_password) or [OAuth](https://www.edgedb.com/docs/guides/auth/oauth) authentication, with support for custom auth providers.
 
 ## Quick Setup
 
@@ -40,27 +37,17 @@ npm install --save-dev nuxt-edgedb-module
 export default defineNuxtConfig({
   modules: [
     'nuxt-edgedb-module'
-  ],
-  // Optional, all options has sufficient defaults.
-  edgedb: {
-    devtools: true,
-    watch: true,
-    dbschemaDir: 'dbschema',
-    queriesDir: 'queries',
-    generateInterfaces: true,
-    generateQueries: true,
-    generateQueryBuilder: true,
-  }
+  ]
 })
 ```
 
-That's it! You can now use Nuxt EdgeDB in your Nuxt app. ✨
+That's it! Your Nuxt project now has a database. ✨
 
-If you do not already have [EdgeDB](https://www.edgedb.com) installed on your machine, the install wizard will prompt you to install it. 🧙
+If you do not already have [EdgeDB](https://www.edgedb.com) installed on your machine, the install wizard will help you to install it.
 
-## Usage
+## Server usage
 
-The module provides 2 auto-imported composables available anywhere inside `server/` context of your Nuxt app.
+The module provides auto-imported composables available anywhere inside `server/` context of your Nuxt app.
 
 ### useEdgeDb
 
@@ -183,6 +170,281 @@ defineProps<{ blogPost: BlogPost }>()
 </script>
 ```
 
+## Authentification
+
+You can use EdgeDB like a server-only database exposed via `server/api` endpoints and `$fetch` on the client, avoiding the need for authentication.
+
+But in some projects, you might want your users to login and have an identity on the server as well, luckily, the module got you covered.
+
+> Before going through these auth installation steps, we strongly recommend you to check [EdgeDB Auth](https://www.edgedb.com/docs/guides/auth/index#auth) documentation.
+
+### Enable `auth` option in your Nuxt configuration
+
+```ts
+export default defineNuxtConfig({
+  modules: ['nuxt-edgedb-module'],
+  edgedb: {
+    auth: true
+  }
+})
+```
+
+### Setup EdgeDB Auth in your schema
+
+In this example, you can notice:
+
+- `global current_user` which defines a [global property](https://www.edgedb.com/docs/datamodel/globals) linked to the client token identity
+- `type User` is the model if your user, you are free to change it, that can be done later on thanks to migrations
+- `access policy author_has_full_access` & `using (.author ?= global current_user);` defines the policy for the users to only have access to their own `BlogPost`
+
+```esdl
+// dbschema/default.esdl
+using extension auth;
+
+module default {
+  global current_user := (
+    assert_single((
+      select User { id, name }
+      filter .identity = global ext::auth::ClientTokenIdentity
+    ))
+  );
+
+  type User {
+    required name: str;
+    required identity: ext::auth::Identity;
+  }
+
+  type BlogPost {
+    property content: str {
+      default := 'My blog post content.';
+    };
+    property title: str {
+      default := 'My blog post';
+    };
+    required author: User;
+
+    access policy author_has_full_access
+      allow all
+      using (.author ?= global current_user);
+
+    access policy others_read_only
+      allow select;
+  }
+}
+```
+
+You can edit that schema while your server is running and accept the prompt to auto-migrate.
+
+If you are doing these edits while the server is off, you can run `edgedb migration create` and `edgedb migrate`.
+
+### Setup EdgeDB auth in your server
+
+You will need to enable auth providers on your EdgeDB server.
+
+That can be done through DevTools, in the `EdgeDB`.
+
+Browse to your database, then inside `Auth Admin` tab.
+
+There, you must specify:
+
+- `auth_signing_key`
+- `allowed_redirect_urls`
+
+You also must enable some providers, you can usually start with `Email + Password`.
+
+If you enable `required_verification`, you will need to configure a SMTP server for you EdgeDB instance.
+
+You can find further instructions on how to use [Mailtrap](https://mailpit.axllent.org/docs/configuration/) locally to debug this feature [here](https://www.edgedb.com/docs/guides/auth/index#email-and-password).
+
+> Do not forget these steps must also be performed on your production environment.
+
+### Use authentication components on the client
+
+As you enabled auth in your config, the module injected these components in your project:
+
+- [`EdgeDbAuthEmailLogin`](./src/runtime/components/EdgeDbAuthEmailLogin.vue)
+- [`EdgeDbAuthEmailVerify`](./src/runtime/components/EdgeDbAuthEmailVerify.vue)
+- [`EdgeDbAuthLogout`](./src/runtime/components/EdgeDbAuthLogout.vue)
+- [`EdgeDbAuthResetPassword`](./src/runtime/components/EdgeDbAuthResetPassword.vue)
+- [`EdgeDbAuthSendPasswordReset`](./src/runtime/components/EdgeDbAuthSendPasswordReset.vue)
+- [`EdgeDbAuthSignup`](./src/runtime/components/EdgeDbAuthSignup.vue)
+- [`EdgeDbAuthProviders`](./src/runtime/components/EdgeDbAuthProviders.vue)
+
+You can look at the sources of these components to learn more about their props.
+
+They all are unstyled components that only expose the logic required to achieve smooth authentication flows.
+
+```vue
+<template>
+  <EdgeDbAuthEmailLogin
+    v-slot="{ email, updateEmail, password, updatePassword, submit, loading }"
+    redirect-to="/"
+  >
+    <div>
+      <input
+        type="email"
+        :value="email"
+        placeholder="your@email.com"
+        @change="(e) => updateEmail(e.target.value)"
+      >
+      <input
+        type="password"
+        :value="password"
+        placeholder="password"
+        @change="(e) => updatePassword(e.target.value)"
+      >
+      <button
+        type="button"
+        @click="(e) => !loading && submit()"
+      >
+        {{ loading ? 'Loading' : 'Login' }}
+      </button>
+    </div>
+  </EdgeDbAuthEmailLogin>
+</template>
+```
+
+You can totally rewrite any of these components locally to implement your own authentication flows.
+
+### OAuth
+
+EdgeDB currently supports [OAuth](https://www.edgedb.com/docs/guides/auth/oauth#oauth) on following providers:
+
+- Apple
+- Azure (Microsoft)
+- GitHub
+- Google
+
+- [`EdgeDbOAuthButton`](./src/runtime/components/EdgeDbOAuthButton.vue)
+- [`EdgeDbOAuthCallback`](./src/runtime/components/EdgeDbOAuthCallback.vue)
+
+In order to get OAuth working, you will have to visit your EdgeDB Instance UI, via the Nuxt DevTools.
+
+Browse to your database and visit "Auth Admin" tab.
+
+In your list of providers, you can then add any provider you want and configure according keys (usually client `appid` and `secret`).
+
+> Do not forget to set the callback url of your provider to the one listed at the top of your EdgeDB Auth Admin.
+
+Once done, you can then create a simple OAuth button in your app like this:
+
+```vue
+<template>
+  <!-- Gives access to all available auth providers -->
+  <EdgeDbAuthProviders v-slot="{ oAuthProviders: providers }">
+    <!-- Create a OAuth button behavior from a provider name -->
+    <EdgeDbOAuthButton
+      v-for="provider of providers"
+      :key="provider.name"
+      v-slot="{ redirect }"
+      :provider="provider.name"
+    >
+      <!-- Call `redirect` from the OAuthButton -->
+      <button @click="() => redirect()">
+        {{ provider.display_name }}
+      </button>
+    </EdgeDbOAuthButton>
+  </EdgeDbAuthProviders>
+</template>
+```
+
+You will also need a call back page, that can use `EdgeDbAuthCallback`.
+
+```vue
+<template>
+  <EdgeDbOAuthCallback
+    v-slot="{ loading }"
+    redirect-to="/"
+  >
+    <div>
+      <h2>OAuth callback</h2>
+      <p v-if="loading">
+        Loading...
+      </p>
+    </UCard>
+  </EdgeDbOAuthCallback>
+</template>
+```
+
+In just a few lines, you added a basic authentication to your application.
+
+### Client-side usage
+
+Now that you added authentication to your project, you also have access to the `useEdgeDbIdentity` composable in your Nuxt app.
+
+```vue
+<script setup lang="ts">
+const { isLoggedIn } = useEdgeDbIdentity()
+</script>
+
+<template>
+  <div>
+    <LoginButton v-if="isLoggedIn" />
+    <LogoutButton v-else />
+  </div>
+</template>
+```
+
+You can look at the [`useEdgeDbIdentity`](./src/runtime/composables/useEdgeDbIdentity.ts) for further usage.
+
+### Server-side usage
+
+The authentication does use a cookie called `edgedb-auth-token`.
+
+On the server, if you want to authenticate your requests to the database for the current user, you only have to pass the current request object to composables:
+
+```typescript
+export default defineEventHandler(async (req) => {
+  const { deleteBlogPost } = useEdgeDbQueries()
+
+  // Will throw an error, as you cannot delete a BlogPost without being its author.
+  await deleteBlogPost({ blogpost_id: id })
+
+  const { deleteBlogPost: deleteBlogPostAuthenticated } = useEdgeDbQueries(req)
+
+  // Succeed
+  await deleteBlogPostAuthenticated({ blogpost_id: id })
+
+  return { id }
+})
+```
+
+### Other authentication solutions
+
+EdgeDDB Auth is a great solution, but eventually your app may require more features than what it offers.
+
+Do not forget that EdgeDB can also be used just as a database, it's totally possible to build your own auth or use existing solutions like:
+
+- [Sidebase Nuxt Auth](https://github.com/sidebase/nuxt-auth)
+- [Nuxt Auth (when ready)](https://github.com/nuxt-community/auth-module)
+- [Nuxt Auth Utils](https://github.com/Atinux/nuxt-auth-utils#supported-oauth-providers)
+- Your own implementation
+
+You can also use _both_ and create Identity objects from your own authentication provider, and use `edgedb-auth-token` as your cookie.
+
+I would recommend looking at [https://github.com/edgedb/edgedb-examples] that is filled with great examples of custom authentications built on EdgeDB.
+
+### Authentication environment variables
+
+```sh
+# Your EdgeDB instance auth extension base URL
+NUXT_EDGEDB_AUTH_BASE_URL=http://localhost:10702/db/edgedb/ext/auth/
+# Your EdgeDB instance OAuth callback URL
+NUXT_EDGEDB_OAUTH_CALLBACK=http://localhost:10702/db/edgedb/ext/auth/callback
+# Your app callback page
+NUXT_EDGEDB_OAUTH_REDIRECT_URL=http://localhost:3000/auth/callback
+# Your app app reset password URL (receiving the token from the forgot password email)
+NUXT_EDGEDB_AUTH_RESET_PASSWORD_URL=http://localhost:3000/auth/reset-password
+# Your app email verify url (receiving the token from email verify feature)
+NUXT_EDGEDB_AUTH_VERIFY_REDIRECT_URL=http://localhost:3000/auth/verify
+```
+
+### Going further with authentication
+
+EdgeDB Auth only provides bare minimal identity feature for authentication.
+
+In the code example I provided, I added a `User` type that goes along with the `Identity` interface.
+
 ## Production
 
 If you want to get out of development and deploy your database to prodution, you must follow [EdgeDB guides](https://www.edgedb.com/docs/guides/deployment/index).
@@ -190,6 +452,18 @@ If you want to get out of development and deploy your database to prodution, you
 [EdgeDB](https://www.edgedb.com) is an open-source database that is designed to be self-hosted.
 
 However, they also offer a [Cloud](https://www.edgedb.com/docs/guides/cloud), which is fully compatible with this module thanks to environment variables.
+
+If you want to customize the [DSN] used by the composables, you can use the environment variables provided by the module:
+
+```
+NUXT_EDGEDB_HOST=
+NUXT_EDGEDB_PORT=
+NUXT_EDGEDB_USER=
+NUXT_EDGEDB_PASS=
+NUXT_EDGEDB_DATABASE=
+```
+
+> If you want to use the env variables, you have to specify **ALL** of them, otherwise the client will fallback on default values.
 
 ## Q&A
 
@@ -242,6 +516,7 @@ No, as they are generated with your Nuxt client, you should add them to your `.g
 **/*.edgeql.ts
 dbschema/queries.*
 dbschema/query-builder
+queries/*.query.ts
 ```
 
 You must change these paths accordingly if you change the `**Dir` options.
