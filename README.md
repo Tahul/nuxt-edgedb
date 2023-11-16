@@ -1,4 +1,4 @@
-![nuxt-edgedb-module](./.github/social-card.png)
+![nuxt-edgedb-module](./.github/social-card.jpeg)
 
 # Nuxt EdgeDB
 
