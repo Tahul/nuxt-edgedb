@@ -1,3 +1,5 @@
+![nuxt-edgedb-module](./.github/social-card.png)
+
 # Nuxt EdgeDB
 
 [![npm version][npm-version-src]][npm-version-href]
