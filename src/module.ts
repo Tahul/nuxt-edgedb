@@ -410,7 +410,7 @@ export default defineNuxtModule<ModuleOptions>({
 
       // Runtime
       addPlugin({
-        src: resolveLocal('./runtime/plugin/edgedb-auth.ts'),
+        src: resolveLocal('./runtime/plugin/edgedb-auth'),
         mode: 'all'
       })
       addComponentsDir({
