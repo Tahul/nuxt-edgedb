@@ -1,6 +1,20 @@
 # Changelog
 
 
+## v0.0.8
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.7...v0.0.8)
+
+### 🏡 Chore
+
+- **social-card:** Add social-card ([eff3fa4](https://github.com/tahul/nuxt-edgedb/commit/eff3fa4))
+- **fix:** Fix cover url ([cad780e](https://github.com/tahul/nuxt-edgedb/commit/cad780e))
+- **auth:** Fix auth plugin ([dd92cad](https://github.com/tahul/nuxt-edgedb/commit/dd92cad))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.7
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.6...v0.0.7)
