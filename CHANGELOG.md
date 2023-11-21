@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.9
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.8...v0.0.9)
+
+### 🚀 Enhancements
+
+- **imports:** Use raw imports in runtime/ to avoid caveats from auto-imports ([0924259](https://github.com/tahul/nuxt-edgedb/commit/0924259))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.8
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.7...v0.0.8)
