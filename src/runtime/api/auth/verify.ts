@@ -1,4 +1,5 @@
 import { defineEventHandler, H3Error, setHeaders, getCookie, getRequestURL } from "h3";
+import { useEdgeDbEnv } from '../../server/useEdgeDbEnv'
 
 /**
  * Handles the link in the email verification flow.

@@ -1,4 +1,5 @@
 import { defineEventHandler, H3Error, readBody, setHeaders } from "h3";
+import { useEdgeDbEnv } from '../../server/useEdgeDbEnv'
 
 /**
  * Handles sign up with email and password.

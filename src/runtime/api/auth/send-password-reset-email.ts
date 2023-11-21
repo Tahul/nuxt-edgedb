@@ -1,4 +1,5 @@
 import { defineEventHandler, H3Error, readBody, setHeaders } from "h3";
+import { useEdgeDbEnv } from '../../server/useEdgeDbEnv';
 
 /**
  * Request a password reset for an email.

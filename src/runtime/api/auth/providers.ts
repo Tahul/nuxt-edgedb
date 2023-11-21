@@ -1,4 +1,5 @@
 import { defineEventHandler } from "h3";
+import { useEdgeDb } from '../../server/useEdgeDb'
 
 export default defineEventHandler(async () => {
   const client = useEdgeDb()
