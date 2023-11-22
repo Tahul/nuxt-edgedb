@@ -1,4 +1,4 @@
-import fs from 'node:fs'
+import { existsSync } from 'node:fs'
 import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
@@ -75,7 +75,7 @@ export default defineNuxtModule<ModuleOptions>({
     const queriesDir = resolveProject(options.queriesDir)
     const queryBuilderDir = resolveProject(options.queryBuilderDir)
     const edgeDbConfigPath = resolveProject('edgedb.toml')
-    const hasConfigFile = () => fs.existsSync(edgeDbConfigPath)
+    const hasConfigFile = () => existsSync(edgeDbConfigPath)
     const canPrompt = nuxt.options.dev
 
     async function generateInterfaces(
@@ -85,7 +85,7 @@ export default defineNuxtModule<ModuleOptions>({
       if (options.generateInterfaces) {
         const interfacesPath = join(dbschemaDir, 'interfaces.ts')
 
-        const hasInterfaces = fs.existsSync(interfacesPath)
+        const hasInterfaces = existsSync(interfacesPath)
 
         if (!force && hasInterfaces)
           return
@@ -105,7 +105,7 @@ export default defineNuxtModule<ModuleOptions>({
       force: boolean = false,
     ) {
       if (options.generateQueries) {
-        const hasQueries = fs.existsSync(join(queriesDir, 'queries.ts'))
+        const hasQueries = existsSync(join(queriesDir, 'queries.ts'))
 
         if (!force && hasQueries)
           return
@@ -125,7 +125,7 @@ export default defineNuxtModule<ModuleOptions>({
       force: boolean = false,
     ) {
       if (options.generateQueryBuilder) {
-        const hasQueryBuilder = fs.existsSync(queryBuilderDir)
+        const hasQueryBuilder = existsSync(queryBuilderDir)
 
         if (hasQueryBuilder && !force)
           return
