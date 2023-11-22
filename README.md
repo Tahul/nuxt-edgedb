@@ -85,11 +85,11 @@ export default defineNuxtConfig({
     queriesDir: 'queries',
     // dbschema/ dir (you should not touch this)
     queryBuilderDir: 'dbschema/query-builder',
-    // Toggles typings generation (@db/interfaces)
+    // Toggles typings generation (#db/interfaces)
     generateInterfaces: true,
-    // Toggles typings generation (@db/queries)
+    // Toggles typings generation (#db/queries)
     generateQueries: true,
-    // Toggles typings generation (@db/builder)
+    // Toggles typings generation (#db/builder)
     generateQueryBuilder: true,
     // Toggles logging messages on code generation
     generateQuiet: true,
@@ -170,11 +170,11 @@ export default defineEventHandler(async (req) => {
 })
 ```
 
-You can still import [queries](https://www.edgedb.com/docs/clients/js/queries) directly from `@db/queries` and pass them the client from `useEdgeDb()`.
+You can still import [queries](https://www.edgedb.com/docs/clients/js/queries) directly from `#db/queries` and pass them the client from `useEdgeDb()`.
 
 ```typescript
 // server/api/blogpost/[id].ts
-import { getBlogPost } from '@db/queries'
+import { getBlogPost } from '#db/queries'
 import { defineEventHandler, getRouterParams } from 'h3'
 
 export default defineEventHandler(async (req) => {
