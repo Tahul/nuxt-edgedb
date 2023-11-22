@@ -392,9 +392,9 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Inject aliases
     const nuxtOptions = nuxt.options
-    nuxtOptions.alias['#db/queries'] = join(dbschemaDir, '/queries.ts')
-    nuxtOptions.alias['#db/interfaces'] = join(dbschemaDir, '/interfaces.ts')
-    nuxtOptions.alias['#db/builder'] = join(dbschemaDir, '/query-builder/index.ts')
+    nuxtOptions.alias['#edgedb/queries'] = join(dbschemaDir, '/queries.ts')
+    nuxtOptions.alias['#edgedb/interfaces'] = join(dbschemaDir, '/interfaces.ts')
+    nuxtOptions.alias['#edgedb/builder'] = join(dbschemaDir, '/query-builder/index.ts')
 
     await generateInterfaces()
     await generateQueries()
