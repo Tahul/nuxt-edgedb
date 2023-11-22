@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.12
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.11...v0.0.12)
+
+### 🚀 Enhancements
+
+- **auth:** Fix auth base url injection ([d1816e7](https://github.com/tahul/nuxt-edgedb/commit/d1816e7))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.11
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.10...v0.0.11)
