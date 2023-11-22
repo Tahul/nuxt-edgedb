@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.14
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.13...v0.0.14)
+
+### 🚀 Enhancements
+
+- **alias:** Move to #edgedb/ ([2244b66](https://github.com/tahul/nuxt-edgedb/commit/2244b66))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.13
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.12...v0.0.13)
