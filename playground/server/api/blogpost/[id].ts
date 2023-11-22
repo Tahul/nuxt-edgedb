@@ -1,6 +1,6 @@
 import { H3Error, defineEventHandler, getRouterParams } from 'h3'
 import { useEdgeDb } from '#edgedb/server'
-import type { BlogPost } from '@db/interfaces'
+import type { BlogPost } from '#edgedb/interfaces'
 
 export default defineEventHandler(async (req) => {
   const params = getRouterParams(req)

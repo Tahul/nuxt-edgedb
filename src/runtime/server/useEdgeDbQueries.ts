@@ -1,6 +1,6 @@
-import * as queries from '@db/queries'
 import type { EventHandlerRequest, H3Event } from 'h3'
 import { useEdgeDb } from './useEdgeDb'
+import * as queries from '#edgedb/queries'
 
 export function useEdgeDbQueries(
   req: H3Event<EventHandlerRequest> | undefined = undefined,

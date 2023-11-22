@@ -390,20 +390,15 @@ export default defineNuxtModule<ModuleOptions>({
       })
     }
 
-    if (options.generateInterfaces || options.generateQueries || options.generateQueryBuilder) {
-      const nuxtOptions = nuxt.options
+    // Inject aliases
+    const nuxtOptions = nuxt.options
+    nuxtOptions.alias['#edgedb/queries'] = join(dbschemaDir, '/queries.ts')
+    nuxtOptions.alias['#edgedb/interfaces'] = join(dbschemaDir, '/interfaces.ts')
+    nuxtOptions.alias['#edgedb/builder'] = join(dbschemaDir, '/query-builder/index.ts')
 
-      if (options.generateQueries)
-        nuxtOptions.alias['@db/queries'] = join(dbschemaDir, '/queries.ts')
-      if (options.generateInterfaces)
-        nuxtOptions.alias['@db/interfaces'] = join(dbschemaDir, '/interfaces.ts')
-      if (options.generateQueryBuilder)
-        nuxtOptions.alias['@db/builder'] = join(dbschemaDir, '/query-builder/index.ts')
-
-      await generateInterfaces()
-      await generateQueries()
-      await generateQueryBuilder()
-    }
+    await generateInterfaces()
+    await generateQueries()
+    await generateQueryBuilder()
 
     if (options.composables) {
       // Add server-side auto-imports

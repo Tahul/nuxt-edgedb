@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BlogPost } from '@db/interfaces'
+import type { BlogPost } from '#edgedb/interfaces'
 
 const { isLoggedIn } = useEdgeDbIdentity()
 
