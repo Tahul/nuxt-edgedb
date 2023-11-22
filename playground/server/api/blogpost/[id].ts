@@ -1,4 +1,5 @@
 import { H3Error, defineEventHandler, getRouterParams } from 'h3'
+import { useEdgeDb } from '#edgedb/server'
 import type { BlogPost } from '@db/interfaces'
 
 export default defineEventHandler(async (req) => {

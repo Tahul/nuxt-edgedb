@@ -1,4 +1,5 @@
 import { defineEventHandler, isMethod, readBody } from 'h3'
+import { useEdgeDbQueries } from '#edgedb/server'
 
 export default defineEventHandler(async (req) => {
   if (isMethod(req, 'POST')) {

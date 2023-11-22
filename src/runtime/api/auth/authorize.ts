@@ -1,6 +1,5 @@
 import { H3Error, defineEventHandler, getRequestURL } from 'h3'
-import { useEdgeDbEnv } from '../../server/useEdgeDbEnv'
-import { useEdgeDbPKCE } from '../../server/useEdgeDbPKCE'
+import { useEdgeDbEnv, useEdgeDbPKCE } from '../../server'
 
 /**
  * Redirects OAuth requests to EdgeDB Auth OAuth authorize redirect
