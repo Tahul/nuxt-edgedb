@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.0.11
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.10...v0.0.11)
+
+### 🚀 Enhancements
+
+- **useedgedbpkce:** Fix imports on all occurences; also add linting ([a6595bc](https://github.com/tahul/nuxt-edgedb/commit/a6595bc))
+
+### 🏡 Chore
+
+- **build:** Fix build ([57c16d7](https://github.com/tahul/nuxt-edgedb/commit/57c16d7))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.10
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.9...v0.0.10)
