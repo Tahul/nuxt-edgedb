@@ -431,7 +431,7 @@ export default defineNuxtModule<ModuleOptions>({
         }
         if (dbCredentials) {
           const { host, port, database } = JSON.parse(dbCredentials.stdout)
-          process.env.NUXT_EDGEDB_AUTH_BASE_URL = `http://${host}:${port}/${database}/ext/auth/`
+          process.env.NUXT_EDGEDB_AUTH_BASE_URL = `http://${host}:${port}/db/${database}/ext/auth/`
         }
       }
 
