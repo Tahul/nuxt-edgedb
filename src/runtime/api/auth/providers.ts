@@ -1,4 +1,4 @@
-import { defineEventHandler } from "h3";
+import { defineEventHandler } from 'h3'
 import { useEdgeDb } from '../../server/useEdgeDb'
 
 export default defineEventHandler(async () => {
@@ -9,7 +9,7 @@ export default defineEventHandler(async () => {
       name,
       [is ext::auth::OAuthProviderConfig].display_name,
     };
-  `);
+  `)
 
-  return result;
-});
+  return result
+})

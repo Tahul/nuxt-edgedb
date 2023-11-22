@@ -7,6 +7,6 @@ export default defineBuildConfig({
     'chalk',
     'prompts',
     'edgedb',
-    '@edgedb/generate'
-  ]
+    '@edgedb/generate',
+  ],
 })

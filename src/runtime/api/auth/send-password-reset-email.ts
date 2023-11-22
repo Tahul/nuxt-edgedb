@@ -1,5 +1,6 @@
-import { defineEventHandler, H3Error, readBody, setHeaders } from "h3";
-import { useEdgeDbEnv } from '../../server/useEdgeDbEnv';
+import { H3Error, defineEventHandler, readBody, setHeaders } from 'h3'
+import { useEdgeDbEnv } from '../../server/useEdgeDbEnv'
+import { useEdgeDbPKCE } from '../../server/useEdgeDbPKCE'
 
 /**
  * Request a password reset for an email.
@@ -7,23 +8,23 @@ import { useEdgeDbEnv } from '../../server/useEdgeDbEnv';
  * @param {Request} req
  */
 export default defineEventHandler(async (req) => {
-  const pkce = useEdgeDbPKCE();
-  const { authBaseUrl, resetPasswordUrl: reset_url } = useEdgeDbEnv();
+  const pkce = useEdgeDbPKCE()
+  const { authBaseUrl, resetPasswordUrl: reset_url } = useEdgeDbEnv()
 
-  const { email } = await readBody(req);
-  const provider = "builtin::local_emailpassword";
+  const { email } = await readBody(req)
+  const provider = 'builtin::local_emailpassword'
 
   if (!email) {
-    const err = new H3Error(`Request body is missing 'email'`);
-    err.statusCode = 400;
-    return err;
+    const err = new H3Error(`Request body is missing 'email'`)
+    err.statusCode = 400
+    return err
   }
 
-  const sendResetUrl = new URL("send-reset-email", authBaseUrl);
+  const sendResetUrl = new URL('send-reset-email', authBaseUrl)
   const sendResetResponse = await fetch(sendResetUrl.href, {
-    method: "post",
+    method: 'post',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       email,
@@ -31,21 +32,21 @@ export default defineEventHandler(async (req) => {
       reset_url,
       challenge: pkce.challenge,
     }),
-  });
+  })
 
   if (!sendResetResponse.ok) {
-    const err = new H3Error(await sendResetResponse.text());
-    err.statusCode = 400;
-    return err;
+    const err = new H3Error(await sendResetResponse.text())
+    err.statusCode = 400
+    return err
   }
 
-  const { email_sent } = await sendResetResponse.json();
+  const { email_sent } = await sendResetResponse.json()
 
   setHeaders(req, {
-    "Set-Cookie": `edgedb-pkce-verifier=${pkce.verifier}; HttpOnly; Path=/; Secure; SameSite=Strict`,
-  });
+    'Set-Cookie': `edgedb-pkce-verifier=${pkce.verifier}; HttpOnly; Path=/; Secure; SameSite=Strict`,
+  })
 
   return {
-    message: `Reset email sent to '${email_sent}'.`
-  };
-});
+    message: `Reset email sent to '${email_sent}'.`,
+  }
+})

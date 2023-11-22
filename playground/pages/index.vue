@@ -1,3 +1,24 @@
+<script setup lang="ts">
+import type { BlogPost } from '@db/interfaces'
+
+const { isLoggedIn } = useEdgeDbIdentity()
+
+const { data, refresh } = await useAsyncData<BlogPost[]>(
+  'blogpost-index',
+  async () => await $fetch('/api/blogpost'),
+)
+
+async function deleteBlogPost(id: string) {
+  await $fetch('/api/blogpost', {
+    method: 'DELETE',
+    body: {
+      id,
+    },
+  })
+  await refresh()
+}
+</script>
+
 <template>
   <UContainer class="p-8 flex flex-col gap-4">
     <UCard
@@ -27,24 +48,3 @@
     </UCard>
   </UContainer>
 </template>
-
-<script setup lang="ts">
-import type { BlogPost } from '@db/interfaces'
-
-const { isLoggedIn } = useEdgeDbIdentity()
-
-const { data, refresh } = await useAsyncData<BlogPost[]>(
-  'blogpost-index',
-  async () => await $fetch('/api/blogpost')
-)
-
-const deleteBlogPost = async (id: string) => {
-  await $fetch('/api/blogpost', {
-    method: 'DELETE',
-    body: {
-      id
-    }
-  })
-  await refresh()
-}
-</script>

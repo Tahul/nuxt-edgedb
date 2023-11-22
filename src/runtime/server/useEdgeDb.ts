@@ -1,5 +1,5 @@
 import { getCookie } from 'h3'
-import type { H3Event, EventHandlerRequest } from 'h3'
+import type { EventHandlerRequest, H3Event } from 'h3'
 import { createClient } from 'edgedb'
 import type { ConnectOptions } from 'edgedb'
 import { useEdgeDbEnv } from './useEdgeDbEnv'
@@ -10,9 +10,10 @@ export function useEdgeDb(
 ) {
   const { dsn } = useEdgeDbEnv()
 
-  if (dsn) { clientOptions.dsn = dsn }
+  if (dsn)
+    clientOptions.dsn = dsn
 
   return createClient(clientOptions).withGlobals({
-    "ext::auth::client_token": req ? getCookie(req, 'edgedb-auth-token') : undefined,
+    'ext::auth::client_token': req ? getCookie(req, 'edgedb-auth-token') : undefined,
   })
 }

@@ -1,9 +1,5 @@
-<template>
-  <slot v-bind="{ loading, success, error, check, code }" />
-</template>
-
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import { navigateTo } from '#imports'
 
 const props = withDefaults(
@@ -13,8 +9,8 @@ const props = withDefaults(
   }>(),
   {
     redirectTo: '/',
-    checkOnSetup: true
-  }
+    checkOnSetup: true,
+  },
 )
 
 const loading = ref(false)
@@ -22,7 +18,7 @@ const success = ref()
 const error = ref()
 const code = computed(() => useRouter().currentRoute.value.query?.code)
 
-const check = async () => {
+async function check() {
   loading.value = true
   try {
     const result = await $fetch(`/api/auth/callback?code=${code.value}`, {
@@ -35,12 +31,15 @@ const check = async () => {
 
     success.value = true
 
-    if (props.redirectTo) { setTimeout(async () => await navigateTo(props.redirectTo), 1) }
+    if (props.redirectTo)
+      setTimeout(async () => await navigateTo(props.redirectTo), 1)
 
     return result
-  } catch (e) {
+  }
+  catch (e) {
     error.value = e
-  } finally {
+  }
+  finally {
     loading.value = false
   }
 }
@@ -50,8 +49,13 @@ defineExpose({
   success,
   loading,
   error,
-  code
+  code,
 })
 
-if (props.checkOnSetup) { await check() }
+if (props.checkOnSetup)
+  await check()
 </script>
+
+<template>
+  <slot v-bind="{ loading, success, error, check, code }" />
+</template>

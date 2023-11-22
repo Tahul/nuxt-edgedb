@@ -5,17 +5,17 @@ export default defineEventHandler(async (req) => {
     const {
       title,
       description,
-      content
+      content,
     } = await readBody(req)
 
     const { insertBlogPost } = useEdgeDbQueries(req)
 
     const blogPost = await insertBlogPost({
-        blogpost_title: title,
-        blogpost_description: description,
-        blogpost_content: content,
+      blogpost_title: title,
+      blogpost_description: description,
+      blogpost_content: content,
 
-      })
+    })
 
     return blogPost
   }

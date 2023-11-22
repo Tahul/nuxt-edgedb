@@ -1,4 +1,4 @@
-import { defineEventHandler, getCookie, deleteCookie } from "h3";
+import { defineEventHandler, deleteCookie, getCookie } from 'h3'
 import { useEdgeDb } from '../../server/useEdgeDb'
 
 export default defineEventHandler(async (req) => {
@@ -11,7 +11,7 @@ export default defineEventHandler(async (req) => {
 
   const client = useEdgeDb(req)
 
-  let user = await client.querySingle(`select global current_user;`);
+  let user = await client.querySingle(`select global current_user;`)
 
   if (!user && token) {
     user = await client.query(`
@@ -22,5 +22,5 @@ export default defineEventHandler(async (req) => {
     `)
   }
 
-  return user;
-});
+  return user
+})

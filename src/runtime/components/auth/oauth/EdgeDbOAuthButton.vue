@@ -1,28 +1,27 @@
-<template>
-  <slot v-bind="{ redirect, loading, error }" />
-</template>
-
 <script lang="ts" setup>
 import { ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{ provider: string }>(),
   {
-    provider: undefined
-  }
+    provider: undefined,
+  },
 )
 
 const loading = ref(false)
 const error = ref()
 
-const redirect = async (provider: string = props.provider) => {
+async function redirect(provider: string = props.provider) {
   loading.value = true
   try {
     const redirectTo = await $fetch(`/api/auth/authorize?provider=${provider}`) as { redirect: string }
-    if (redirectTo) { window.location.href = redirectTo.redirect }
-  } catch (e) {
+    if (redirectTo)
+      window.location.href = redirectTo.redirect
+  }
+  catch (e) {
     error.value = e
-  } finally {
+  }
+  finally {
     loading.value = false
   }
 }
@@ -30,6 +29,10 @@ const redirect = async (provider: string = props.provider) => {
 defineExpose({
   redirect,
   loading,
-  error
+  error,
 })
 </script>
+
+<template>
+  <slot v-bind="{ redirect, loading, error }" />
+</template>

@@ -1,7 +1,3 @@
-<template>
-  <slot v-bind="{ email, updateEmail, submit, error, success, message, loading }" />
-</template>
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import { navigateTo } from '#imports'
@@ -9,18 +5,20 @@ import { navigateTo } from '#imports'
 const props = withDefaults(
   defineProps<{ redirectTo?: string }>(),
   {
-    redirectTo: '/'
-  }
+    redirectTo: '/',
+  },
 )
 
 const email = ref()
-const updateEmail = (value: string) => { email.value = value }
+function updateEmail(value: string) {
+  email.value = value
+}
 const error = ref()
 const success = ref()
 const message = ref()
 const loading = ref(false)
 
-const submit = async () => {
+async function submit() {
   error.value = undefined
   success.value = undefined
   loading.value = true
@@ -29,19 +27,23 @@ const submit = async () => {
       method: 'POST',
       body: {
         email: email.value,
-      }
+      },
     })
 
-    if (result?.message) { message.value = result?.message }
+    if (result?.message)
+      message.value = result?.message
 
-    if (props.redirectTo) { setTimeout(async () => await navigateTo(props.redirectTo), 1) }
+    if (props.redirectTo)
+      setTimeout(async () => await navigateTo(props.redirectTo), 1)
 
     success.value = true
 
     return result
-  } catch (e) {
+  }
+  catch (e) {
     error.value = e
-  } finally {
+  }
+  finally {
     loading.value = false
   }
 }
@@ -53,6 +55,10 @@ defineExpose({
   error,
   success,
   message,
-  loading
+  loading,
 })
 </script>
+
+<template>
+  <slot v-bind="{ email, updateEmail, submit, error, success, message, loading }" />
+</template>

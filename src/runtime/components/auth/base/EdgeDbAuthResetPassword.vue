@@ -1,27 +1,25 @@
-<template>
-  <slot v-bind="{ password, updatePassword, submit, error, success, message, resetToken, loading }" />
-</template>
-
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import { navigateTo } from '#imports'
 
 const props = withDefaults(
   defineProps<{ redirectTo?: string }>(),
   {
-    redirectTo: '/'
-  }
+    redirectTo: '/',
+  },
 )
 
 const resetToken = computed(() => useRouter().currentRoute.value.params?.resetToken)
 const password = ref()
-const updatePassword = (value: string) => { password.value = value }
+function updatePassword(value: string) {
+  password.value = value
+}
 const error = ref()
 const success = ref()
 const message = ref()
 const loading = ref(false)
 
-const submit = async (provider: string = 'builtin::local_emailpassword') => {
+async function submit(provider: string = 'builtin::local_emailpassword') {
   error.value = undefined
   success.value = undefined
   loading.value = true
@@ -31,20 +29,24 @@ const submit = async (provider: string = 'builtin::local_emailpassword') => {
       body: {
         password: password.value,
         reset_token: resetToken.value,
-        provider
-      }
+        provider,
+      },
     })
 
-    if (result?.message) { message.value = result?.message }
+    if (result?.message)
+      message.value = result?.message
 
-    if (props.redirectTo) { setTimeout(async () => await navigateTo(props.redirectTo), 1) }
+    if (props.redirectTo)
+      setTimeout(async () => await navigateTo(props.redirectTo), 1)
 
     success.value = true
 
     return result
-  } catch (e) {
+  }
+  catch (e) {
     error.value = e
-  } finally {
+  }
+  finally {
     loading.value = false
   }
 }
@@ -57,6 +59,10 @@ defineExpose({
   success,
   message,
   resetToken,
-  loading
+  loading,
 })
 </script>
+
+<template>
+  <slot v-bind="{ password, updatePassword, submit, error, success, message, resetToken, loading }" />
+</template>

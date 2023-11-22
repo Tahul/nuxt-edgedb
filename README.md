@@ -437,7 +437,8 @@ You will also need a call back page, that can use `EdgeDbAuthCallback`.
       <p v-if="loading">
         Loading...
       </p>
-    </UCard>
+      </UCard>
+    </div>
   </EdgeDbOAuthCallback>
 </template>
 ```
@@ -594,8 +595,8 @@ I guess that can be useful for a super-admin/internal dashboard, but use it at y
 <script setup lang="ts">
 import e, { type $infer } from '@db/builder'
 
-const query = e.select(e.Movie, () => ({ id: true, title: true }));
-type result = $infer<typeof query>;
+const query = e.select(e.Movie, () => ({ id: true, title: true }))
+type result = $infer<typeof query>
 //   ^ { id: string; title: string }[]
 </script>
 ```

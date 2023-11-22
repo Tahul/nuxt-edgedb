@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import type { BlogPost } from '~/dbschema/interfaces'
+
+const { params } = useRoute()
+
+const { data: blogpost } = await useAsyncData<BlogPost>(
+  `blogpost-${params.id}`,
+  async () => await $fetch(`/api/blogpost/${params.id}`),
+)
+</script>
+
 <template>
   <UContainer class="p-8 flex flex-col gap-4">
     <UCard v-if="blogpost">
@@ -18,17 +29,6 @@
     </UCard>
   </UContainer>
 </template>
-
-<script setup lang="ts">
-import type { BlogPost } from '~/dbschema/interfaces';
-
-const { params } = useRoute()
-
-const { data: blogpost } = await useAsyncData<BlogPost>(
-  `blogpost-${params.id}`,
-  async () => await  $fetch(`/api/blogpost/${params.id}`)
-)
-</script>
 
 <style scoped>
 h1 {

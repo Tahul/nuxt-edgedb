@@ -1,24 +1,24 @@
-import { defineEventHandler, H3Error, readBody, setHeaders } from "h3";
+import { H3Error, defineEventHandler, readBody, setHeaders } from 'h3'
 import { useEdgeDbEnv } from '../../server/useEdgeDbEnv'
 import { useEdgeDbPKCE } from '../../server/useEdgeDbPKCE'
 
 export default defineEventHandler(async (req) => {
-  const pkce = useEdgeDbPKCE();
-  const { authBaseUrl } = useEdgeDbEnv();
+  const pkce = useEdgeDbPKCE()
+  const { authBaseUrl } = useEdgeDbEnv()
 
-  const { email, password, provider } = await readBody(req);
+  const { email, password, provider } = await readBody(req)
 
   if (!email || !password || !provider) {
-    const err = new H3Error(`Request body malformed. Expected JSON body with 'email', 'password', and 'provider' keys, but got: ${Object.entries({ email, password, provider }).filter(([, v]) => !!v)}`);
+    const err = new H3Error(`Request body malformed. Expected JSON body with 'email', 'password', and 'provider' keys, but got: ${Object.entries({ email, password, provider }).filter(([, v]) => !!v)}`)
     err.statusCode = 400
-    return err;
+    return err
   }
 
-  const authenticateUrl = new URL("authenticate", authBaseUrl);
+  const authenticateUrl = new URL('authenticate', authBaseUrl)
   const authenticateResponse = await fetch(authenticateUrl.href, {
-    method: "post",
+    method: 'post',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       challenge: pkce.challenge,
@@ -26,34 +26,34 @@ export default defineEventHandler(async (req) => {
       password,
       provider,
     }),
-  });
+  })
 
   if (!authenticateResponse.ok) {
-    const err = new H3Error(await authenticateResponse.text());
+    const err = new H3Error(await authenticateResponse.text())
     err.statusCode = 400
-    return err;
+    return err
   }
 
-  const authenticateResponseData = await authenticateResponse.json();
+  const authenticateResponseData = await authenticateResponse.json()
 
-  const tokenUrl = new URL("token", authBaseUrl);
-  tokenUrl.searchParams.set("code", authenticateResponseData.code);
-  tokenUrl.searchParams.set("verifier", pkce.verifier);
+  const tokenUrl = new URL('token', authBaseUrl)
+  tokenUrl.searchParams.set('code', authenticateResponseData.code)
+  tokenUrl.searchParams.set('verifier', pkce.verifier)
   const tokenResponse = await fetch(tokenUrl.href, {
-    method: "get",
-  });
+    method: 'get',
+  })
 
   if (!tokenResponse.ok) {
-    const err = new H3Error(await tokenResponse.text());
+    const err = new H3Error(await tokenResponse.text())
     err.statusCode = 400
-    return err;
+    return err
   }
 
-  const tokenResponseData = await tokenResponse.json();
+  const tokenResponseData = await tokenResponse.json()
 
   setHeaders(req, {
-    "Set-Cookie": `edgedb-auth-token=${tokenResponseData.auth_token}; HttpOnly; Path=/; Secure; SameSite=Strict`
-  });
+    'Set-Cookie': `edgedb-auth-token=${tokenResponseData.auth_token}; HttpOnly; Path=/; Secure; SameSite=Strict`,
+  })
 
-  return tokenResponseData;
-});
+  return tokenResponseData
+})

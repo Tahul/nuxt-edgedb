@@ -1,6 +1,6 @@
 import type { H3Event } from 'h3'
 import { fetchWithEvent, getRequestURL } from 'h3'
-import { defineNuxtPlugin, useState, useCookie, navigateTo } from 'nuxt/app'
+import { defineNuxtPlugin, navigateTo, useCookie, useState } from 'nuxt/app'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const identity = useState<any>('edgedb-auth-identity', () => undefined)
@@ -8,10 +8,11 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const cookie = useCookie('edgedb-auth-token')
 
   const updateIdentity = async (event?: H3Event) => {
-    if (!cookie.value) { return }
+    if (!cookie.value)
+      return
     if (process.server && event) {
       const req = getRequestURL(event)
-      const url = req.protocol + '//' + req.host + '/api/auth/identity'
+      const url = `${req.protocol}//${req.host}/api/auth/identity`
       identity.value = await fetchWithEvent(event, url).then(r => r.json())
       return
     }
@@ -21,12 +22,14 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const logout = async (redirectTo: string) => {
     cookie.value = undefined
     identity.value = undefined
-    if (redirectTo) { await navigateTo(redirectTo) }
+    if (redirectTo)
+      await navigateTo(redirectTo)
   }
 
   if (process.server) {
     const event = nuxtApp?.ssrContext?.event
-    if (event) await updateIdentity(event)
+    if (event)
+      await updateIdentity(event)
   }
 
   return {
@@ -34,7 +37,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       edgeDbCookie: cookie,
       edgeDbIdentity: identity,
       edgeDbUpdateIdentity: updateIdentity,
-      edgeDbLogout: logout
-    }
+      edgeDbLogout: logout,
+    },
   }
 })

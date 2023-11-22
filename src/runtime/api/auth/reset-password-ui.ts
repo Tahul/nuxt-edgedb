@@ -1,4 +1,4 @@
-import { defineEventHandler, getQuery } from "h3";
+import { defineEventHandler, getQuery } from 'h3'
 import { useEdgeDbEnv } from '../../server/useEdgeDbEnv'
 
 /**
@@ -7,11 +7,11 @@ import { useEdgeDbEnv } from '../../server/useEdgeDbEnv'
  * @param {Request} req
  */
 export default defineEventHandler((req) => {
-  const { authBaseUrl } = useEdgeDbEnv();
-  const { reset_token } = getQuery(req);
+  const { authBaseUrl } = useEdgeDbEnv()
+  const { reset_token } = getQuery(req)
 
   return {
-    headers: { "Content-Type": "text/html" },
+    headers: { 'Content-Type': 'text/html' },
     body: `
       <html>
         <body>
@@ -25,6 +25,6 @@ export default defineEventHandler((req) => {
           </form>
         </body>
       </html>
-    `
-  };
-});
+    `,
+  }
+})

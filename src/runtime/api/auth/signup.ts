@@ -1,5 +1,6 @@
-import { defineEventHandler, H3Error, readBody, setHeaders } from "h3";
+import { H3Error, defineEventHandler, readBody, setHeaders } from 'h3'
 import { useEdgeDbEnv } from '../../server/useEdgeDbEnv'
+import { useEdgeDbPKCE } from '../../server/useEdgeDbPKCE'
 
 /**
  * Handles sign up with email and password.
@@ -8,43 +9,43 @@ import { useEdgeDbEnv } from '../../server/useEdgeDbEnv'
  * @param {Response} res
  */
 export default defineEventHandler(async (req) => {
-  const pkce = useEdgeDbPKCE();
-  const { authBaseUrl, verifyRedirectUrl } = useEdgeDbEnv();
+  const pkce = useEdgeDbPKCE()
+  const { authBaseUrl, verifyRedirectUrl } = useEdgeDbEnv()
 
-  const { email, password, provider } = await readBody(req);
+  const { email, password, provider } = await readBody(req)
 
   if (!email || !password || !provider) {
-    const err = new H3Error(`Request body malformed. Expected JSON body with 'email', 'password', and 'provider' keys, but got: ${Object.entries({ email, password, provider }).filter(([, v]) => !!v)}`);
+    const err = new H3Error(`Request body malformed. Expected JSON body with 'email', 'password', and 'provider' keys, but got: ${Object.entries({ email, password, provider }).filter(([, v]) => !!v)}`)
     err.statusCode = 400
-    return err;
+    return err
   }
 
-  const registerUrl = new URL("register", authBaseUrl);
+  const registerUrl = new URL('register', authBaseUrl)
   const registerResponse = await fetch(registerUrl.href, {
-    method: "post",
+    method: 'post',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       challenge: pkce.challenge,
       email,
       provider,
       password,
-      verify_url: verifyRedirectUrl
+      verify_url: verifyRedirectUrl,
     }),
-  });
+  })
 
   if (!registerResponse.ok) {
-    const err = new H3Error(`Error from auth server: ${await registerResponse.text()}`);
+    const err = new H3Error(`Error from auth server: ${await registerResponse.text()}`)
     err.statusCode = 400
-    return err;
+    return err
   }
 
-  const registerResponseData = await registerResponse.json();
+  const registerResponseData = await registerResponse.json()
 
   setHeaders(req, {
-    "Set-Cookie": `edgedb-pkce-verifier=${pkce.verifier}; HttpOnly; Path=/; Secure; SameSite=Strict`
+    'Set-Cookie': `edgedb-pkce-verifier=${pkce.verifier}; HttpOnly; Path=/; Secure; SameSite=Strict`,
   })
 
   return registerResponseData
-});
+})

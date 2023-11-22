@@ -1,26 +1,24 @@
-<template>
-  <slot v-bind="{ providers, oAuthProviders, getProviders, loading, error }" />
-</template>
-
 <script lang="ts" setup>
-import { useAsyncData } from '#imports';
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
+import { useAsyncData } from '#imports'
 
-const providers = ref<{ name: string; display_name: string  }[]>([])
+const providers = ref<{ name: string, display_name: string }[]>([])
 const oAuthProviders = computed(() => {
   return providers.value.filter(p => p?.name?.includes('oauth_'))
 })
 const loading = ref(false)
 const error = ref()
 
-const getProviders = async () => {
+async function getProviders() {
   loading.value = true
   try {
     providers.value = await $fetch(`/api/auth/providers`)
     return providers.value
-  } catch (e) {
+  }
+  catch (e) {
     error.value = e
-  } finally {
+  }
+  finally {
     loading.value = false
   }
 }
@@ -30,11 +28,15 @@ defineExpose({
   oAuthProviders,
   getProviders,
   loading,
-  error
+  error,
 })
 
 await useAsyncData(
   'edgedb-oauth-providers',
-  async () => await getProviders()
+  async () => await getProviders(),
 )
 </script>
+
+<template>
+  <slot v-bind="{ providers, oAuthProviders, getProviders, loading, error }" />
+</template>

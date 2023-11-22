@@ -1,5 +1,5 @@
-import { defineEventHandler, getRouterParams, H3Error } from 'h3'
-import { BlogPost } from '@db/interfaces'
+import { H3Error, defineEventHandler, getRouterParams } from 'h3'
+import type { BlogPost } from '@db/interfaces'
 
 export default defineEventHandler(async (req) => {
   const params = getRouterParams(req)
@@ -15,7 +15,8 @@ export default defineEventHandler(async (req) => {
     `, { blogpost_id: params.id })
 
     return blogpost as BlogPost
-  } else {
+  }
+  else {
     const err = new H3Error('No domain found in query.')
     err.statusCode = 400
     return err

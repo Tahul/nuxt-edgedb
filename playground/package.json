@@ -1,19 +1,19 @@
 {
-  "private": true,
   "name": "my-module-playground",
   "type": "module",
+  "private": true,
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
     "generate": "nuxi generate"
   },
-  "devDependencies": {
-    "@nuxt/devtools": "latest",
-    "nuxt": "latest"
-  },
   "dependencies": {
     "@edgedb/generate": "^0.4.1",
     "@iconify-json/heroicons": "^1.1.13",
     "@nuxt/ui": "^2.10.0"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "nuxt": "latest"
   }
 }

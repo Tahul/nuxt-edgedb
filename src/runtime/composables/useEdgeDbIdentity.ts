@@ -1,8 +1,8 @@
 import { computed } from 'vue'
 import type { ComputedRef, Ref } from 'vue'
 import type { H3Event } from 'h3'
-import { useNuxtApp } from '#imports'
 import type { User } from '@db/interfaces'
+import { useNuxtApp } from '#imports'
 
 interface UseEdgeDbIdentityData {
   identity: Ref<User>
@@ -17,7 +17,7 @@ export function useEdgeDbIdentity(): UseEdgeDbIdentityData {
     $edgeDbIdentity: identity,
     $edgeDbCookie: cookie,
     $edgeDbUpdateIdentity: update,
-    $edgeDbLogout: logout
+    $edgeDbLogout: logout,
   } = useNuxtApp()
 
   const identityData = {
@@ -25,7 +25,7 @@ export function useEdgeDbIdentity(): UseEdgeDbIdentityData {
     identity,
     cookie,
     update,
-    logout
+    logout,
   } as UseEdgeDbIdentityData
 
   return identityData

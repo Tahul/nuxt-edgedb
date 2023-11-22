@@ -6,7 +6,7 @@ const links = computed(() => {
     {
       label: 'Home',
       icon: 'i-heroicons-home',
-      to: '/'
+      to: '/',
     },
   ]
 
@@ -15,37 +15,37 @@ const links = computed(() => {
       {
         label: 'New blogpost',
         icon: 'i-heroicons-newspaper-20-solid',
-        to: '/new'
+        to: '/new',
       },
       {
         label: 'Logout',
         icon: 'i-heroicons-newspaper-20-solid',
-        to: '/auth/logout'
-      }
+        to: '/auth/logout',
+      },
     )
-  } else {
+  }
+  else {
     links.push(
       {
         label: 'Register',
         icon: 'i-heroicons-key-20-solid',
-        to: '/auth/signup'
+        to: '/auth/signup',
       },
       {
         label: 'Login',
         icon: 'i-heroicons-lock-open-20-solid',
-        to: '/auth/login'
+        to: '/auth/login',
       },
       {
         label: 'Forgot my password',
         icon: 'i-heroicons-sparkles-20-solid',
-        to: '/auth/forgot-password'
+        to: '/auth/forgot-password',
       },
     )
   }
 
   return links
 })
-
 </script>
 
 <template>

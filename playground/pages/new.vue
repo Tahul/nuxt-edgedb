@@ -1,3 +1,36 @@
+<script setup lang="ts">
+const loading = ref(false)
+const error = ref('')
+const success = ref()
+const title = ref()
+const description = ref()
+const content = ref()
+
+let timeout: undefined | NodeJS.Timeout
+async function submit() {
+  loading.value = true
+  error.value = ''
+  clearTimeout(timeout)
+  try {
+    await $fetch('/api/blogpost', {
+      method: 'POST',
+      body: {
+        title: title.value,
+        description: description.value,
+        content: content.value,
+      },
+    })
+    success.value = true
+  }
+  catch (e: any) {
+    console.log(e)
+    error.value = e
+  }
+  timeout = setTimeout(() => (success.value = undefined), 1000)
+  loading.value = false
+}
+</script>
+
 <template>
   <UCard>
     <template #header>
@@ -35,35 +68,3 @@
     </div>
   </UCard>
 </template>
-
-<script setup lang="ts">
-const loading = ref(false);
-const error = ref("");
-const success = ref();
-const title = ref();
-const description = ref();
-const content = ref();
-
-let timeout: undefined | NodeJS.Timeout
-const submit = async () => {
-  loading.value = true
-  error.value = ""
-  clearTimeout(timeout)
-  try {
-    await $fetch('/api/blogpost', {
-      method: 'POST',
-      body: {
-        title: title.value,
-        description: description.value,
-        content: content.value
-      }
-    })
-    success.value = true
-  } catch (e: any) {
-    console.log(e);
-    error.value = e;
-  }
-  timeout = setTimeout(() => (success.value = undefined), 1000)
-  loading.value = false
-}
-</script>

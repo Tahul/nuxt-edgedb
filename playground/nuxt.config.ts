@@ -1,14 +1,14 @@
 export default defineNuxtConfig({
   modules: [
     '../src/module',
-    '@nuxt/ui'
+    '@nuxt/ui',
   ],
   edgeDb: {
     auth: true,
-    oauth: true
+    oauth: true,
   },
   devtools: { enabled: true },
   tailwindcss: {
-    viewer: false
-  }
+    viewer: false,
+  },
 })
