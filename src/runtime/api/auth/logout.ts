@@ -1,4 +1,4 @@
-import { H3Error, defineEventHandler, readBody, setHeaders } from 'h3'
+import { H3Error, defineEventHandler, getCookie, setCookie } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const authToken = getCookie(event, 'edgedb-auth-token')
