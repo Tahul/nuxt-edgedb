@@ -13,6 +13,6 @@ export default defineEventHandler(async (event) => {
     path: '/',
     secure: true,
     sameSite: true,
-    expires: new Date(0)
+    expires: new Date(0),
   })
 })

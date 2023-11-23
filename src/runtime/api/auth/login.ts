@@ -1,4 +1,4 @@
-import { H3Error, defineEventHandler, readBody, setCookie, setHeaders } from 'h3'
+import { H3Error, defineEventHandler, readBody, setCookie } from 'h3'
 import { useEdgeDbEnv, useEdgeDbPKCE } from '../../server'
 
 export default defineEventHandler(async (req) => {
