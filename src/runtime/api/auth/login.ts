@@ -1,4 +1,4 @@
-import { H3Error, defineEventHandler, readBody, setHeaders } from 'h3'
+import { H3Error, defineEventHandler, readBody, setCookie, setHeaders } from 'h3'
 import { useEdgeDbEnv, useEdgeDbPKCE } from '../../server'
 
 export default defineEventHandler(async (req) => {
@@ -50,8 +50,11 @@ export default defineEventHandler(async (req) => {
 
   const tokenResponseData = await tokenResponse.json()
 
-  setHeaders(req, {
-    'Set-Cookie': `edgedb-auth-token=${tokenResponseData.auth_token}; HttpOnly; Path=/; Secure; SameSite=Strict`,
+  setCookie(req, 'edgedb-auth-token', tokenResponseData.auth_token, {
+    httpOnly: true,
+    path: '/',
+    secure: true,
+    sameSite: true,
   })
 
   return tokenResponseData
