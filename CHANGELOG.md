@@ -1,6 +1,30 @@
 # Changelog
 
 
+## v0.0.15
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.14...v0.0.15)
+
+### 🚀 Enhancements
+
+- Single export for server modules under alias '#edgedb/server' ([#7](https://github.com/tahul/nuxt-edgedb/pull/7))
+- Add server logout handler ([#5](https://github.com/tahul/nuxt-edgedb/pull/5))
+
+### 📖 Documentation
+
+- **readme:** Fix typo and improve some sentences ([#6](https://github.com/tahul/nuxt-edgedb/pull/6))
+
+### 🏡 Chore
+
+- **lock:** Update lockfile ([642a50e](https://github.com/tahul/nuxt-edgedb/commit/642a50e))
+- **lint:** Fix linting ([d08008f](https://github.com/tahul/nuxt-edgedb/commit/d08008f))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+- Julien Le Coupanec <julien.le.coupanec@gmail.com>
+- Andreas Korth <andreas.korth@gmail.com>
+
 ## v0.0.14
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.13...v0.0.14)
