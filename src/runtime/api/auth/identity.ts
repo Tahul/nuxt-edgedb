@@ -1,5 +1,5 @@
 import { defineEventHandler, deleteCookie, getCookie } from 'h3'
-import { useEdgeDb } from '../../server/useEdgeDb'
+import { useEdgeDb } from '../../server'
 
 export default defineEventHandler(async (req) => {
   const token = getCookie(req, 'edgedb-auth-token')

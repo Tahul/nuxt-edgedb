@@ -55,6 +55,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Asdf
+.tool-versions
+
 # EdgeDB
 **/*.edgeql.ts
 **/dbschema/queries.*

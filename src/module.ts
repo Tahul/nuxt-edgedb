@@ -405,11 +405,12 @@ export default defineNuxtModule<ModuleOptions>({
       nuxt.hook(
         'nitro:config',
         (config) => {
-          if (!config.imports)
-            config.imports = {}
-          if (!config.imports.dirs)
-            config.imports.dirs = []
-          config.imports.dirs.push(resolveLocal('./runtime/server'))
+          config.externals ??= {}
+          config.externals.inline ??= []
+          config.externals.inline.push(resolveLocal('./runtime'))
+
+          config.alias ??= { }
+          config.alias['#edgedb/server'] = resolveLocal('./runtime/server')
         },
       )
     }
