@@ -51,8 +51,11 @@ export default defineEventHandler(async (req) => {
 
   const tokenResponseData = await tokenResponse.json()
 
-  setHeaders(req, {
-    'Set-Cookie': `edgedb-auth-token=${tokenResponseData.auth_token}; HttpOnly; Path=/; Secure; SameSite=Strict`,
+  setCookie(req, 'edgedb-auth-token', tokenResponseData.auth_token, {
+    httpOnly: true,
+    path: '/',
+    secure: true,
+    sameSite: true,
   })
 
   return tokenResponseData

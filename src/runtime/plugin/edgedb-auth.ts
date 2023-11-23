@@ -20,7 +20,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 
   const logout = async (redirectTo: string) => {
-    cookie.value = undefined
+    await $fetch('/api/auth/logout')
     identity.value = undefined
     if (redirectTo)
       await navigateTo(redirectTo)

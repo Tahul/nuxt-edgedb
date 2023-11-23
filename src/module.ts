@@ -447,6 +447,10 @@ export default defineNuxtModule<ModuleOptions>({
         route: '/api/auth/login',
       })
       addServerHandler({
+        handler: resolveLocal('./runtime/api/auth/logout'),
+        route: '/api/auth/logout',
+      })
+      addServerHandler({
         handler: resolveLocal('./runtime/api/auth/verify'),
         route: '/api/auth/verify',
       })
