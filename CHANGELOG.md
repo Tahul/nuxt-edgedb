@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.23
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.22...v0.0.23)
+
+### 🩹 Fixes
+
+- **import:** Fix import path ([e9fa0e4](https://github.com/tahul/nuxt-edgedb/commit/e9fa0e4))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.22
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.21...v0.0.22)
