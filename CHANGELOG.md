@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.0.19
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.18...v0.0.19)
+
+### 🚀 Enhancements
+
+- **server-imports:** Fix auto imports in server ([85f0ea8](https://github.com/tahul/nuxt-edgedb/commit/85f0ea8))
+
+### 🏡 Chore
+
+- **cleanup:** Cleanup ([c68bc23](https://github.com/tahul/nuxt-edgedb/commit/c68bc23))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.18
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.17...v0.0.18)
