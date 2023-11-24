@@ -424,7 +424,7 @@ export default defineNuxtModule<ModuleOptions>({
         },
         {
           from: resolveLocal('./runtime/server/composables/useEdgeDbQueryBuilder'),
-          name: 'useEdgeQueryBuilder',
+          name: 'useEdgeDbQueryBuilder',
         },
       ])
 
