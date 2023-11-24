@@ -392,9 +392,25 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Inject aliases
     const nuxtOptions = nuxt.options
+    nuxtOptions.alias = nuxtOptions.alias ?? {}
     nuxtOptions.alias['#edgedb/queries'] = join(dbschemaDir, '/queries.ts')
     nuxtOptions.alias['#edgedb/interfaces'] = join(dbschemaDir, '/interfaces.ts')
     nuxtOptions.alias['#edgedb/builder'] = join(dbschemaDir, '/query-builder/index.ts')
+
+    // Add Nitro aliases
+    nuxtOptions.nitro.alias = nuxtOptions.nitro.alias ?? {}
+    nuxtOptions.nitro.alias['#edgedb/queries'] = join(dbschemaDir, '/queries.ts')
+    nuxtOptions.nitro.alias['#edgedb/interfaces'] = join(dbschemaDir, '/interfaces.ts')
+    nuxtOptions.nitro.alias['#edgedb/builder'] = join(dbschemaDir, '/query-builder/index.ts')
+
+    // Enforce paths on typescript config
+    nuxtOptions.nitro.typescript ??= {}
+    nuxtOptions.nitro.typescript.tsConfig ??= {}
+    nuxtOptions.nitro.typescript.tsConfig.compilerOptions ??= {}
+    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths ??= {}
+    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/queries'] = [`'${join(dbschemaDir, '/queries.ts')}'`]
+    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/interfaces'] = [`'${join(dbschemaDir, '/interfaces.ts')}'`]
+    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/builder'] = [`'${join(dbschemaDir, '/query-builder/index.ts')}'`]
 
     await generateInterfaces()
     await generateQueries()
