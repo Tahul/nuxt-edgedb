@@ -412,9 +412,11 @@ export default defineNuxtModule<ModuleOptions>({
     nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/interfaces'] = [`'${join(dbschemaDir, '/interfaces.ts')}'`]
     nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/builder'] = [`'${join(dbschemaDir, '/query-builder/index.ts')}'`]
 
-    await generateInterfaces()
-    await generateQueries()
-    await generateQueryBuilder()
+    if (!nuxt.options._prepare) {
+      await generateInterfaces()
+      await generateQueries()
+      await generateQueryBuilder()
+    }
 
     if (options.composables) {
       // Add server-side auto-imports
