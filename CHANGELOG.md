@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.18
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.17...v0.0.18)
+
+### 🚀 Enhancements
+
+- **auto-imports:** Fix server auto-imports; aliases and paths ([5f9bd80](https://github.com/tahul/nuxt-edgedb/commit/5f9bd80))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.17
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.16...v0.0.17)
