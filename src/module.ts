@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs'
-import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImportsDir, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
 import chalk from 'chalk'
@@ -404,7 +404,29 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     if (options.composables) {
-      addServerImportsDir(resolveLocal('./runtime/server/composables/'))
+      // Add server imports manually
+      addServerImports([
+        {
+          from: resolveLocal('./runtime/server/composables/useEdgeDb'),
+          name: 'useEdgeDb',
+        },
+        {
+          from: resolveLocal('./runtime/server/composables/useEdgeDbEnv'),
+          name: 'useEdgeDbEnv',
+        },
+        {
+          from: resolveLocal('./runtime/server/composables/useEdgeDbPKCE'),
+          name: 'useEdgeDbPKCE',
+        },
+        {
+          from: resolveLocal('./runtime/server/composables/useEdgeDbQueries'),
+          name: 'useEdgeDbQueries',
+        },
+        {
+          from: resolveLocal('./runtime/server/composables/useEdgeDbQueryBuilder'),
+          name: 'useEdgeQueryBuilder',
+        },
+      ])
 
       // Add server-side auto-imports
       nuxt.hook(
