@@ -1,6 +1,5 @@
 import { existsSync } from 'node:fs'
 import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImportsDir, createResolver, defineNuxtModule } from '@nuxt/kit'
-import type { UnimportOptions } from 'unimport'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
 import chalk from 'chalk'
