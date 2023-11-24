@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.0.21
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.20...v0.0.21)
+
+### 🏡 Chore
+
+- **imports:** Make server imports manually to avoid .mjs via importsDir ([8396d12](https://github.com/tahul/nuxt-edgedb/commit/8396d12))
+- **lint:** Lint ([f34801e](https://github.com/tahul/nuxt-edgedb/commit/f34801e))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.20
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.19...v0.0.20)
