@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.17
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.16...v0.0.17)
+
+### 🩹 Fixes
+
+- **paths:** Fix ts paths ([970e721](https://github.com/tahul/nuxt-edgedb/commit/970e721))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.16
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.15...v0.0.16)
