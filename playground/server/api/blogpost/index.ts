@@ -15,7 +15,6 @@ export default defineEventHandler(async (req) => {
       blogpost_title: title,
       blogpost_description: description,
       blogpost_content: content,
-
     })
 
     return blogPost
