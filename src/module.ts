@@ -408,9 +408,9 @@ export default defineNuxtModule<ModuleOptions>({
     nuxtOptions.nitro.typescript.tsConfig ??= {}
     nuxtOptions.nitro.typescript.tsConfig.compilerOptions ??= {}
     nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths ??= {}
-    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/queries'] = [`'${join(dbschemaDir, '/queries.ts')}'`]
-    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/interfaces'] = [`'${join(dbschemaDir, '/interfaces.ts')}'`]
-    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/builder'] = [`'${join(dbschemaDir, '/query-builder/index.ts')}'`]
+    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/queries'] = [`${join(dbschemaDir, '/queries.ts')}`]
+    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/interfaces'] = [`${join(dbschemaDir, '/interfaces.ts')}`]
+    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/builder'] = [`${join(dbschemaDir, '/query-builder/index.ts')}`]
 
     if (!nuxt.options._prepare) {
       await generateInterfaces()
