@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs'
-import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImportsDir, createResolver, defineNuxtModule } from '@nuxt/kit'
 import type { UnimportOptions } from 'unimport'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
@@ -405,6 +405,8 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     if (options.composables) {
+      addServerImportsDir(resolveLocal('./runtime/server/composables/'))
+
       // Add server-side auto-imports
       nuxt.hook(
         'nitro:config',
@@ -412,16 +414,11 @@ export default defineNuxtModule<ModuleOptions>({
           // Push externals
           config.externals ??= {}
           config.externals.inline ??= []
-          config.externals.inline.push(resolveLocal('./runtime'))
-
-          // Push server auto-imports
-          config.imports ??= {} as UnimportOptions
-          (config.imports as UnimportOptions).dirs = [] as any[]
-          (config.imports as UnimportOptions).dirs?.push(resolveLocal('./runtime/server/composables'))
+          config.externals.inline.push(resolveLocal('./runtime/server'))
 
           // Push server aliases
           config.alias ??= {}
-          config.alias['#edgedb/server'] = resolveLocal('./runtime/server')
+          config.alias['#edgedb/server'] = resolveLocal('./runtime/server/index')
           config.alias['#edgedb/queries'] = join(dbschemaDir, '/queries.ts')
           config.alias['#edgedb/interfaces'] = join(dbschemaDir, '/interfaces.ts')
           config.alias['#edgedb/builder'] = join(dbschemaDir, '/query-builder/index.ts')
