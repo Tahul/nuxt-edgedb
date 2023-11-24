@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.0.16
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.15...v0.0.16)
+
+### 🚀 Enhancements
+
+- **types:** Enforce type resolving in nitro context (#edgedb) ([2bd3902](https://github.com/tahul/nuxt-edgedb/commit/2bd3902))
+- **prepare:** Do not run generate on prepare steps ([2c3003a](https://github.com/tahul/nuxt-edgedb/commit/2c3003a))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.15
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.14...v0.0.15)
