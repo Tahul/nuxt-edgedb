@@ -6,6 +6,7 @@ export default await antfu(
       'dist',
       'node_modules',
       '*.md',
+      'package.json',
     ],
   },
   {
