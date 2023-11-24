@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.22
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.21...v0.0.22)
+
+### 🏡 Chore
+
+- **useedgedbqueries:** Fix typing ([4d8971e](https://github.com/tahul/nuxt-edgedb/commit/4d8971e))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.21
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.20...v0.0.21)
