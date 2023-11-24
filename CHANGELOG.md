@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.20
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.19...v0.0.20)
+
+### 🚀 Enhancements
+
+- **types:** Fix composables types to properly expose generated content ([718889b](https://github.com/tahul/nuxt-edgedb/commit/718889b))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.19
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.18...v0.0.19)
