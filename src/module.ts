@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs'
 import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, createResolver, defineNuxtModule } from '@nuxt/kit'
+import type { UnimportOptions } from 'unimport'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
 import chalk from 'chalk'
@@ -397,21 +398,6 @@ export default defineNuxtModule<ModuleOptions>({
     nuxtOptions.alias['#edgedb/interfaces'] = join(dbschemaDir, '/interfaces.ts')
     nuxtOptions.alias['#edgedb/builder'] = join(dbschemaDir, '/query-builder/index.ts')
 
-    // Add Nitro aliases
-    nuxtOptions.nitro.alias = nuxtOptions.nitro.alias ?? {}
-    nuxtOptions.nitro.alias['#edgedb/queries'] = join(dbschemaDir, '/queries.ts')
-    nuxtOptions.nitro.alias['#edgedb/interfaces'] = join(dbschemaDir, '/interfaces.ts')
-    nuxtOptions.nitro.alias['#edgedb/builder'] = join(dbschemaDir, '/query-builder/index.ts')
-
-    // Enforce paths on typescript config
-    nuxtOptions.nitro.typescript ??= {}
-    nuxtOptions.nitro.typescript.tsConfig ??= {}
-    nuxtOptions.nitro.typescript.tsConfig.compilerOptions ??= {}
-    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths ??= {}
-    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/queries'] = [`${join(dbschemaDir, '/queries.ts')}`]
-    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/interfaces'] = [`${join(dbschemaDir, '/interfaces.ts')}`]
-    nuxtOptions.nitro.typescript.tsConfig.compilerOptions.paths['#edgedb/builder'] = [`${join(dbschemaDir, '/query-builder/index.ts')}`]
-
     if (!nuxt.options._prepare) {
       await generateInterfaces()
       await generateQueries()
@@ -423,12 +409,31 @@ export default defineNuxtModule<ModuleOptions>({
       nuxt.hook(
         'nitro:config',
         (config) => {
+          // Push externals
           config.externals ??= {}
           config.externals.inline ??= []
           config.externals.inline.push(resolveLocal('./runtime'))
 
-          config.alias ??= { }
+          // Push server auto-imports
+          config.imports ??= {} as UnimportOptions
+          (config.imports as UnimportOptions).dirs = [] as any[]
+          (config.imports as UnimportOptions).dirs?.push(resolveLocal('./runtime/server/composables'))
+
+          // Push server aliases
+          config.alias ??= {}
           config.alias['#edgedb/server'] = resolveLocal('./runtime/server')
+          config.alias['#edgedb/queries'] = join(dbschemaDir, '/queries.ts')
+          config.alias['#edgedb/interfaces'] = join(dbschemaDir, '/interfaces.ts')
+          config.alias['#edgedb/builder'] = join(dbschemaDir, '/query-builder/index.ts')
+
+          // Enforce paths on typescript config
+          config.typescript ??= {}
+          config.typescript.tsConfig ??= {}
+          config.typescript.tsConfig.compilerOptions ??= {}
+          config.typescript.tsConfig.compilerOptions.paths ??= {}
+          config.typescript.tsConfig.compilerOptions.paths['#edgedb/queries'] = [`${join(dbschemaDir, '/queries.ts')}`]
+          config.typescript.tsConfig.compilerOptions.paths['#edgedb/interfaces'] = [`${join(dbschemaDir, '/interfaces.ts')}`]
+          config.typescript.tsConfig.compilerOptions.paths['#edgedb/builder'] = [`${join(dbschemaDir, '/query-builder/index.ts')}`]
         },
       )
     }
