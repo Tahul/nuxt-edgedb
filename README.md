@@ -128,8 +128,10 @@ export default defineEventHandler(async (req) => {
     select BlogPost {
       title,
       description
-    } filter .id = ${id}
-  `)
+    } filter .id = $id
+  `, {
+    id: id
+  });
 
   return blogpost
 })
