@@ -398,7 +398,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     const hasQueries = existsSync(queriesPath)
     const hasInterfaces = existsSync(interfacesPath)
-    const hasQueryBuilder = existsSync(queryBuilderDir)
+    const hasQueryBuilder = existsSync(builderPath)
 
     // Inject aliases
     const nuxtOptions = nuxt.options
