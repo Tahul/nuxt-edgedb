@@ -5,7 +5,7 @@ const { params } = useRoute()
 
 const { data: blogpost } = await useAsyncData<BlogPost>(
   `blogpost-${params.id}`,
-  async () => await $fetch(`/api/blogpost/${params.id}`),
+  async () => await $fetch(`/api/blogpost?id=${params.id}`),
 )
 </script>
 

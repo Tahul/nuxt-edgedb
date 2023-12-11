@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs'
 import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, createResolver, defineNuxtModule } from '@nuxt/kit'
+import type { ViteDevServer } from 'vite'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
 import chalk from 'chalk'
@@ -224,14 +225,16 @@ export default defineNuxtModule<ModuleOptions>({
 
     if (canPrompt && options.devtools) {
       let uiUrl: any | undefined
-      try {
-        uiUrl = await execa.execa(`edgedb`, ['ui', '--print-url'])
-      }
-      catch (e) {
-        //
+      if (!process.env.NUXT_EDGEDB_UI_URL && options.injectDbCredentials) {
+        try {
+          uiUrl = await execa.execa(`edgedb`, ['ui', '--print-url'])
+        }
+        catch (e) {
+          //
+        }
       }
 
-      if (uiUrl?.stdout) {
+      if (process.env?.NUXT_EDGEDB_UI_URL || uiUrl?.stdout) {
         nuxt.hook('devtools:customTabs', (tabs) => {
           tabs.push({
             // unique identifier
@@ -244,7 +247,7 @@ export default defineNuxtModule<ModuleOptions>({
             // iframe view
             view: {
               type: 'iframe',
-              src: uiUrl.stdout,
+              src: process.env?.NUXT_EDGEDB_UI_URL || uiUrl.stdout,
               persistent: true,
             },
           })
@@ -390,12 +393,23 @@ export default defineNuxtModule<ModuleOptions>({
       })
     }
 
+    const queriesPath = join(dbschemaDir, '/queries.ts')
+    const interfacesPath = join(dbschemaDir, '/interfaces.ts')
+    const builderPath = join(dbschemaDir, '/query-builder/index.ts')
+
+    const hasQueries = existsSync(queriesPath)
+    const hasInterfaces = existsSync(interfacesPath)
+    const hasQueryBuilder = existsSync(queryBuilderDir)
+
     // Inject aliases
     const nuxtOptions = nuxt.options
     nuxtOptions.alias = nuxtOptions.alias ?? {}
-    nuxtOptions.alias['#edgedb/queries'] = join(dbschemaDir, '/queries.ts')
-    nuxtOptions.alias['#edgedb/interfaces'] = join(dbschemaDir, '/interfaces.ts')
-    nuxtOptions.alias['#edgedb/builder'] = join(dbschemaDir, '/query-builder/index.ts')
+    if (hasQueries)
+      nuxtOptions.alias['#edgedb/queries'] = queriesPath
+    if (hasInterfaces)
+      nuxtOptions.alias['#edgedb/interfaces'] = interfacesPath
+    if (hasQueryBuilder)
+      nuxtOptions.alias['#edgedb/builder'] = builderPath
 
     if (!nuxt.options._prepare) {
       await generateInterfaces()
@@ -437,21 +451,34 @@ export default defineNuxtModule<ModuleOptions>({
           config.externals.inline ??= []
           config.externals.inline.push(resolveLocal('./runtime/server'))
 
+          // Fixes for weird cjs query builder imports
+          if (hasQueryBuilder) {
+            config.replace ??= {}
+            config.replace['edgedb/dist/primitives/buffer'] = 'edgedb/dist/primitives/buffer.js'
+            config.replace['edgedb/dist/reflection/index'] = 'edgedb/dist/reflection/index.js'
+          }
+
           // Push server aliases
           config.alias ??= {}
           config.alias['#edgedb/server'] = resolveLocal('./runtime/server/index')
-          config.alias['#edgedb/queries'] = join(dbschemaDir, '/queries.ts')
-          config.alias['#edgedb/interfaces'] = join(dbschemaDir, '/interfaces.ts')
-          config.alias['#edgedb/builder'] = join(dbschemaDir, '/query-builder/index.ts')
+          if (hasQueries)
+            config.alias['#edgedb/queries'] = join(dbschemaDir, '/queries.ts')
+          if (hasInterfaces)
+            config.alias['#edgedb/interfaces'] = join(dbschemaDir, '/interfaces.ts')
+          if (hasQueryBuilder)
+            config.alias['#edgedb/builder'] = join(dbschemaDir, '/query-builder/index.ts')
 
           // Enforce paths on typescript config
           config.typescript ??= {}
           config.typescript.tsConfig ??= {}
           config.typescript.tsConfig.compilerOptions ??= {}
           config.typescript.tsConfig.compilerOptions.paths ??= {}
-          config.typescript.tsConfig.compilerOptions.paths['#edgedb/queries'] = [`${join(dbschemaDir, '/queries.ts')}`]
-          config.typescript.tsConfig.compilerOptions.paths['#edgedb/interfaces'] = [`${join(dbschemaDir, '/interfaces.ts')}`]
-          config.typescript.tsConfig.compilerOptions.paths['#edgedb/builder'] = [`${join(dbschemaDir, '/query-builder/index.ts')}`]
+          if (hasQueries)
+            config.typescript.tsConfig.compilerOptions.paths['#edgedb/queries'] = [`${join(dbschemaDir, '/queries.ts')}`]
+          if (hasInterfaces)
+            config.typescript.tsConfig.compilerOptions.paths['#edgedb/interfaces'] = [`${join(dbschemaDir, '/interfaces.ts')}`]
+          if (hasQueryBuilder)
+            config.typescript.tsConfig.compilerOptions.paths['#edgedb/builder'] = [`${join(dbschemaDir, '/query-builder/index.ts')}`]
         },
       )
     }
