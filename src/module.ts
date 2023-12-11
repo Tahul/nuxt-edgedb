@@ -1,6 +1,5 @@
 import { existsSync } from 'node:fs'
 import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, createResolver, defineNuxtModule } from '@nuxt/kit'
-import type { ViteDevServer } from 'vite'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
 import chalk from 'chalk'
