@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.25
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.24...v0.0.25)
+
+### 🩹 Fixes
+
+- **queries:** Do not inject composables if missing files ([7ad1db9](https://github.com/tahul/nuxt-edgedb/commit/7ad1db9))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.24
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.23...v0.0.24)
