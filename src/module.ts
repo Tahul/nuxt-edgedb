@@ -403,6 +403,7 @@ export default defineNuxtModule<ModuleOptions>({
     // Inject aliases
     const nuxtOptions = nuxt.options
     nuxtOptions.alias = nuxtOptions.alias ?? {}
+
     if (hasQueries)
       nuxtOptions.alias['#edgedb/queries'] = queriesPath
     if (hasInterfaces)
@@ -431,15 +432,25 @@ export default defineNuxtModule<ModuleOptions>({
           from: resolveLocal('./runtime/server/composables/useEdgeDbPKCE'),
           name: 'useEdgeDbPKCE',
         },
-        {
-          from: resolveLocal('./runtime/server/composables/useEdgeDbQueries'),
-          name: 'useEdgeDbQueries',
-        },
-        {
-          from: resolveLocal('./runtime/server/composables/useEdgeDbQueryBuilder'),
-          name: 'useEdgeDbQueryBuilder',
-        },
       ])
+
+      if (hasQueryBuilder) {
+        addServerImports([
+          {
+            from: resolveLocal('./runtime/server/composables/useEdgeDbQueryBuilder'),
+            name: 'useEdgeDbQueryBuilder',
+          },
+        ])
+      }
+
+      if (hasQueries) {
+        addServerImports([
+          {
+            from: resolveLocal('./runtime/server/composables/useEdgeDbQueries'),
+            name: 'useEdgeDbQueries',
+          },
+        ])
+      }
 
       // Add server-side auto-imports
       nuxt.hook(
@@ -460,6 +471,7 @@ export default defineNuxtModule<ModuleOptions>({
           // Push server aliases
           config.alias ??= {}
           config.alias['#edgedb/server'] = resolveLocal('./runtime/server/index')
+
           if (hasQueries)
             config.alias['#edgedb/queries'] = join(dbschemaDir, '/queries.ts')
           if (hasInterfaces)
@@ -472,6 +484,7 @@ export default defineNuxtModule<ModuleOptions>({
           config.typescript.tsConfig ??= {}
           config.typescript.tsConfig.compilerOptions ??= {}
           config.typescript.tsConfig.compilerOptions.paths ??= {}
+
           if (hasQueries)
             config.typescript.tsConfig.compilerOptions.paths['#edgedb/queries'] = [`${join(dbschemaDir, '/queries.ts')}`]
           if (hasInterfaces)
