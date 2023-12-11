@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.26
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.25...v0.0.26)
+
+### 🏡 Chore
+
+- **fix:** Fix hasQueryBuilder ([d032306](https://github.com/tahul/nuxt-edgedb/commit/d032306))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.25
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.24...v0.0.25)
