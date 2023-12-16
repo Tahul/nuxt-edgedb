@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs'
-import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
 import chalk from 'chalk'
@@ -418,6 +418,9 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     if (options.composables) {
+      // Add server plugin for EdgeDB client
+      addServerPlugin(resolveLocal('./runtime/server/plugins/edgedb-client'))
+
       // Add server imports manually
       addServerImports([
         {
@@ -513,7 +516,7 @@ export default defineNuxtModule<ModuleOptions>({
 
       // Runtime
       addPlugin({
-        src: resolveLocal('./runtime/plugin/edgedb-auth'),
+        src: resolveLocal('./runtime/plugins/edgedb-auth'),
         mode: 'all',
       })
       addComponentsDir({

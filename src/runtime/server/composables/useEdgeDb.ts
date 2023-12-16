@@ -1,19 +1,16 @@
 import { getCookie } from 'h3'
 import type { EventHandlerRequest, H3Event } from 'h3'
-import { createClient } from 'edgedb'
-import type { ConnectOptions } from 'edgedb'
-import { useEdgeDbEnv } from './useEdgeDbEnv'
+import type { Client, ConnectOptions } from 'edgedb'
 
-export function useEdgeDb(
-  req: H3Event<EventHandlerRequest> | undefined = undefined,
-  clientOptions: ConnectOptions = {},
-) {
-  const { dsn } = useEdgeDbEnv()
+export function useEdgeDb(req: H3Event<EventHandlerRequest> | undefined = undefined) {
+  // @ts-expect-error - untyped global
+  const client = globalThis.__nuxt_edgedb_client__ as Client
 
-  if (dsn)
-    clientOptions.dsn = dsn
+  if (req) {
+    return client.withGlobals({
+      'ext::auth::client_token': req ? getCookie(req, 'edgedb-auth-token') : undefined,
+    })
+  }
 
-  return createClient(clientOptions).withGlobals({
-    'ext::auth::client_token': req ? getCookie(req, 'edgedb-auth-token') : undefined,
-  })
+  return client
 }
