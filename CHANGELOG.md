@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.0.27
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.26...v0.0.27)
+
+### 🩹 Fixes
+
+- **edgedb-client:** Create a single client and expose it instead of recreating ([3b5c01d](https://github.com/tahul/nuxt-edgedb/commit/3b5c01d))
+
+### 🏡 Chore
+
+- **lint:** Fix lint ([1d48b7f](https://github.com/tahul/nuxt-edgedb/commit/1d48b7f))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.26
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.25...v0.0.26)
