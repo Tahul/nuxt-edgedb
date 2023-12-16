@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.28
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.27...v0.0.28)
+
+### 🩹 Fixes
+
+- **imports:** Use real imports ([bc2578e](https://github.com/tahul/nuxt-edgedb/commit/bc2578e))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.27
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.26...v0.0.27)
