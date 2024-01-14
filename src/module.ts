@@ -142,7 +142,13 @@ export default defineNuxtModule<ModuleOptions>({
     /**
      * CLI Install detection
      */
-    let edgedbCliVersion = (await execa.execa(`edgedb`, [`--version`])).stdout.replace('EdgeDB CLI ', '')
+    let edgedbCliVersion
+    try {
+      edgedbCliVersion = await execa.execa(`edgedb`, [`--version`]).then(result => result.stdout.replace('EdgeDB CLI ', ''))
+    }
+    catch (e) {
+      //
+    }
 
     if (options.installCli && !edgedbCliVersion) {
       error(`Could not find ${edgeColor('EdgeDB')} CLI.`, true)
@@ -168,7 +174,7 @@ export default defineNuxtModule<ModuleOptions>({
       if (response?.value === true) {
         try {
           await execa.execaCommand(`curl --proto '=https' --tlsv1.2 -sSf https://sh.edgedb.com | sh`)
-          edgedbCliVersion = (await execa.execa(`edgedb`, ['--version'])).stdout.replace('EdgeDB CLI ', '')
+          edgedbCliVersion = await execa.execa(`edgedb`, ['--version']).then(result => result?.stdout?.replace('EdgeDB CLI ', ''))
           success(`EdgeDB CLI version ${edgedbCliVersion} installed.`, true)
         }
         catch (e) {
@@ -177,7 +183,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
     }
     else {
-      success(`Using ${edgeColor('EdgeDB')} version ${edgeColor(edgedbCliVersion)}.`, true)
+      success(`Using ${edgeColor('EdgeDB')} version ${edgedbCliVersion ? edgeColor(edgedbCliVersion) : chalk.yellow('?')}.`, true)
     }
 
     /**
