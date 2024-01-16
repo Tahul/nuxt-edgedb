@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.29
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.28...v0.0.29)
+
+### 🩹 Fixes
+
+- **module:** Allow boot without `edgedb` locally installed ([12c3c9d](https://github.com/tahul/nuxt-edgedb/commit/12c3c9d))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.28
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.27...v0.0.28)
