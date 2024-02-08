@@ -1,6 +1,31 @@
 # Changelog
 
 
+## v0.0.30
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.29...v0.0.30)
+
+### 🚀 Enhancements
+
+- **env:** Improve env parameters ([a94077e](https://github.com/tahul/nuxt-edgedb/commit/a94077e))
+- **auth:** Improve auth plugin ([e8d6e9f](https://github.com/tahul/nuxt-edgedb/commit/e8d6e9f))
+- **auth:** Improve auth composable (client) ([4a4df3a](https://github.com/tahul/nuxt-edgedb/commit/4a4df3a))
+- **playground:** Update ([87876d6](https://github.com/tahul/nuxt-edgedb/commit/87876d6))
+- **deps:** Upgrade dependencies ([2448fd5](https://github.com/tahul/nuxt-edgedb/commit/2448fd5))
+- **module:** Improve credentials resolution; allow running from outside of cwd without errors ([febdb50](https://github.com/tahul/nuxt-edgedb/commit/febdb50))
+
+### 🏡 Chore
+
+- Test bundler module resolution ([#14](https://github.com/tahul/nuxt-edgedb/pull/14))
+- **tsconfig:** Temporary workaround for tsconfig ([45b9517](https://github.com/tahul/nuxt-edgedb/commit/45b9517))
+- **minimal-starter:** Remove minimal starter; playground is enough ([52ac007](https://github.com/tahul/nuxt-edgedb/commit/52ac007))
+- **release:** Prepare release; fix build & lint ([f38e9fe](https://github.com/tahul/nuxt-edgedb/commit/f38e9fe))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v0.0.29
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.28...v0.0.29)
