@@ -272,7 +272,7 @@ export default defineNuxtModule<ModuleOptions>({
             // title to display in the tab
             title: 'EdgeDB',
             // any icon from Iconify, or a URL to an image
-            icon: 'edgedb-icon',
+            icon: 'logos:edgedb',
             category: 'app',
             // iframe view
             view: {
