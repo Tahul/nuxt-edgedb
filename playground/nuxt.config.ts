@@ -11,7 +11,4 @@ export default defineNuxtConfig({
   tailwindcss: {
     viewer: false,
   },
-  typescript: {
-    includeWorkspace: true,
-  },
 })

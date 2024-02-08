@@ -41,8 +41,7 @@ export default defineEventHandler(async (req) => {
 
   const codeExchangeResponseData = await codeExchangeResponse.json()
 
-  useNitroApp().hooks.callHook(
-    // @ts-expect-error - untyped hook
+  await useNitroApp().hooks.callHook(
     'edgedb:auth:callback',
     {
       code,

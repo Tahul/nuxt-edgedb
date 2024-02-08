@@ -8,6 +8,7 @@
         <template #header>
           <h2>Login</h2>
         </template>
+
         <div class="flex flex-col gap-4">
           <UFormGroup label="Email">
             <UInput
@@ -44,9 +45,3 @@
     </EdgeDbAuthEmailLogin>
   </div>
 </template>
-
-<style>
-.blogpost-list {
-
-}
-</style>

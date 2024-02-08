@@ -1,6 +1,3 @@
 {
-  "extends": "./.nuxt/tsconfig.json",
-  "vueCompilerOptions": {
-    "skipTemplateCodegen": true
-  }
+  "extends": "./.nuxt/tsconfig.json"
 }
