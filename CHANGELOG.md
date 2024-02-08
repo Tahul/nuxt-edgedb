@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.31
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.30...v0.0.31)
+
+### 🏡 Chore
+
+- **devtools:** Rollback icon change ([218a2c8](https://github.com/tahul/nuxt-edgedb/commit/218a2c8))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.30
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.29...v0.0.30)
