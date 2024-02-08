@@ -1,9 +1,9 @@
 import { existsSync } from 'node:fs'
-import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerImportsDir, addServerPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
 import chalk from 'chalk'
-import prompts from 'prompts'
+import { prompt } from 'prompts'
 import * as execa from 'execa'
 
 const logger = createConsola({
@@ -78,6 +78,31 @@ export default defineNuxtModule<ModuleOptions>({
     const hasConfigFile = () => existsSync(edgeDbConfigPath)
     const canPrompt = nuxt.options.dev
 
+    async function piped$(
+      command: string,
+      args: string[],
+      quiet: boolean = false,
+      cwd: string = resolveProject(),
+    ) {
+      try {
+        if (quiet) {
+          return execa.execa(command, args, { cwd })
+        }
+        else {
+          const commandProcess = execa.execa(command, args, { cleanup: true, cwd })
+
+          commandProcess?.stdout?.pipe(process.stdout)
+
+          commandProcess.stdin?.pipe(process.stdin)
+
+          return commandProcess
+        }
+      }
+      catch (e) {
+        logger.error(e)
+      }
+    }
+
     async function generateInterfaces(
       quiet: boolean = options.generateQuiet,
       force: boolean = false,
@@ -144,7 +169,7 @@ export default defineNuxtModule<ModuleOptions>({
      */
     let edgedbCliVersion
     try {
-      edgedbCliVersion = await execa.execa(`edgedb`, [`--version`]).then(result => result.stdout.replace('EdgeDB CLI ', ''))
+      edgedbCliVersion = await execa.execa(`edgedb`, [`--version`], { cwd: resolveProject() }).then(result => result.stdout.replace('EdgeDB CLI ', ''))
     }
     catch (e) {
       //
@@ -154,7 +179,7 @@ export default defineNuxtModule<ModuleOptions>({
       error(`Could not find ${edgeColor('EdgeDB')} CLI.`, true)
       if (activePrompts.installCliPrompt)
         return
-      activePrompts.installCliPrompt = prompts(
+      activePrompts.installCliPrompt = prompt(
         {
           type: 'confirm',
           name: 'value',
@@ -173,8 +198,8 @@ export default defineNuxtModule<ModuleOptions>({
       const response = await activePrompts.installCliPrompt
       if (response?.value === true) {
         try {
-          await execa.execaCommand(`curl --proto '=https' --tlsv1.2 -sSf https://sh.edgedb.com | sh`)
-          edgedbCliVersion = await execa.execa(`edgedb`, ['--version']).then(result => result?.stdout?.replace('EdgeDB CLI ', ''))
+          await execa.execaCommand(`curl --proto '=https' --tlsv1.2 -sSf https://sh.edgedb.com | sh`, { cwd: resolveProject() })
+          edgedbCliVersion = await execa.execa(`edgedb`, ['--version'], { cwd: resolveProject() }).then(result => result?.stdout?.replace('EdgeDB CLI ', ''))
           success(`EdgeDB CLI version ${edgedbCliVersion} installed.`, true)
         }
         catch (e) {
@@ -194,7 +219,7 @@ export default defineNuxtModule<ModuleOptions>({
       logger.log(`  ${chalk.red('➜')} Could not find ${edgeColor('EdgeDB')} configuration file.`, true)
       if (activePrompts.initPrompt)
         return
-      activePrompts.initPrompt = prompts(
+      activePrompts.initPrompt = prompt(
         {
           type: 'confirm',
           name: 'value',
@@ -232,7 +257,7 @@ export default defineNuxtModule<ModuleOptions>({
       let uiUrl: any | undefined
       if (!process.env.NUXT_EDGEDB_UI_URL && options.injectDbCredentials) {
         try {
-          uiUrl = await execa.execa(`edgedb`, ['ui', '--print-url'])
+          uiUrl = await execa.execa(`edgedb`, ['ui', '--print-url'], { cwd: resolveProject() })
         }
         catch (e) {
           //
@@ -240,6 +265,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
 
       if (process.env?.NUXT_EDGEDB_UI_URL || uiUrl?.stdout) {
+        // @ts-expect-error - ?
         nuxt.hook('devtools:customTabs', (tabs) => {
           tabs.push({
             // unique identifier
@@ -247,7 +273,7 @@ export default defineNuxtModule<ModuleOptions>({
             // title to display in the tab
             title: 'EdgeDB',
             // any icon from Iconify, or a URL to an image
-            icon: 'logos:edgedb',
+            icon: 'edgedb-icon',
             category: 'app',
             // iframe view
             view: {
@@ -279,7 +305,7 @@ export default defineNuxtModule<ModuleOptions>({
                 if (activePrompts.queriesPrompt)
                   return
 
-                activePrompts.queriesPrompt = prompts(
+                activePrompts.queriesPrompt = prompt(
                   {
                     type: 'confirm',
                     name: 'value',
@@ -318,7 +344,7 @@ export default defineNuxtModule<ModuleOptions>({
               if (options.watchPrompt) {
                 if (activePrompts.migrationPrompt)
                   return
-                activePrompts.migrationPrompt = prompts(
+                activePrompts.migrationPrompt = prompt(
                   {
                     type: 'confirm',
                     name: 'value',
@@ -364,7 +390,7 @@ export default defineNuxtModule<ModuleOptions>({
               if (options.watchPrompt) {
                 if (activePrompts.schemaPrompt)
                   return
-                activePrompts.schemaPrompt = prompts(
+                activePrompts.schemaPrompt = prompt(
                   {
                     type: 'confirm',
                     name: 'value',
@@ -505,17 +531,24 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     if (options.auth) {
-      if (!process.env.NUXT_EDGEDB_AUTH_BASE_URL && options.injectDbCredentials) {
+      if (options.injectDbCredentials) {
         // http://localhost:10702/db/edgedb/ext/auth/
         let dbCredentials: any | undefined
         try {
-          dbCredentials = await execa.execaCommand(`edgedb instance credentials --json`)
+          dbCredentials = await execa.execaCommand(`edgedb instance credentials --json`, { cwd: resolveProject() })
         }
         catch (e) {
           //
         }
         if (dbCredentials) {
-          const { host, port, database } = JSON.parse(dbCredentials.stdout)
+          const { host, port, database, user, password, tls_ca, tls_security } = JSON.parse(dbCredentials.stdout)
+          process.env.NUXT_EDGEDB_HOST = host
+          process.env.NUXT_EDGEDB_PORT = port
+          process.env.NUXT_EDGEDB_DATABASE = database
+          process.env.NUXT_EDGEDB_USER = user
+          process.env.NUXT_EDGEDB_PASS = password
+          process.env.NUXT_EDGEDB_TLS_CA = tls_ca
+          process.env.NUXT_EDGEDB_TLS_SECURITY = tls_security
           process.env.NUXT_EDGEDB_AUTH_BASE_URL = `http://${host}:${port}/db/${database}/ext/auth/`
         }
       }
@@ -532,6 +565,12 @@ export default defineNuxtModule<ModuleOptions>({
       addImportsDir(resolveLocal('./runtime/composables'))
 
       // Server
+      addServerImports([
+        {
+          from: resolveLocal('./runtime/server/composables/useEdgeDbIdentity'),
+          name: 'useEdgeDbIdentity',
+        },
+      ])
       addServerHandler({
         handler: resolveLocal('./runtime/api/auth/login'),
         route: '/api/auth/login',
@@ -604,29 +643,4 @@ function useLogger() {
       edgeColor,
     },
   )
-}
-
-async function piped$(
-  command: string,
-  args: string[],
-  quiet: boolean = false,
-  // execPath = process.cwd(),
-) {
-  try {
-    if (quiet) {
-      return execa.execa(command, args)
-    }
-    else {
-      const commandProcess = execa.execa(command, args, { cleanup: true })
-
-      commandProcess?.stdout?.pipe(process.stdout)
-
-      commandProcess.stdin?.pipe(process.stdin)
-
-      return commandProcess
-    }
-  }
-  catch (e) {
-    logger.error(e)
-  }
 }
