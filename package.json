@@ -31,22 +31,22 @@
   },
   "dependencies": {
     "@edgedb/generate": "^0.4.1",
-    "@nuxt/kit": "^3.8.2",
+    "@nuxt/kit": "^3.10.1",
     "edgedb": "^1.4.1",
     "execa": "^8.0.1",
     "prompts": "^2.4.2"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.1.0",
+    "@antfu/eslint-config": "^2.6.4",
     "@nuxt/devtools": "latest",
-    "@nuxt/module-builder": "^0.5.4",
-    "@nuxt/schema": "^3.8.2",
-    "@nuxt/test-utils": "^3.8.1",
-    "@types/node": "^20.10.0",
+    "@nuxt/module-builder": "^0.5.5",
+    "@nuxt/schema": "^3.10.1",
+    "@nuxt/test-utils": "^3.11.0",
+    "@types/node": "^20.11.16",
     "@types/prompts": "^2.4.9",
     "changelogen": "^0.5.5",
-    "eslint": "^8.54.0",
-    "nuxt": "^3.8.2",
-    "vitest": "^0.34.6"
+    "eslint": "^8.56.0",
+    "nuxt": "^3.10.1",
+    "vitest": "^1.2.2"
   }
 }
