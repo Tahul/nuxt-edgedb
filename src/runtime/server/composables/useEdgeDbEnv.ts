@@ -6,6 +6,8 @@ export function useEdgeDbEnv() {
     NUXT_EDGEDB_USER: user,
     NUXT_EDGEDB_PASS: pass,
     NUXT_EDGEDB_DATABASE: database,
+    NUXT_EDGEDB_TLS_CA: tlsCA,
+    NUXT_EDGEDB_TLS_SECURITY: tlsSecurity,
     NUXT_EDGEDB_AUTH_BASE_URL: authBaseUrl = 'http://localhost:10702/db/edgedb/ext/auth/',
     NUXT_EDGEDB_OAUTH_CALLBACK: oAuthCallbackUrl = 'http://localhost:10702/db/edgedb/ext/auth/callback',
     NUXT_EDGEDB_AUTH_VERIFY_REDIRECT_URL: verifyRedirectUrl = 'http://localhost:3000/auth/verify',
@@ -36,5 +38,7 @@ export function useEdgeDbEnv() {
     pass,
     host,
     port,
+    tlsCA,
+    tlsSecurity: tlsSecurity as 'insecure' | 'no_host_verification' | 'strict' | 'default',
   }
 }
