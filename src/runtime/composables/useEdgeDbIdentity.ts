@@ -18,10 +18,11 @@ export function useEdgeDbIdentity(): UseEdgeDbIdentityData {
     $edgeDbCookie: cookie,
     $edgeDbUpdateIdentity: update,
     $edgeDbLogout: logout,
+    $edgeDbIsLoggedIn: isLoggedIn,
   } = useNuxtApp()
 
   const identityData = {
-    isLoggedIn: computed(() => !!((identity as Ref<User>)?.value)),
+    isLoggedIn,
     identity,
     cookie,
     update,
