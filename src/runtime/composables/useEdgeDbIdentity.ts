@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import type { ComputedRef, Ref } from 'vue'
 import type { H3Event } from 'h3'
 import type { User } from '#edgedb/interfaces'

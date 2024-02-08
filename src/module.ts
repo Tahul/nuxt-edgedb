@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs'
-import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerImportsDir, addServerPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
 import chalk from 'chalk'
@@ -265,7 +265,6 @@ export default defineNuxtModule<ModuleOptions>({
       }
 
       if (process.env?.NUXT_EDGEDB_UI_URL || uiUrl?.stdout) {
-        // @ts-expect-error - ?
         nuxt.hook('devtools:customTabs', (tabs) => {
           tabs.push({
             // unique identifier
