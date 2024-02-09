@@ -31,6 +31,7 @@ export interface ModuleOptions {
   injectDbCredentials: boolean
   projectInit: boolean
   installCli: boolean
+  identityModel: string
 }
 
 const { resolve: resolveLocal } = createResolver(import.meta.url)
@@ -67,6 +68,7 @@ export default defineNuxtModule<ModuleOptions>({
     injectDbCredentials: true,
     auth: false,
     oauth: false,
+    identityModel: 'User',
   },
   async setup(options, nuxt) {
     const { successMessage: success, errorMessage: error, edgeColor } = useLogger()
@@ -77,6 +79,11 @@ export default defineNuxtModule<ModuleOptions>({
     const edgeDbConfigPath = resolveProject('edgedb.toml')
     const hasConfigFile = () => existsSync(edgeDbConfigPath)
     const canPrompt = nuxt.options.dev
+
+    // Transpile edgedb
+    nuxt.options.build = nuxt.options.build ?? {}
+    nuxt.options.build.transpile ??= []
+    nuxt.options.build.transpile.push('edgedb')
 
     async function piped$(
       command: string,
