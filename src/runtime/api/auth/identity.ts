@@ -11,16 +11,5 @@ export default defineEventHandler(async (req) => {
 
   const client = useEdgeDb(req)
 
-  let user = await client.querySingle(`select global current_user;`)
-
-  if (!user && token) {
-    user = await client.query(`
-      insert User {
-        name := '',
-        identity := global ext::auth::ClientTokenIdentity
-      }
-    `)
-  }
-
-  return user
+  return await client.querySingle(`select global current_user;`)
 })
