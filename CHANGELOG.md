@@ -1,6 +1,29 @@
 # Changelog
 
 
+## v0.0.36
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.35...v0.0.36)
+
+### 🚀 Enhancements
+
+- **auth:** Support identityModel in `nuxt.config > edgeDb.identityModel` ([e77d950](https://github.com/tahul/nuxt-edgedb/commit/e77d950))
+
+### 🩹 Fixes
+
+- Import `useEdgeDbIdentity` ([#18](https://github.com/tahul/nuxt-edgedb/pull/18))
+- **types:** Up ([458107c](https://github.com/tahul/nuxt-edgedb/commit/458107c))
+
+### 🏡 Chore
+
+- Use module builder stubbed types ([#19](https://github.com/tahul/nuxt-edgedb/pull/19))
+- **fix:** IdentityModel ([60f3891](https://github.com/tahul/nuxt-edgedb/commit/60f3891))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v0.0.35
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.34...v0.0.35)
