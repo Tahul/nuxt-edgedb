@@ -58,7 +58,9 @@ git clone git@github.com:Tahul/nuxt-edgedb.git
 cd nuxt-edgedb
 pnpm install
 pnpm stub
-cd playground && pnpm run dev
+cd playground
+edgedb project init
+pnpm run dev
 ```
 
 ## Module options
