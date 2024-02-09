@@ -1,4 +1,8 @@
+import { useRuntimeConfig } from '#imports'
+
 export function useEdgeDbEnv() {
+  const { edgeDb } = useRuntimeConfig()
+
   const {
     APP_URL: appUrl,
     NUXT_EDGEDB_HOST: host,
@@ -40,5 +44,7 @@ export function useEdgeDbEnv() {
     port,
     tlsCA,
     tlsSecurity: tlsSecurity as 'insecure' | 'no_host_verification' | 'strict' | 'default',
+    auth: edgeDb?.auth || false,
+    identityModel: edgeDb?.identityModel || 'User',
   }
 }
