@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.33
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.32...v0.0.33)
+
+### 🩹 Fixes
+
+- Import `computed` from `vue` ([#16](https://github.com/tahul/nuxt-edgedb/pull/16))
+
+### ❤️ Contributors
+
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v0.0.32
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.31...v0.0.32)
