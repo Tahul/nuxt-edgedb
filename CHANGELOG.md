@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.32
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.31...v0.0.32)
+
+### 🩹 Fixes
+
+- **prompts:** Fix prompts ([432a6f1](https://github.com/tahul/nuxt-edgedb/commit/432a6f1))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.31
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.30...v0.0.31)
