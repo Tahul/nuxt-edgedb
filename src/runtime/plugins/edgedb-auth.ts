@@ -8,25 +8,37 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
   const cookie = useCookie('edgedb-auth-token')
 
-  const updateIdentity = async (event?: H3Event) => {
-    if (!process.server) {
-      identity.value = await $fetch('/api/auth/identity')
-      return
-    }
-
-    if (!cookie.value)
-      return
-
-    const req = getRequestURL(event)
-    const url = `${req.protocol}//${req.host}/api/auth/identity`
-    identity.value = await fetchWithEvent(event, url).then(r => r.json())
-  }
-
   const isLoggedIn = computed(() => !!((identity as Ref<User>)?.value))
 
-  const logout = async (redirectTo: string) => {
+  async function updateIdentity(event?: H3Event) {
+    try {
+      if (!process.server) {
+        identity.value = await $fetch('/api/auth/identity')
+        return
+      }
+
+      const req = getRequestURL(event)
+      const url = `${req.protocol}//${req.host}/api/auth/identity`
+
+      const idRequest = await fetchWithEvent(event, url).then(r => r.json())
+
+      if (identity) {
+        identity.value = idRequest
+      }
+      else {
+        identity.value = undefined
+        await logout()
+      }
+    }
+    catch (_) {
+      //
+    }
+  }
+
+  async function logout(redirectTo: string) {
     await $fetch('/api/auth/logout')
     identity.value = undefined
+    cookie.value = ''
     if (redirectTo)
       await navigateTo(redirectTo)
   }
