@@ -1,6 +1,7 @@
 import type { H3Event } from 'h3'
 import { fetchWithEvent, getRequestURL } from 'h3'
 import { defineNuxtPlugin, navigateTo, useCookie, useState } from 'nuxt/app'
+import { computed } from 'vue'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const identity = useState<any>('edgedb-auth-identity', () => undefined)
