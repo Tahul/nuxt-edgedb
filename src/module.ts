@@ -85,8 +85,8 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.build.transpile.push('edgedb')
 
     // Set user model if `auth` is set.
-    nuxt.options.runtimeConfig ??= {}
-    nuxt.options.runtimeConfig.edgeDb ??= {
+    ;(nuxt.options.runtimeConfig as any).edgeDb ??= {}
+    ;(nuxt.options.runtimeConfig.app as any).edgeDb ??= {
       auth: options.auth,
       identityModel: options.identityModel,
     }
