@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  nuxt-edgedb-module: link:.
+
 importers:
 
   .:
@@ -69,6 +72,9 @@ importers:
       '@nuxt/ui':
         specifier: ^2.13.0
         version: 2.13.0(nuxt@3.10.1)(rollup@3.29.4)(vite@5.1.0)(vue@3.4.16)
+      nuxt-edgedb-module:
+        specifier: link:..
+        version: link:..
     devDependencies:
       '@nuxt/devtools':
         specifier: latest

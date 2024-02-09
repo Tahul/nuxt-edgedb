@@ -48,5 +48,8 @@
     "eslint": "^8.56.0",
     "nuxt": "^3.10.1",
     "vitest": "^1.2.2"
+  },
+  "resolutions": {
+    "nuxt-edgedb-module": "link:."
   }
 }

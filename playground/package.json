@@ -10,7 +10,8 @@
   "dependencies": {
     "@edgedb/generate": "^0.4.1",
     "@iconify-json/heroicons": "^1.1.19",
-    "@nuxt/ui": "^2.13.0"
+    "@nuxt/ui": "^2.13.0",
+    "nuxt-edgedb-module": "latest"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
