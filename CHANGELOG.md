@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.0.35
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.34...v0.0.35)
+
+### 🩹 Fixes
+
+- **warnings:** Fix warning errors ([c951440](https://github.com/tahul/nuxt-edgedb/commit/c951440))
+- **auth:** Try to fix updateIdentity ([7c5bee6](https://github.com/tahul/nuxt-edgedb/commit/7c5bee6))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.34
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.33...v0.0.34)
