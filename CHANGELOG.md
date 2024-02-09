@@ -1,6 +1,20 @@
 # Changelog
 
 
+## v0.0.37
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.36...v0.0.37)
+
+### 🩹 Fixes
+
+- Add missing imports of `useRouter` ([#20](https://github.com/tahul/nuxt-edgedb/pull/20))
+- **auth:** Fix user creation ([97dee3d](https://github.com/tahul/nuxt-edgedb/commit/97dee3d))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v0.0.36
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.35...v0.0.36)
