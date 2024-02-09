@@ -81,7 +81,6 @@ export default defineNuxtModule<ModuleOptions>({
     const canPrompt = nuxt.options.dev
 
     // Transpile edgedb
-    nuxt.options.build ??= {}
     nuxt.options.build.transpile ??= []
     nuxt.options.build.transpile.push('edgedb')
 
