@@ -3,7 +3,7 @@ import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServer
 import { createConsola } from 'consola'
 import { join } from 'pathe'
 import chalk from 'chalk'
-import { prompt } from 'prompts'
+import prompts from 'prompts'
 import * as execa from 'execa'
 
 const logger = createConsola({
@@ -179,7 +179,7 @@ export default defineNuxtModule<ModuleOptions>({
       error(`Could not find ${edgeColor('EdgeDB')} CLI.`, true)
       if (activePrompts.installCliPrompt)
         return
-      activePrompts.installCliPrompt = prompt(
+      activePrompts.installCliPrompt = prompts(
         {
           type: 'confirm',
           name: 'value',
@@ -219,7 +219,7 @@ export default defineNuxtModule<ModuleOptions>({
       logger.log(`  ${chalk.red('➜')} Could not find ${edgeColor('EdgeDB')} configuration file.`, true)
       if (activePrompts.initPrompt)
         return
-      activePrompts.initPrompt = prompt(
+      activePrompts.initPrompt = prompts(
         {
           type: 'confirm',
           name: 'value',
@@ -304,7 +304,7 @@ export default defineNuxtModule<ModuleOptions>({
                 if (activePrompts.queriesPrompt)
                   return
 
-                activePrompts.queriesPrompt = prompt(
+                activePrompts.queriesPrompt = prompts(
                   {
                     type: 'confirm',
                     name: 'value',
@@ -343,7 +343,7 @@ export default defineNuxtModule<ModuleOptions>({
               if (options.watchPrompt) {
                 if (activePrompts.migrationPrompt)
                   return
-                activePrompts.migrationPrompt = prompt(
+                activePrompts.migrationPrompt = prompts(
                   {
                     type: 'confirm',
                     name: 'value',
@@ -389,7 +389,7 @@ export default defineNuxtModule<ModuleOptions>({
               if (options.watchPrompt) {
                 if (activePrompts.schemaPrompt)
                   return
-                activePrompts.schemaPrompt = prompt(
+                activePrompts.schemaPrompt = prompts(
                   {
                     type: 'confirm',
                     name: 'value',

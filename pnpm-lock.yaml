@@ -58,19 +58,6 @@ importers:
         specifier: ^1.2.2
         version: 1.2.2(@types/node@20.11.16)
 
-  minimal-starter:
-    dependencies:
-      '@edgedb/generate':
-        specifier: ^0.4.1
-        version: 0.4.1(edgedb@1.4.1)
-    devDependencies:
-      '@nuxt/devtools':
-        specifier: latest
-        version: 1.0.8(nuxt@3.10.1)(rollup@3.29.4)(vite@5.1.0)
-      nuxt:
-        specifier: latest
-        version: 3.10.1(@types/node@20.11.16)(eslint@8.56.0)(rollup@3.29.4)(typescript@5.3.3)(vite@5.1.0)
-
   playground:
     dependencies:
       '@edgedb/generate':
