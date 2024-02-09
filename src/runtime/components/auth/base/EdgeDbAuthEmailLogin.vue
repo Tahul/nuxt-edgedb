@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { navigateTo } from '#imports'
+import { navigateTo, useEdgeDbIdentity } from '#imports'
 
 const props = withDefaults(
   defineProps<{ redirectTo?: string }>(),
