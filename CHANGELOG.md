@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.34
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.33...v0.0.34)
+
+### 🏡 Chore
+
+- **auth:** Fix auth ([619b544](https://github.com/tahul/nuxt-edgedb/commit/619b544))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.33
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.32...v0.0.33)
