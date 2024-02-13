@@ -448,12 +448,9 @@ export default defineNuxtModule<ModuleOptions>({
     const nuxtOptions = nuxt.options
     nuxtOptions.alias = nuxtOptions.alias ?? {}
 
-    if (hasQueries)
-      nuxtOptions.alias['#edgedb/queries'] = queriesPath
-    if (hasInterfaces)
-      nuxtOptions.alias['#edgedb/interfaces'] = interfacesPath
-    if (hasQueryBuilder)
-      nuxtOptions.alias['#edgedb/builder'] = builderPath
+    nuxtOptions.alias['#edgedb/queries'] = queriesPath
+    nuxtOptions.alias['#edgedb/interfaces'] = interfacesPath
+    nuxtOptions.alias['#edgedb/builder'] = builderPath
 
     if (!nuxt.options._prepare) {
       await generateInterfaces()
