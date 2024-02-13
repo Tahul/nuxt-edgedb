@@ -17,6 +17,7 @@ export interface ModuleOptions {
   devtools: boolean
   watch: boolean
   watchPrompt: true
+  dbWatchMode: boolean
   dbschemaDir: string
   queriesDir: string
   queryBuilderDir: string
@@ -54,6 +55,7 @@ export default defineNuxtModule<ModuleOptions>({
     devtools: true,
     watch: true,
     watchPrompt: true,
+    dbWatchMode: false,
     generateTarget: 'ts',
     dbschemaDir: 'dbschema',
     queriesDir: 'queries',
@@ -302,7 +304,69 @@ export default defineNuxtModule<ModuleOptions>({
      * Watchers
      */
 
-    if (canPrompt && options.watch) {
+    async function maybeTriggerGenerateQueries(path: string) {
+       if (path.includes(options.queriesDir) && path.endsWith('.edgeql')) {
+         success(`Queries changes detected on: ${edgeColor(path.replace(options.dbschemaDir, ''))}`)
+         try {
+           if (options.watchPrompt) {
+             if (activePrompts.queriesPrompt)
+               return
+
+             activePrompts.queriesPrompt = prompts(
+               {
+                 type: 'confirm',
+                 name: 'value',
+                 message: 'Do you want to generate queries files?',
+               },
+               {
+                 onSubmit() {
+                   activePrompts.queriesPrompt = undefined
+                 },
+                 onCancel() {
+                   activePrompts.queriesPrompt = undefined
+                 },
+               },
+             )
+             const response = await activePrompts.queriesPrompt
+             if (response?.value === true) {
+               await generateQueries()
+               success('Successfully generated queries!')
+             }
+           }
+           else {
+             await generateQueries()
+             success('Successfully generated queries!')
+           }
+         }
+         catch (e) {
+           //
+         }
+         return
+       }
+
+    }
+
+    if (options.dbWatchMode) {
+      await piped$(`edgedb`, ['watch'], true)
+      nuxt.options.watch.push(`${dbschemaDir}/*`)
+      nuxt.options.watch.push(`${queriesDir}/*`)
+
+      nuxt.hook('builder:watch', async (event, path) => {
+        if (event === 'add' || event === 'change' || event === 'unlink' || event === 'unlinkDir') {
+          // Queries
+          await maybeTriggerGenerateQueries(path)
+
+          // Query Builder & Interface
+          if (path.includes(options.dbschemaDir) && path.endsWith('.esdl')) {
+              success(`Schema changes detected on: ${edgeColor(path.replace(options.dbschemaDir, ''))}`)
+              await generateInterfaces()
+              await generateQueryBuilder()
+          }
+        }
+
+      })
+    }
+    else if (canPrompt && options.watch) {
       nuxt.options.watch.push(`${dbschemaDir}/*`)
       nuxt.options.watch.push(`${dbschemaDir}/migrations/*`)
       nuxt.options.watch.push(`${queriesDir}/*`)
@@ -310,44 +374,7 @@ export default defineNuxtModule<ModuleOptions>({
       nuxt.hook('builder:watch', async (event, path) => {
         if (event === 'add' || event === 'change' || event === 'unlink' || event === 'unlinkDir') {
           // Queries
-          if (path.includes(options.queriesDir) && path.endsWith('.edgeql')) {
-            success(`Queries changes detected on: ${edgeColor(path.replace(options.dbschemaDir, ''))}`)
-            try {
-              if (options.watchPrompt) {
-                if (activePrompts.queriesPrompt)
-                  return
-
-                activePrompts.queriesPrompt = prompts(
-                  {
-                    type: 'confirm',
-                    name: 'value',
-                    message: 'Do you want to generate queries files?',
-                  },
-                  {
-                    onSubmit() {
-                      activePrompts.queriesPrompt = undefined
-                    },
-                    onCancel() {
-                      activePrompts.queriesPrompt = undefined
-                    },
-                  },
-                )
-                const response = await activePrompts.queriesPrompt
-                if (response?.value === true) {
-                  await generateQueries()
-                  success('Successfully generated queries!')
-                }
-              }
-              else {
-                await generateQueries()
-                success('Successfully generated queries!')
-              }
-            }
-            catch (e) {
-              //
-            }
-            return
-          }
+          await maybeTriggerGenerateQueries(path)
 
           // Migrations
           if (path.includes(`${options.dbschemaDir}/migrations`) && path.endsWith('.edgeql')) {
