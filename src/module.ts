@@ -347,7 +347,10 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     if (options.dbWatchMode) {
-      await piped$(`edgedb`, ['watch'], true)
+      const edb_watch_process = execa.execa('edgedb', ['watch'], { cwd: resolveProject(), detached: true, stdio: 'ignore' })
+      edb_watch_process.unref()
+
+      success("Running 'edgedb watch' mode in the background.", true)
       nuxt.options.watch.push(`${dbschemaDir}/*`)
       nuxt.options.watch.push(`${queriesDir}/*`)
 
