@@ -312,6 +312,10 @@ export default defineNuxtModule<ModuleOptions>({
         const matches = input.match(pattern)
         return matches || []
       }
+      const excluded_logs = [
+        'EdgeDB Watch initialized.',
+        `Monitoring "${resolveProject()}".`,
+      ]
 
       edb_watch_process.stderr!.on('data', async (chunk: string) => {
         const content = chunk.toString()
@@ -319,7 +323,10 @@ export default defineNuxtModule<ModuleOptions>({
         if (ddls.length) {
           await generateInterfaces()
           await generateQueryBuilder()
-          success(`Schema changes detected - interface & query builder updated`)
+          success(`EdgeDB - schema changes detected`)
+        }
+        else if (!excluded_logs.some(e => content.includes(e))) {
+          console.log(content)
         }
       })
       success('Running \'edgedb watch\' mode in the background.', true)
