@@ -304,7 +304,7 @@ export default defineNuxtModule<ModuleOptions>({
      * Watchers
      */
 
-    if (options.dbWatchMode) {
+    if (options.dbWatchMode && !nuxt.options._prepare) {
       const edb_watch_process = execa.execa('edgedb', ['watch', '--verbose'], { cwd: resolveProject(), buffer: false })
 
       const extractDDLs = (input: string) => {
