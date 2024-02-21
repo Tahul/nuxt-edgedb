@@ -14,7 +14,7 @@
               type="email"
               :value="email"
               placeholder="your@email.com"
-              @change="(e) => updateEmail(e.target.value)"
+              @change="(e: any) => updateEmail(e.target.value)"
             />
           </UFormGroup>
         </div>
@@ -22,6 +22,7 @@
         <template #footer>
           <UButton
             type="button"
+            color="gray"
             :loading="loading"
             @click="(e) => submit()"
           >

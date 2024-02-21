@@ -14,7 +14,7 @@
               type="password"
               :value="password"
               placeholder="your@email.com"
-              @change="(e) => updatePassword(e.target.value)"
+              @change="(e: any) => updatePassword(e.target.value)"
             />
           </UFormGroup>
         </div>
@@ -22,8 +22,9 @@
         <template #footer>
           <UButton
             type="button"
+            color="gray"
             :loading="loading"
-            @click="(e) => submit()"
+            @click="() => submit()"
           >
             Send reset email
           </UButton>

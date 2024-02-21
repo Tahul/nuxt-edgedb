@@ -5,14 +5,21 @@ const success = ref()
 const title = ref()
 const description = ref()
 const content = ref()
+const router = useRouter()
+const { isLoggedIn } = useEdgeDbIdentity()
 
 let timeout: undefined | NodeJS.Timeout
+
+if (!isLoggedIn.value)
+  router.push('/')
+
 async function submit() {
   loading.value = true
   error.value = ''
   clearTimeout(timeout)
+
   try {
-    await $fetch('/api/blogpost', {
+    const blogPost = await $fetch('/api/blogpost', {
       method: 'POST',
       body: {
         title: title.value,
@@ -20,12 +27,16 @@ async function submit() {
         content: content.value,
       },
     })
+
+    router.push(`/blogposts/${blogPost.id}`)
+
     success.value = true
   }
   catch (e: any) {
     console.log(e)
     error.value = e
   }
+
   timeout = setTimeout(() => (success.value = undefined), 1000)
   loading.value = false
 }
@@ -59,7 +70,7 @@ async function submit() {
       </UFormGroup>
     </div>
     <template #footer>
-      <UButton @click="submit">
+      <UButton color="gray" @click="submit">
         {{ loading ? 'Loading...' : 'Submit' }}
       </UButton>
     </template>

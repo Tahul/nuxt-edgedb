@@ -3,15 +3,13 @@ import { useEdgeDbQueries } from '#edgedb/server'
 import type { BlogPost } from '#edgedb/interfaces'
 
 export default defineEventHandler(async (req) => {
-  const query = getQuery(req)
   const { insertBlogPost, allBlogPosts, deleteBlogPost, getBlogPost } = useEdgeDbQueries(req)
+  const query = getQuery(req)
+  const id = query?.id as string | undefined
 
   if (isMethod(req, 'POST')) {
-    const {
-      title,
-      description,
-      content,
-    } = await readBody(req)
+    const body = await readBody(req)
+    const { title, description, content } = body
 
     const blogPost = await insertBlogPost({
       blogpost_title: title,
@@ -23,16 +21,18 @@ export default defineEventHandler(async (req) => {
   }
 
   if (isMethod(req, 'GET')) {
-    if (query?.id) {
-      const blogpost = await getBlogPost({ blogpost_id: query.id.toString() })
+    if (id) {
+      const blogpost = await getBlogPost({ blogpost_id: id })
       return blogpost as BlogPost
     }
 
-    return await allBlogPosts()
+    const count = await useEdgeDb().query('select count(BlogPost);').then(([count]) => count)
+
+    return count ? await allBlogPosts() : []
   }
 
-  if (isMethod(req, 'DELETE') && query?.id) {
-    await deleteBlogPost({ blogpost_id: query.id.toString() })
-    return { deleted: query?.id }
+  if (isMethod(req, 'DELETE') && id) {
+    await deleteBlogPost({ blogpost_id: id })
+    return { deleted: id }
   }
 })
