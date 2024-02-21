@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.0.38
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.37...v0.0.38)
+
+### 🚀 Enhancements
+
+- **playground:** Improve playground ([c635109](https://github.com/tahul/nuxt-edgedb/commit/c635109))
+- **edgedb:** Small improvements ([8bcc015](https://github.com/tahul/nuxt-edgedb/commit/8bcc015))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.37
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.36...v0.0.37)
