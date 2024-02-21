@@ -2,6 +2,7 @@ import { H3Error, defineEventHandler, getCookie, setCookie } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const authToken = getCookie(event, 'edgedb-auth-token')
+
   if (!authToken) {
     const err = new H3Error('Not logged in')
     err.statusCode = 401

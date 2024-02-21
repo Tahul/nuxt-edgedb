@@ -1,28 +1,44 @@
 import { defineEventHandler, deleteCookie, getCookie } from 'h3'
 import { useEdgeDb, useEdgeDbEnv } from '../../server'
 
-export default defineEventHandler(async (req) => {
+export default defineEventHandler(async (event) => {
   const { identityModel } = useEdgeDbEnv()
 
-  const token = getCookie(req, 'edgedb-auth-token')
+  const token = getCookie(event, 'edgedb-auth-token')
 
   if (!token) {
-    deleteCookie(req, 'edgedb-auth-token')
+    deleteCookie(event, 'edgedb-auth-token')
     return
   }
 
-  const client = useEdgeDb(req)
+  const client = useEdgeDb(event)
 
-  let identityTarget = await client.querySingle(`select global current_user;`)
+  try {
+    let identityTarget = await client.querySingle(`select global current_user;`)
 
-  if (!identityTarget && token) {
-    identityTarget = await client.query(`
+    if (!identityTarget && token) {
+      identityTarget = await client.query(`
       insert ${identityModel} {
         name := '',
         identity := global ext::auth::ClientTokenIdentity
       }
     `)
-  }
+    }
 
-  return identityTarget
+    return identityTarget
+  }
+  catch (err) {
+    setCookie(
+      event,
+      'edgedb-auth-token',
+      '',
+      {
+        httpOnly: true,
+        path: '/',
+        secure: true,
+        sameSite: true,
+        expires: new Date(0),
+      },
+    )
+  }
 })
