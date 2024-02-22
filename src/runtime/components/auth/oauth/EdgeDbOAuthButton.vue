@@ -14,7 +14,8 @@ const error = ref()
 async function redirect(provider: string = props.provider) {
   loading.value = true
   try {
-    const redirectTo = await $fetch(`/api/auth/authorize?provider=${provider}`) as { redirect: string }
+    const redirectTo = await $fetch(`/api/auth/authorize?provider=${provider}`)
+
     if (redirectTo)
       window.location.href = redirectTo.redirect
   }
