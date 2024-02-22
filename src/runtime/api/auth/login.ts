@@ -1,4 +1,4 @@
-import { H3Error, defineEventHandler, readBody, setCookie } from 'h3'
+import { H3Error, defineEventHandler, readBody, sendError, setCookie } from 'h3'
 import { useEdgeDbEnv, useEdgeDbPKCE } from '../../server'
 
 export default defineEventHandler(async (req) => {
@@ -10,7 +10,7 @@ export default defineEventHandler(async (req) => {
   if (!email || !password || !provider) {
     const err = new H3Error(`Request body malformed. Expected JSON body with 'email', 'password', and 'provider' keys, but got: ${Object.entries({ email, password, provider }).filter(([, v]) => !!v)}`)
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const authenticateUrl = new URL('authenticate', authBaseUrl)
@@ -30,7 +30,7 @@ export default defineEventHandler(async (req) => {
   if (!authenticateResponse.ok) {
     const err = new H3Error(await authenticateResponse.text())
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const authenticateResponseData = await authenticateResponse.json()
@@ -45,7 +45,7 @@ export default defineEventHandler(async (req) => {
   if (!tokenResponse.ok) {
     const err = new H3Error(await tokenResponse.text())
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const tokenResponseData = await tokenResponse.json()

@@ -1,4 +1,4 @@
-import { H3Error, defineEventHandler, readBody, setHeaders } from 'h3'
+import { H3Error, defineEventHandler, readBody, sendError, setHeaders } from 'h3'
 import { useEdgeDbEnv, useEdgeDbPKCE } from '../../server'
 
 /**
@@ -16,7 +16,7 @@ export default defineEventHandler(async (req) => {
   if (!email) {
     const err = new H3Error(`Request body is missing 'email'`)
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const sendResetUrl = new URL('send-reset-email', authBaseUrl)
@@ -36,7 +36,7 @@ export default defineEventHandler(async (req) => {
   if (!sendResetResponse.ok) {
     const err = new H3Error(await sendResetResponse.text())
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const { email_sent } = await sendResetResponse.json()

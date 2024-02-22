@@ -1,4 +1,4 @@
-import { H3Error, defineEventHandler, getCookie, getRequestURL, setHeaders } from 'h3'
+import { H3Error, defineEventHandler, getCookie, getRequestURL, sendError, setHeaders } from 'h3'
 import { useEdgeDbEnv } from '../../server'
 
 /**
@@ -14,14 +14,14 @@ export default defineEventHandler(async (req) => {
   if (!verification_token) {
     const err = new H3Error(`Verify request is missing 'verification_token' search param. The verification email is malformed.`)
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const verifier = getCookie(req, 'edgedb-pkce-verifier')
   if (!verifier) {
     const err = new H3Error(`Could not find 'verifier' in the cookie store. Is this the same user agent/browser that started the authorization flow?`)
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const verifyUrl = new URL('verify', authBaseUrl)
@@ -40,7 +40,7 @@ export default defineEventHandler(async (req) => {
   if (!verifyResponse.ok) {
     const err = new H3Error(await verifyResponse.text())
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const { code } = await verifyResponse.json()
@@ -55,7 +55,7 @@ export default defineEventHandler(async (req) => {
   if (!tokenResponse.ok) {
     const err = new H3Error(await tokenResponse.text())
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const tokenResponseData = await tokenResponse.json()

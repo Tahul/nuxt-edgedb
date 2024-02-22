@@ -1,4 +1,4 @@
-import { H3Error, defineEventHandler, getRequestURL } from 'h3'
+import { H3Error, defineEventHandler, getRequestURL, sendError } from 'h3'
 import { useEdgeDbEnv, useEdgeDbPKCE } from '../../server'
 
 /**
@@ -16,7 +16,7 @@ export default defineEventHandler(async (req) => {
   if (!provider) {
     const err = new H3Error('Must provide a \'provider\' value in search parameters')
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const pkce = useEdgeDbPKCE()
