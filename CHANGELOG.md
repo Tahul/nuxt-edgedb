@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.39
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.38...v0.0.39)
+
+### 🩹 Fixes
+
+- **identity:** Missing setCookie import ([de65844](https://github.com/tahul/nuxt-edgedb/commit/de65844))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.38
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.37...v0.0.38)
