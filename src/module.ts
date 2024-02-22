@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs'
-import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponentsDir, addImports, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
 import chalk from 'chalk'
@@ -574,7 +574,12 @@ export default defineNuxtModule<ModuleOptions>({
         path: resolveLocal('./runtime/components/auth/base'),
         global: true,
       })
-      addImportsDir(resolveLocal('./runtime/composables'))
+      addImports([
+        {
+          from: resolveLocal('./runtime/composables/useEdgeDbIdentity'),
+          name: 'useEdgeDbIdentity',
+        },
+      ])
 
       // Server
       addServerImports([
