@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.42
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.41...v0.0.42)
+
+### 🩹 Fixes
+
+- **logout:** Missing import ([085d0de](https://github.com/tahul/nuxt-edgedb/commit/085d0de))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.41
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.40...v0.0.41)
