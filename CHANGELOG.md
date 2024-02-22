@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.0.41
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.40...v0.0.41)
+
+### 🚀 Enhancements
+
+- **auth:** Improve error handling and response types ([83486c6](https://github.com/tahul/nuxt-edgedb/commit/83486c6))
+
+### 🩹 Fixes
+
+- **components:** Fix components imports ([101e3c9](https://github.com/tahul/nuxt-edgedb/commit/101e3c9))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.40
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.39...v0.0.40)
