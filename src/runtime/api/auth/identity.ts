@@ -1,4 +1,4 @@
-import { defineEventHandler, deleteCookie, getCookie } from 'h3'
+import { defineEventHandler, deleteCookie, getCookie, setCookie } from 'h3'
 import { useEdgeDb, useEdgeDbEnv } from '../../server'
 
 export default defineEventHandler(async (event) => {
