@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.40
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.39...v0.0.40)
+
+### 🩹 Fixes
+
+- **identity:** Fix useEdgeDbIdentity runtime import ([1c66b13](https://github.com/tahul/nuxt-edgedb/commit/1c66b13))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.39
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.38...v0.0.39)
