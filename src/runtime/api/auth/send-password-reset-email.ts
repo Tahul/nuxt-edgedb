@@ -8,7 +8,8 @@ import { useEdgeDbEnv, useEdgeDbPKCE } from '../../server'
  */
 export default defineEventHandler(async (req) => {
   const pkce = useEdgeDbPKCE()
-  const { authBaseUrl, resetPasswordUrl: reset_url } = useEdgeDbEnv()
+  const { urls } = useEdgeDbEnv()
+  const { authBaseUrl, resetPasswordUrl: reset_url } = urls
 
   const { email } = await readBody(req)
   const provider = 'builtin::local_emailpassword'
@@ -41,9 +42,12 @@ export default defineEventHandler(async (req) => {
 
   const { email_sent } = await sendResetResponse.json()
 
-  setHeaders(req, {
-    'Set-Cookie': `edgedb-pkce-verifier=${pkce.verifier}; HttpOnly; Path=/; Secure; SameSite=Strict`,
-  })
+  setHeaders(
+    req,
+    {
+      'Set-Cookie': `edgedb-pkce-verifier=${pkce.verifier}; HttpOnly; Path=/; Secure; SameSite=Strict`,
+    },
+  )
 
   return {
     message: `Reset email sent to '${email_sent}'.`,

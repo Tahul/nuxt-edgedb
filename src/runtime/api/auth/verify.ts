@@ -7,7 +7,8 @@ import { useEdgeDbEnv } from '../../server'
  * @param {Request} req
  */
 export default defineEventHandler(async (req) => {
-  const { authBaseUrl } = useEdgeDbEnv()
+  const { urls } = useEdgeDbEnv()
+  const { authBaseUrl } = urls
 
   const requestUrl = getRequestURL(req)
   const verification_token = requestUrl.searchParams.get('verification_token')

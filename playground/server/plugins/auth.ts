@@ -1,5 +1,8 @@
 export default defineNitroPlugin((app) => {
-  app.hooks.hook('edgedb:auth:callback', (_) => {
-    // console.log(_)
-  })
+  app.hooks.hook(
+    'edgedb:auth:callback' as any,
+    () => {
+      console.log('auth callback!')
+    },
+  )
 })

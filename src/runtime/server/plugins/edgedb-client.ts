@@ -3,14 +3,13 @@ import { defineNitroPlugin } from 'nitropack/dist/runtime/plugin'
 import { useEdgeDbEnv } from '../'
 
 export default defineNitroPlugin(() => {
-  const { dsn, tlsSecurity, tlsCA } = useEdgeDbEnv()
+  const { dsn } = useEdgeDbEnv()
 
   const client = createClient({
-    dsn,
-    tlsSecurity,
-    tlsCA,
+    dsn: dsn.full,
+    tlsSecurity: dsn.tlsSecurity,
+    tlsCA: dsn.tlsCA,
   })
 
-  // @ts-expect-error - untyped global
   globalThis.__nuxt_edgedb_client__ = client
 })

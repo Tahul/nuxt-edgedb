@@ -2,7 +2,7 @@ import { defineEventHandler, deleteCookie, getCookie, setCookie } from 'h3'
 import { useEdgeDb, useEdgeDbEnv } from '../../server'
 
 export default defineEventHandler(async (event) => {
-  const { identityModel } = useEdgeDbEnv()
+  const { auth } = useEdgeDbEnv()
 
   const token = getCookie(event, 'edgedb-auth-token')
 
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 
     if (!identityTarget && token) {
       identityTarget = await client.query(`
-      insert ${identityModel} {
+      insert ${auth.identityModel} {
         name := '',
         identity := global ext::auth::ClientTokenIdentity
       }

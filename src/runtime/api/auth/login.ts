@@ -3,7 +3,8 @@ import { useEdgeDbEnv, useEdgeDbPKCE } from '../../server'
 
 export default defineEventHandler(async (req) => {
   const pkce = useEdgeDbPKCE()
-  const { authBaseUrl } = useEdgeDbEnv()
+  const { urls } = useEdgeDbEnv()
+  const { authBaseUrl } = urls
 
   const { email, password, provider } = await readBody(req)
 

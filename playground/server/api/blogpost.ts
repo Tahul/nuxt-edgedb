@@ -26,7 +26,7 @@ export default defineEventHandler(async (req) => {
       return blogpost as BlogPost
     }
 
-    const count = await useEdgeDb().query('select count(BlogPost);').then(([count]) => count)
+    const count = await useEdgeDb().query('select count(BlogPost);').then(count => count?.[0] || 0)
 
     return count ? await allBlogPosts() : []
   }
