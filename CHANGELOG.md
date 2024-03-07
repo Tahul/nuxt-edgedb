@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.43
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.42...v0.0.43)
+
+### 🚀 Enhancements
+
+- **edgedb:** Refactor dsn management; improve runtimeConfig ([2634967](https://github.com/tahul/nuxt-edgedb/commit/2634967))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.42
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.41...v0.0.42)
