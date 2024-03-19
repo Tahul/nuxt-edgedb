@@ -6,6 +6,7 @@ import { join } from 'pathe'
 import chalk from 'chalk'
 import prompts from 'prompts'
 import * as execa from 'execa'
+import { getEdgeDbConfiguration } from './utils'
 
 const logger = createConsola({
   defaults: {
@@ -85,38 +86,6 @@ const nuxtModule = defineNuxtModule<ModuleOptions>({
     nuxt.options.build.transpile ??= []
     nuxt.options.build.transpile.push('edgedb')
 
-    // Inject env credentials from `edgedb instance credentials`
-    if (options.injectDbCredentials) {
-      // http://localhost:10702/db/edgedb/ext/auth/
-      let dbCredentials: any | undefined
-      try {
-        dbCredentials = await execa.execaCommand(`edgedb instance credentials --json`, { cwd: resolveProject() })
-      }
-      catch (e) {
-        // Silently fail, the EdgeDB instance credentials command failed.
-      }
-      if (dbCredentials) {
-        const { host, port, database, user, password, tls_ca, tls_security } = JSON.parse(dbCredentials.stdout)
-
-        if (!process.env.NUXT_EDGEDB_HOST)
-          process.env.NUXT_EDGEDB_HOST = host
-        if (!process.env.NUXT_EDGEDB_PORT)
-          process.env.NUXT_EDGEDB_PORT = port
-        if (!process.env.NUXT_EDGEDB_DATABASE)
-          process.env.NUXT_EDGEDB_DATABASE = database
-        if (!process.env.NUXT_EDGEDB_USER)
-          process.env.NUXT_EDGEDB_USER = user
-        if (!process.env.NUXT_EDGEDB_PASS)
-          process.env.NUXT_EDGEDB_PASS = password
-        if (!process.env.NUXT_EDGEDB_TLS_CA)
-          process.env.NUXT_EDGEDB_TLS_CA = tls_ca
-        if (!process.env.NUXT_EDGEDB_TLS_SECURITY)
-          process.env.NUXT_EDGEDB_TLS_SECURITY = tls_security
-        if (!process.env.NUXT_EDGEDB_AUTH_BASE_URL)
-          process.env.NUXT_EDGEDB_AUTH_BASE_URL = `http://${host}:${port}/db/${database}/ext/auth/`
-      }
-    }
-
     const envAppUrl = process.env.APP_URL || process.env.NUXT_EDGEDB_APP_URL
 
     // Create dev app url
@@ -128,63 +97,10 @@ const nuxtModule = defineNuxtModule<ModuleOptions>({
 
     const appUrl = envAppUrl || devAppUrl
 
-    const {
-      // EdgeDB DSN settings
-      NUXT_EDGEDB_HOST: host,
-      NUXT_EDGEDB_PORT: port,
-      NUXT_EDGEDB_USER: user,
-      NUXT_EDGEDB_PASS: pass,
-      NUXT_EDGEDB_DATABASE: database,
-      NUXT_EDGEDB_TLS_CA: tlsCA,
-      NUXT_EDGEDB_TLS_SECURITY: tlsSecurity,
+    // Inject runtime configuration
+    nuxt.options.runtimeConfig.edgeDb ??= await getEdgeDbConfiguration(appUrl, options, resolveProject(), options.injectDbCredentials)
 
-      // EdgeDB Auth settings
-      NUXT_EDGEDB_IDENTITY_MODEL: identityModel = options.identityModel || 'User',
-
-      // EdgeDB Auth URls
-      NUXT_EDGEDB_AUTH_BASE_URL: authBaseUrl = `http://${host}:${port}/db/${database}/ext/auth/`,
-      NUXT_EDGEDB_OAUTH_CALLBACK: oAuthCallbackUrl = `http://${host}:${port}/db/${database}/ext/auth/callback`,
-
-      // EdgeDB Nuxt Auth URLs
-      NUXT_EDGEDB_AUTH_VERIFY_REDIRECT_URL: verifyRedirectUrl = `${appUrl}/auth/verify`,
-      NUXT_EDGEDB_AUTH_RESET_PASSWORD_URL: resetPasswordUrl = `${appUrl}/auth/reset-password`,
-      NUXT_EDGEDB_OAUTH_REDIRECT_URL: oAuthRedirectUrl = `${appUrl}/auth/callback`,
-    } = process.env
-
-    const dsn = {
-      host,
-      port,
-      user,
-      pass,
-      database,
-      tlsCA,
-      tlsSecurity: tlsSecurity as 'insecure' | 'no_host_verification' | 'strict' | 'default' | undefined,
-      full: `edgedb://${user}:${pass}@${host}:${port}/${database}`,
-    }
-
-    const urls = {
-      // EdgeDB Nuxt Auth URLs
-      appUrl: appUrl || devAppUrl,
-      resetPasswordUrl,
-      verifyRedirectUrl,
-      oAuthRedirectUrl,
-
-      // EdgeDB Auth URls
-      authBaseUrl,
-      oAuthCallbackUrl,
-    }
-
-    const auth = {
-      enabled: options.auth,
-      oauth: options.oauth,
-      identityModel,
-    }
-
-    nuxt.options.runtimeConfig.edgeDb ??= {
-      auth,
-      dsn,
-      urls,
-    }
+    console.log(nuxt.options.runtimeConfig.edgeDb)
 
     async function piped$(
       command: string,
