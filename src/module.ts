@@ -98,7 +98,7 @@ const nuxtModule = defineNuxtModule<ModuleOptions>({
     const appUrl = envAppUrl || devAppUrl
 
     // Inject runtime configuration
-    nuxt.options.runtimeConfig.edgeDb ??= await getEdgeDbConfiguration(appUrl, options, resolveProject(), options.injectDbCredentials)
+    nuxt.options.runtimeConfig.edgeDb ??= await getEdgeDbConfiguration(appUrl, options, resolveProject(), options.injectDbCredentials) as any
 
     console.log(nuxt.options.runtimeConfig.edgeDb)
 
