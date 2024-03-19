@@ -100,8 +100,6 @@ const nuxtModule = defineNuxtModule<ModuleOptions>({
     // Inject runtime configuration
     nuxt.options.runtimeConfig.edgeDb ??= await getEdgeDbConfiguration(appUrl, options, resolveProject(), options.injectDbCredentials) as any
 
-    console.log(nuxt.options.runtimeConfig.edgeDb)
-
     async function piped$(
       command: string,
       args: string[],
