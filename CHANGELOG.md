@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.0.44
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.43...v0.0.44)
+
+### 🚀 Enhancements
+
+- **package:** Upgrade deps ([bc81f33](https://github.com/tahul/nuxt-edgedb/commit/bc81f33))
+- **utils:** Use utils in module ; expose it from package ([e3d747f](https://github.com/tahul/nuxt-edgedb/commit/e3d747f))
+
+### 🩹 Fixes
+
+- **module:** Typecheck fix ([cae29d8](https://github.com/tahul/nuxt-edgedb/commit/cae29d8))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.43
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.42...v0.0.43)
