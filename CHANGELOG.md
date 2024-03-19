@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.45
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.44...v0.0.45)
+
+### 🩹 Fixes
+
+- **clean:** Remove logging ([42f264a](https://github.com/tahul/nuxt-edgedb/commit/42f264a))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.44
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.43...v0.0.44)
