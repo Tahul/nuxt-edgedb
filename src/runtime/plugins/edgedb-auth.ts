@@ -12,7 +12,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
   async function updateIdentity(event?: H3Event) {
     try {
-      if (!process.server) {
+      if (!import.meta.server) {
         identity.value = await $fetch('/api/auth/identity')
         return
       }
@@ -43,7 +43,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       await navigateTo(redirectTo)
   }
 
-  if (process.server) {
+  if (import.meta.server) {
     const event = nuxtApp?.ssrContext?.event
 
     if (event)
