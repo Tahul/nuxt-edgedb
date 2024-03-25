@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useEdgeDbIdentity } from '../../../composables/useEdgeDbIdentity'
+
 const props = withDefaults(
   defineProps<{
     redirectTo?: string

@@ -1,6 +1,112 @@
 # Changelog
 
 
+## v0.0.45
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.44...v0.0.45)
+
+### 🩹 Fixes
+
+- **clean:** Remove logging ([42f264a](https://github.com/tahul/nuxt-edgedb/commit/42f264a))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
+## v0.0.44
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.43...v0.0.44)
+
+### 🚀 Enhancements
+
+- **package:** Upgrade deps ([bc81f33](https://github.com/tahul/nuxt-edgedb/commit/bc81f33))
+- **utils:** Use utils in module ; expose it from package ([e3d747f](https://github.com/tahul/nuxt-edgedb/commit/e3d747f))
+
+### 🩹 Fixes
+
+- **module:** Typecheck fix ([cae29d8](https://github.com/tahul/nuxt-edgedb/commit/cae29d8))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
+## v0.0.43
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.42...v0.0.43)
+
+### 🚀 Enhancements
+
+- **edgedb:** Refactor dsn management; improve runtimeConfig ([2634967](https://github.com/tahul/nuxt-edgedb/commit/2634967))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
+## v0.0.42
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.41...v0.0.42)
+
+### 🩹 Fixes
+
+- **logout:** Missing import ([085d0de](https://github.com/tahul/nuxt-edgedb/commit/085d0de))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
+## v0.0.41
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.40...v0.0.41)
+
+### 🚀 Enhancements
+
+- **auth:** Improve error handling and response types ([83486c6](https://github.com/tahul/nuxt-edgedb/commit/83486c6))
+
+### 🩹 Fixes
+
+- **components:** Fix components imports ([101e3c9](https://github.com/tahul/nuxt-edgedb/commit/101e3c9))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
+## v0.0.40
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.39...v0.0.40)
+
+### 🩹 Fixes
+
+- **identity:** Fix useEdgeDbIdentity runtime import ([1c66b13](https://github.com/tahul/nuxt-edgedb/commit/1c66b13))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
+## v0.0.39
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.38...v0.0.39)
+
+### 🩹 Fixes
+
+- **identity:** Missing setCookie import ([de65844](https://github.com/tahul/nuxt-edgedb/commit/de65844))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
+## v0.0.38
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.37...v0.0.38)
+
+### 🚀 Enhancements
+
+- **playground:** Improve playground ([c635109](https://github.com/tahul/nuxt-edgedb/commit/c635109))
+- **edgedb:** Small improvements ([8bcc015](https://github.com/tahul/nuxt-edgedb/commit/8bcc015))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.37
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.36...v0.0.37)

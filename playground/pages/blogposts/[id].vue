@@ -23,7 +23,9 @@ const { data: blogpost } = await useAsyncData<BlogPost>(
 
       <template #footer>
         <NuxtLink to="/">
-          <UButton>Home</UButton>
+          <UButton color="gray">
+            Home
+          </UButton>
         </NuxtLink>
       </template>
     </UCard>

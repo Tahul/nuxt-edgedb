@@ -1,7 +1,7 @@
 {
   "name": "nuxt-edgedb-module",
   "type": "module",
-  "version": "0.0.37",
+  "version": "0.0.45",
   "description": "Nuxt 3 integration for EdgeDB.",
   "license": "MIT",
   "repository": "tahul/nuxt-edgedb",
@@ -10,6 +10,11 @@
       "types": "./dist/module.d.ts",
       "import": "./dist/module.mjs",
       "require": "./dist/module.cjs"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.mjs",
+      "require": "./dist/utils.mjs"
     }
   },
   "main": "./dist/module.cjs",
@@ -31,23 +36,23 @@
   },
   "dependencies": {
     "@edgedb/generate": "^0.4.1",
-    "@nuxt/kit": "^3.10.1",
+    "@nuxt/kit": "^3.11.1",
     "edgedb": "^1.4.1",
     "execa": "^8.0.1",
     "prompts": "^2.4.2"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.6.4",
+    "@antfu/eslint-config": "^2.8.3",
     "@nuxt/devtools": "latest",
     "@nuxt/module-builder": "^0.5.5",
-    "@nuxt/schema": "^3.10.1",
-    "@nuxt/test-utils": "^3.11.0",
-    "@types/node": "^20.11.16",
+    "@nuxt/schema": "^3.11.1",
+    "@nuxt/test-utils": "^3.12.0",
+    "@types/node": "^20.11.30",
     "@types/prompts": "^2.4.9",
     "changelogen": "^0.5.5",
-    "eslint": "^8.56.0",
-    "nuxt": "^3.10.1",
-    "vitest": "^1.2.2"
+    "eslint": "^8.57.0",
+    "nuxt": "^3.11.1",
+    "vitest": "^1.4.0"
   },
   "resolutions": {
     "nuxt-edgedb-module": "link:."

@@ -7,7 +7,8 @@ import { useEdgeDbEnv } from '../../server'
  * @param {Request} req
  */
 export default defineEventHandler((req) => {
-  const { authBaseUrl } = useEdgeDbEnv()
+  const { urls } = useEdgeDbEnv()
+  const { authBaseUrl } = urls
   const { reset_token } = getQuery(req)
 
   return {

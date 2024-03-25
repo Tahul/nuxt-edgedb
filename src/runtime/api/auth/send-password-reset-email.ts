@@ -1,4 +1,4 @@
-import { H3Error, defineEventHandler, readBody, setHeaders } from 'h3'
+import { H3Error, defineEventHandler, readBody, sendError, setHeaders } from 'h3'
 import { useEdgeDbEnv, useEdgeDbPKCE } from '../../server'
 
 /**
@@ -8,7 +8,8 @@ import { useEdgeDbEnv, useEdgeDbPKCE } from '../../server'
  */
 export default defineEventHandler(async (req) => {
   const pkce = useEdgeDbPKCE()
-  const { authBaseUrl, resetPasswordUrl: reset_url } = useEdgeDbEnv()
+  const { urls } = useEdgeDbEnv()
+  const { authBaseUrl, resetPasswordUrl: reset_url } = urls
 
   const { email } = await readBody(req)
   const provider = 'builtin::local_emailpassword'
@@ -16,7 +17,7 @@ export default defineEventHandler(async (req) => {
   if (!email) {
     const err = new H3Error(`Request body is missing 'email'`)
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const sendResetUrl = new URL('send-reset-email', authBaseUrl)
@@ -36,14 +37,17 @@ export default defineEventHandler(async (req) => {
   if (!sendResetResponse.ok) {
     const err = new H3Error(await sendResetResponse.text())
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const { email_sent } = await sendResetResponse.json()
 
-  setHeaders(req, {
-    'Set-Cookie': `edgedb-pkce-verifier=${pkce.verifier}; HttpOnly; Path=/; Secure; SameSite=Strict`,
-  })
+  setHeaders(
+    req,
+    {
+      'Set-Cookie': `edgedb-pkce-verifier=${pkce.verifier}; HttpOnly; Path=/; Secure; SameSite=Strict`,
+    },
+  )
 
   return {
     message: `Reset email sent to '${email_sent}'.`,

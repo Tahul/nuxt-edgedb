@@ -1,4 +1,4 @@
-import { H3Error, defineEventHandler, getCookie, getRequestURL, setHeaders } from 'h3'
+import { H3Error, defineEventHandler, getCookie, getRequestURL, sendError, setHeaders } from 'h3'
 import { useEdgeDbEnv } from '../../server'
 
 /**
@@ -8,7 +8,8 @@ import { useEdgeDbEnv } from '../../server'
  * @param {Request} req
  */
 export default defineEventHandler(async (req) => {
-  const { authBaseUrl } = useEdgeDbEnv()
+  const { urls } = useEdgeDbEnv()
+  const { authBaseUrl } = urls
 
   const requestUrl = getRequestURL(req)
   const code = requestUrl.searchParams.get('code')
@@ -16,14 +17,14 @@ export default defineEventHandler(async (req) => {
     const error = requestUrl.searchParams.get('error')
     const err = new H3Error(`OAuth callback is missing 'code'. OAuth provider responded with error: ${error}`)
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const verifier = getCookie(req, 'edgedb-pkce-verifier')
   if (!verifier) {
     const err = new H3Error(`Could not find 'verifier' in the cookie store. Is this the same user agent/browser that started the authorization flow?`)
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const codeExchangeUrl = new URL('token', authBaseUrl)
@@ -36,13 +37,13 @@ export default defineEventHandler(async (req) => {
   if (!codeExchangeResponse.ok) {
     const err = new H3Error(await codeExchangeResponse.text())
     err.statusCode = 400
-    return err
+    return sendError(req, err)
   }
 
   const codeExchangeResponseData = await codeExchangeResponse.json()
 
   await useNitroApp().hooks.callHook(
-    'edgedb:auth:callback',
+    'edgedb:auth:callback' as any,
     {
       code,
       verifier,

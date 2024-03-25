@@ -11,10 +11,9 @@ const { data, refresh } = await useAsyncData<BlogPost[]>(
 async function deleteBlogPost(id: string) {
   await $fetch('/api/blogpost', {
     method: 'DELETE',
-    body: {
-      id,
-    },
+    query: { id },
   })
+
   await refresh()
 }
 </script>
@@ -28,22 +27,35 @@ async function deleteBlogPost(id: string) {
       <template #header>
         <div class="flex items-center justify-between">
           <h2>{{ blogpost.title }}</h2>
+        </div>
+      </template>
+
+      <p class="text-sm opacity-50">
+        {{ blogpost.description }}
+      </p>
+
+      <template #footer>
+        <div class="flex items-center justify-between">
+          <div>
+            <UButton color="gray">
+              <NuxtLink :to="`/blogposts/${blogpost.id}`">
+                Read more
+              </NuxtLink>
+            </UButton>
+          </div>
+
           <div
             v-if="isLoggedIn"
             class="cursor-pointer"
             @click="() => deleteBlogPost(blogpost.id)"
           >
-            <UIcon name="i-heroicons-trash" />
+            <UButton icon="i-heroicons-trash" color="red" variant="outline">
+              <NuxtLink :to="`/blogposts/${blogpost.id}`">
+                Delete
+              </NuxtLink>
+            </UButton>
           </div>
         </div>
-      </template>
-
-      <p>{{ blogpost.description }}</p>
-
-      <template #footer>
-        <NuxtLink :to="`/blogposts/${blogpost.id}`">
-          Read more
-        </NuxtLink>
       </template>
     </UCard>
   </UContainer>

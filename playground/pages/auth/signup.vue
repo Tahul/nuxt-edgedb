@@ -14,7 +14,8 @@
               type="email"
               :value="email"
               placeholder="your@email.com"
-              @change="(e) => updateEmail(e.target.value)"
+              @change="(e: any) => updateEmail(e.target.value)"
+              @keyup.enter="() => submit()"
             />
           </UFormGroup>
           <UFormGroup label="Password">
@@ -22,7 +23,8 @@
               type="password"
               :value="password"
               placeholder="password"
-              @change="(e) => updatePassword(e.target.value)"
+              @change="(e: any) => updatePassword(e.target.value)"
+              @keyup.enter="() => submit()"
             />
           </UFormGroup>
         </div>
@@ -30,9 +32,10 @@
         <template #footer>
           <div class="flex items-center gap-2">
             <UButton
+              color="gray"
               type="button"
               :loading="loading"
-              @click="(e) => submit()"
+              @click="() => submit()"
             >
               Signup
             </UButton>

@@ -8,7 +8,7 @@
         <template #header>
           <h2>Email verification</h2>
         </template>
-        <UButton :loading="loading">
+        <UButton :loading="loading" color="gray">
           Loading...
         </UButton>
       </UCard>

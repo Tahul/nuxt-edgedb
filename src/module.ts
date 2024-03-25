@@ -1,10 +1,12 @@
 import { existsSync } from 'node:fs'
-import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import type { NuxtModule } from 'nuxt/schema'
+import { addComponentsDir, addImports, addPlugin, addServerHandler, addServerImports, addServerPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { createConsola } from 'consola'
 import { join } from 'pathe'
 import chalk from 'chalk'
 import prompts from 'prompts'
 import * as execa from 'execa'
+import { getEdgeDbConfiguration } from './utils'
 
 const logger = createConsola({
   defaults: {
@@ -45,7 +47,7 @@ const activePrompts = {
   schemaPrompt: undefined as any,
 }
 
-export default defineNuxtModule<ModuleOptions>({
+const nuxtModule = defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'nuxt-edgedb-module',
     configKey: 'edgeDb',
@@ -86,12 +88,19 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.build.transpile ??= []
     nuxt.options.build.transpile.push('edgedb')
 
-    // Set user model if `auth` is set.
-    ;(nuxt.options.runtimeConfig as any).edgeDb ??= {}
-    ;(nuxt.options.runtimeConfig.app as any).edgeDb ??= {
-      auth: options.auth,
-      identityModel: options.identityModel,
-    }
+    const envAppUrl = process.env.APP_URL || process.env.NUXT_EDGEDB_APP_URL
+
+    // Create dev app url
+    const devAppUrl = [
+      nuxt.options.devServer.https ? `https://` : `http://`,
+      nuxt.options.devServer.host ? nuxt.options.devServer.host : 'localhost',
+      nuxt.options.devServer.port ? `:${nuxt.options.devServer.port}` : '',
+    ].join('')
+
+    const appUrl = envAppUrl || devAppUrl
+
+    // Inject runtime configuration
+    nuxt.options.runtimeConfig.edgeDb ??= await getEdgeDbConfiguration(appUrl, options, resolveProject(), options.injectDbCredentials) as any
 
     async function piped$(
       command: string,
@@ -572,28 +581,6 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     if (options.auth) {
-      if (options.injectDbCredentials) {
-        // http://localhost:10702/db/edgedb/ext/auth/
-        let dbCredentials: any | undefined
-        try {
-          dbCredentials = await execa.execaCommand(`edgedb instance credentials --json`, { cwd: resolveProject() })
-        }
-        catch (e) {
-          //
-        }
-        if (dbCredentials) {
-          const { host, port, database, user, password, tls_ca, tls_security } = JSON.parse(dbCredentials.stdout)
-          process.env.NUXT_EDGEDB_HOST = host
-          process.env.NUXT_EDGEDB_PORT = port
-          process.env.NUXT_EDGEDB_DATABASE = database
-          process.env.NUXT_EDGEDB_USER = user
-          process.env.NUXT_EDGEDB_PASS = password
-          process.env.NUXT_EDGEDB_TLS_CA = tls_ca
-          process.env.NUXT_EDGEDB_TLS_SECURITY = tls_security
-          process.env.NUXT_EDGEDB_AUTH_BASE_URL = `http://${host}:${port}/db/${database}/ext/auth/`
-        }
-      }
-
       // Runtime
       addPlugin({
         src: resolveLocal('./runtime/plugins/edgedb-auth'),
@@ -603,7 +590,12 @@ export default defineNuxtModule<ModuleOptions>({
         path: resolveLocal('./runtime/components/auth/base'),
         global: true,
       })
-      addImportsDir(resolveLocal('./runtime/composables'))
+      addImports([
+        {
+          from: resolveLocal('./runtime/composables/useEdgeDbIdentity'),
+          name: 'useEdgeDbIdentity',
+        },
+      ])
 
       // Server
       addServerImports([
@@ -684,4 +676,44 @@ function useLogger() {
       edgeColor,
     },
   )
+}
+
+export default nuxtModule
+
+declare module 'nuxt/schema' {
+  interface NuxtConfig {
+    ['edgeDb']?: typeof nuxtModule extends NuxtModule<infer O> ? Partial<O> : Record<string, any>
+  }
+
+  interface RuntimeConfig {
+    edgeDb: {
+      auth: {
+        enabled: boolean
+        oauth: boolean
+        identityModel: string
+      }
+      identityModel?: string
+      urls: {
+        appUrl?: string
+        authBaseUrl?: string
+        resetPasswordUrl?: string
+        verifyRedirectUrl?: string
+        oAuthCallbackUrl?: string
+        oAuthRedirectUrl?: string
+      }
+      dsn: {
+        host?: string
+        port?: string
+        user?: string
+        pass?: string
+        database?: string
+        tlsCA?: string
+        tlsSecurity?: 'insecure' | 'no_host_verification' | 'strict' | 'default' | undefined
+      }
+    }
+  }
+
+  interface PublicRuntimeConfig {
+
+  }
 }

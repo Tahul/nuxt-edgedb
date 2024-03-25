@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useEdgeDbIdentity } from '../../../composables/useEdgeDbIdentity'
 import { navigateTo, useRouter } from '#imports'
 
 const props = withDefaults(
