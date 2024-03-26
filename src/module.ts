@@ -1,3 +1,4 @@
+import { relative, resolve } from 'node:path'
 import { existsSync } from 'node:fs'
 import type { NuxtModule } from 'nuxt/schema'
 import { addComponentsDir, addImports, addPlugin, addServerHandler, addServerImports, addServerPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
@@ -317,6 +318,7 @@ const nuxtModule = defineNuxtModule<ModuleOptions>({
       nuxt.options.watch.push(`${queriesDir}/*`)
 
       nuxt.hook('builder:watch', async (event, path) => {
+        path = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, path))
         if (event === 'add' || event === 'change' || event === 'unlink' || event === 'unlinkDir') {
           // Queries
           if (path.includes(options.queriesDir) && path.endsWith('.edgeql')) {
