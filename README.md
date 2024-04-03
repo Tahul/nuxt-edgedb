@@ -23,14 +23,7 @@ Integrate [Nuxt 3](https://nuxt.com) with [EdgeDB](https://www.edgedb.com) effor
 1. Add `nuxt-edgedb-module` dependency to your project
 
 ```bash
-# Using pnpm
-pnpm add -D nuxt-edgedb-module
-
-# Using yarn
-yarn add --dev nuxt-edgedb-module
-
-# Using npm
-npm install --save-dev nuxt-edgedb-module
+npx nuxi@latest module add edgedb
 ```
 
 2. Add `nuxt-edgedb-module` to the `modules` section of `nuxt.config.ts`
