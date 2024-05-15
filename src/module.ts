@@ -20,6 +20,7 @@ export interface ModuleOptions {
   devtools: boolean
   watch: boolean
   watchPrompt: true
+  dbWatchMode: boolean
   dbschemaDir: string
   queriesDir: string
   queryBuilderDir: string
@@ -57,6 +58,7 @@ const nuxtModule = defineNuxtModule<ModuleOptions>({
     devtools: true,
     watch: true,
     watchPrompt: true,
+    dbWatchMode: false,
     generateTarget: 'ts',
     dbschemaDir: 'dbschema',
     queriesDir: 'queries',
@@ -312,7 +314,34 @@ const nuxtModule = defineNuxtModule<ModuleOptions>({
      * Watchers
      */
 
-    if (canPrompt && options.watch) {
+    if (options.dbWatchMode && !nuxt.options._prepare) {
+      const edb_watch_process = execa.execa('edgedb', ['watch', '--verbose'], { cwd: resolveProject(), buffer: false })
+
+      const extractDDLs = (input: string) => {
+        const pattern = /(?:ALTER|CREATE|DROP)([\s\S]+?(};))/g
+        const matches = input.match(pattern)
+        return matches || []
+      }
+      const excluded_logs = [
+        'EdgeDB Watch initialized.',
+        `Monitoring "${resolveProject()}".`,
+      ]
+
+      edb_watch_process.stderr!.on('data', async (chunk: string) => {
+        const content = chunk.toString()
+        const ddls = extractDDLs(content)
+        if (ddls.length) {
+          await generateInterfaces()
+          await generateQueryBuilder()
+          success(`EdgeDB - schema changes detected`)
+        }
+        else if (!excluded_logs.some(e => content.includes(e))) {
+          console.log(content)
+        }
+      })
+      success('Running \'edgedb watch\' mode in the background.', true)
+    }
+    else if (canPrompt && options.watch) {
       nuxt.options.watch.push(`${dbschemaDir}/*`)
       nuxt.options.watch.push(`${dbschemaDir}/migrations/*`)
       nuxt.options.watch.push(`${queriesDir}/*`)
