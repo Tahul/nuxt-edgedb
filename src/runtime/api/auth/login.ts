@@ -1,5 +1,6 @@
 import { H3Error, defineEventHandler, readBody, sendError, setCookie } from 'h3'
-import { useEdgeDbEnv, useEdgeDbPKCE } from '../../server'
+import { useEdgeDbEnv } from '../../server/composables/useEdgeDbEnv'
+import { useEdgeDbPKCE } from '../../server/composables/useEdgeDbPKCE'
 
 export default defineEventHandler(async (req) => {
   const pkce = useEdgeDbPKCE()

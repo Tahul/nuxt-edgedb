@@ -1,5 +1,6 @@
 import { H3Error, defineEventHandler, readBody, sendError, setHeaders } from 'h3'
-import { useEdgeDbEnv, useEdgeDbPKCE } from '../../server'
+import { useEdgeDbEnv } from '../../server/composables/useEdgeDbEnv'
+import { useEdgeDbPKCE } from '../../server/composables/useEdgeDbPKCE'
 
 /**
  * Request a password reset for an email.

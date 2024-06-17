@@ -1,6 +1,6 @@
 import { createClient } from 'edgedb'
 import { defineNitroPlugin } from 'nitropack/dist/runtime/plugin'
-import { useEdgeDbEnv } from '../'
+import { useEdgeDbEnv } from '../composables/useEdgeDbEnv'
 
 export default defineNitroPlugin(() => {
   const { dsn } = useEdgeDbEnv()

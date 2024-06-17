@@ -1,5 +1,5 @@
 import { H3Error, defineEventHandler, getCookie, getRequestURL, sendError, setHeaders } from 'h3'
-import { useEdgeDbEnv } from '../../server'
+import { useEdgeDbEnv } from '../../server/composables/useEdgeDbEnv'
 
 /**
  * Handles the PKCE callback and exchanges the `code` and `verifier`

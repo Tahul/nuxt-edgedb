@@ -1,5 +1,5 @@
 import { H3Error, defineEventHandler, getCookie, readBody, sendError, setHeaders } from 'h3'
-import { useEdgeDbEnv } from '../../server'
+import { useEdgeDbEnv } from '../../server/composables/useEdgeDbEnv'
 
 /**
  * Send new password with reset token to EdgeDB Auth.

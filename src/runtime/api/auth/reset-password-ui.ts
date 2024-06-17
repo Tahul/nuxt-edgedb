@@ -1,5 +1,5 @@
 import { defineEventHandler, getQuery } from 'h3'
-import { useEdgeDbEnv } from '../../server'
+import { useEdgeDbEnv } from '../../server/composables/useEdgeDbEnv'
 
 /**
  * Render a simple reset password UI
