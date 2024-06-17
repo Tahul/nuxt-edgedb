@@ -1,5 +1,4 @@
 import { defineEventHandler, getQuery, isMethod, readBody } from 'h3'
-import { useEdgeDbQueries } from '#edgedb/server'
 import type { BlogPost } from '#edgedb/interfaces'
 
 export default defineEventHandler(async (req) => {
