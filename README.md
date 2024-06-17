@@ -12,11 +12,11 @@ Integrate [Nuxt 3](https://nuxt.com) with [EdgeDB](https://www.edgedb.com) effor
 ## Features
 
 - 🍱 **Effortless Integration**: Set up a database with just one line of configuration.
-- 🧙 **Seamless Initialization**: Automates [EdgeDB CLI](https://www.edgedb.com/docs/cli/index) setup and [project initialization](https://www.edgedb.com/docs/cli/edgedb_project/edgedb_project_init).
 - 🎩 **Live Schema Updates**: Experience _HMR-like DX_ with watchers on **schema**, **queries**, and **migrations**.
 - 🛟 **Typed Query Generation**: Automatically generate a typed query client with [@edgedb/generate](https://www.edgedb.com/docs/clients/js/generation).
 - 🍩 **Integrated Database Management**: Pilot your database from [Nuxt DevTools](https://github.com/nuxt/devtools).
 - 🔐 **Flexible Auth**: 1-line toggle [Email](https://www.edgedb.com/docs/guides/auth/email_password) or [OAuth](https://www.edgedb.com/docs/guides/auth/oauth) authentication, with support for custom auth providers.
+- 🧙 **Initial guidance**: Guides you through [EdgeDB CLI](https://www.edgedb.com/docs/cli/index) setup and [project initialization](https://www.edgedb.com/docs/cli/edgedb_project/edgedb_project_init).
 
 ## Quick Setup
 
@@ -36,6 +36,12 @@ export default defineNuxtConfig({
 })
 ```
 
+3. Run `npx nuxt-edgedb-module` in your project root to run the CLI setup wizard.
+
+```bash
+npx nuxt-edgedb-module
+```
+
 That's it! Your Nuxt project now have a database. ✨
 
 If you do not already have [EdgeDB](https://www.edgedb.com) installed on your machine, the install wizard will help you install it.
@@ -53,6 +59,7 @@ pnpm install
 pnpm stub
 cd playground
 edgedb project init
+npx nuxt-edgedb-module
 pnpm run dev
 ```
 
@@ -72,22 +79,10 @@ export default defineNuxtConfig({
     watchPrompt: true,
     // Generate target for your queries and query builder
     generateTarget: 'ts',
-    // dbschema/ dir (you should not touch this)
+    // dbschema/ dir
     dbschemaDir: 'dbschema',
-    // dbschema/ dir (you should not touch this)
+    // Individual queries dir (useEdgeDbQueries composable)
     queriesDir: 'queries',
-    // dbschema/ dir (you should not touch this)
-    queryBuilderDir: 'dbschema/query-builder',
-    // Toggles typings generation (#edgedb/interfaces)
-    generateInterfaces: true,
-    // Toggles typings generation (#edgedb/queries)
-    generateQueries: true,
-    // Toggles typings generation (#edgedb/builder)
-    generateQueryBuilder: true,
-    // Toggles logging messages on code generation
-    generateQuiet: true,
-    // Toggles project init wizard
-    projectInit: true,
     // Toggle CLI install wizard
     installCli: true,
     // Toggles composables
