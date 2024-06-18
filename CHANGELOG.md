@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.51
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.50...v0.0.51)
+
+### 🚀 Enhancements
+
+- **module:** Transpile ([1d2ba1f](https://github.com/tahul/nuxt-edgedb/commit/1d2ba1f))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.50
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.49...v0.0.50)
