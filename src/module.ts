@@ -52,6 +52,7 @@ const nuxtModule = defineNuxtModule<ModuleOptions>({
     // Transpile edgedb
     nuxt.options.build.transpile ??= []
     nuxt.options.build.transpile.push('edgedb')
+    nuxt.options.build.transpile.push('nuxt-edgedb-module')
 
     const envAppUrl = process.env.APP_URL || process.env.NUXT_EDGEDB_APP_URL
 
@@ -83,7 +84,7 @@ const nuxtModule = defineNuxtModule<ModuleOptions>({
       }
 
       if (process.env?.NUXT_EDGEDB_UI_URL || uiUrl?.stdout) {
-        nuxt.hook('devtools:customTabs', (tabs) => {
+        nuxt.hook('devtools:customTabs' as any, (tabs: any[]) => {
           tabs.push({
             // unique identifier
             name: 'nuxt-edgedb-module',
