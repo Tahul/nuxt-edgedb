@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.48
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.47...v0.0.48)
+
+### 🚀 Enhancements
+
+- **package:** Cleanup ([fdd6fb7](https://github.com/tahul/nuxt-edgedb/commit/fdd6fb7))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.47
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.46...v0.0.47)
