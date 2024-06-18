@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs'
 import type { NuxtModule } from 'nuxt/schema'
-import { addComponentsDir, addImports, addPlugin, addServerHandler, addServerImports, addServerPlugin, addTemplate, createResolver, defineNuxtModule, logger } from '@nuxt/kit'
+import { addComponentsDir, addImports, addPlugin, addServerHandler, addServerImports, addServerPlugin, createResolver, defineNuxtModule, logger } from '@nuxt/kit'
 import { join } from 'pathe'
 import * as execa from 'execa'
 import chalk from 'chalk'
