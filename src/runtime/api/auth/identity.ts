@@ -1,5 +1,6 @@
 import { defineEventHandler, deleteCookie, getCookie, setCookie } from 'h3'
 import { useEdgeDbEnv } from '../../server/composables/useEdgeDbEnv'
+import { useEdgeDb } from '../../server/composables/useEdgeDb'
 
 export default defineEventHandler(async (event) => {
   const { auth } = useEdgeDbEnv()
