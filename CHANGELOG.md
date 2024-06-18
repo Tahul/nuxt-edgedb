@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.49
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.48...v0.0.49)
+
+### 🩹 Fixes
+
+- **nitro:** Proper import for useNitroApp ([63b9075](https://github.com/tahul/nuxt-edgedb/commit/63b9075))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.48
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.47...v0.0.48)
