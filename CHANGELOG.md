@@ -1,6 +1,36 @@
 # Changelog
 
 
+## v0.0.47
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.46...v0.0.47)
+
+### 🚀 Enhancements
+
+- **auth:** Cleanup imports ; only use relative to runtime dir ([6246c7c](https://github.com/tahul/nuxt-edgedb/commit/6246c7c))
+- **cli:** Add cli install wizard ; avoiding bloating the module with 1-time logic ([283fc5d](https://github.com/tahul/nuxt-edgedb/commit/283fc5d))
+- **module:** Cleanup the module from all generate logic ; rely on cli now ([4aef093](https://github.com/tahul/nuxt-edgedb/commit/4aef093))
+- **playground:** Drop import ([9fffe2a](https://github.com/tahul/nuxt-edgedb/commit/9fffe2a))
+- **package:** Update dependencies (nuxt ^3.12) ([3e11791](https://github.com/tahul/nuxt-edgedb/commit/3e11791))
+- **package:** Build cli ([07ab7a3](https://github.com/tahul/nuxt-edgedb/commit/07ab7a3))
+- **readme:** Update readme according to latest updates ([f226ee7](https://github.com/tahul/nuxt-edgedb/commit/f226ee7))
+- **lint:** Update ([29c6ca1](https://github.com/tahul/nuxt-edgedb/commit/29c6ca1))
+
+### 🩹 Fixes
+
+- Opt in to `import.meta.*` properties ([#23](https://github.com/tahul/nuxt-edgedb/pull/23))
+- Adopt forward-compatible approach to `builder:watch` ([#24](https://github.com/tahul/nuxt-edgedb/pull/24))
+
+### 📖 Documentation
+
+- Add project init step ([#17](https://github.com/tahul/nuxt-edgedb/pull/17))
+- Use new `nuxi module add` command in installation ([#25](https://github.com/tahul/nuxt-edgedb/pull/25))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v0.0.46
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.45...v0.0.46)
