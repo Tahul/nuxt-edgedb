@@ -1,4 +1,5 @@
 import { H3Error, defineEventHandler, getCookie, getRequestURL, sendError, setHeaders } from 'h3'
+import { useNitroApp } from 'nitropack/runtime'
 import { useEdgeDbEnv } from '../../server/composables/useEdgeDbEnv'
 
 /**
