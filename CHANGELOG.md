@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.52
+
+[compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.51...v0.0.52)
+
+### 🚀 Enhancements
+
+- **utils:** Use execa properly ([916a807](https://github.com/tahul/nuxt-edgedb/commit/916a807))
+
+### ❤️ Contributors
+
+- Yaël Guilloux ([@Tahul](http://github.com/Tahul))
+
 ## v0.0.51
 
 [compare changes](https://github.com/tahul/nuxt-edgedb/compare/v0.0.50...v0.0.51)
