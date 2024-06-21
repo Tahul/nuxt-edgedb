@@ -1,18 +1,19 @@
-import * as execa from 'execa'
+import { execa } from 'execa'
 import type { ModuleOptions } from './module'
 
 export async function getEdgeDbCredentials(
   cwd: string,
   processInject: boolean = true,
 ) {
-  // http://localhost:10702/db/edgedb/ext/auth/
   let dbCredentials: any | undefined
+
   try {
-    dbCredentials = await execa.execaCommand(`edgedb instance credentials --json`, { cwd })
+    dbCredentials = await execa({ cwd })`edgedb instance credentials --json`
   }
   catch (e) {
     // Silently fail, the EdgeDB instance credentials command failed.
   }
+
   if (dbCredentials) {
     const { host, port, database, user, password, tls_ca, tls_security } = JSON.parse(dbCredentials.stdout)
 
